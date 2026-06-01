@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "923179620080",
+    "project_id": "numberfindinggame",
+    "storage_bucket": "numberfindinggame.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923179620080:android:f25df147358ef043c55435",
+        "android_client_info": {
+          "package_name": "com.example.numberfindinggame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLMn6pZte0Qln30L0KY4ibQ3tmR9oIqOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
