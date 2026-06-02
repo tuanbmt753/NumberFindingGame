@@ -14,9 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NumberFindingGame"
         tools:targetApi="31">
-
         <activity
-            android:name=".activity.TrangChuActivity"
+            android:name=".activity.SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.auth.DangKyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.auth.DangNhapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.home.TrangChuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

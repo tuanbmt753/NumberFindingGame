@@ -1,4 +1,4 @@
-package com.example.numberfindinggame.activity;
+package com.example.numberfindinggame.activity.home;
 
 import android.os.Bundle;
 
@@ -17,10 +17,6 @@ public class TrangChuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_trang_chu);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
     }
 }
