@@ -8,7 +8,8 @@ public class FirebaseManager {
                     "https://numberfindinggame-default-rtdb.asia-southeast1.firebasedatabase.app"
             );
 
-    public static DatabaseReference getNguoiDungRef() {
+    public static DatabaseReference nguoiDung() {
         return database.getReference("NguoiDung");
     }
+
 }
