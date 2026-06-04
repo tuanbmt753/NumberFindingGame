@@ -1,4 +1,12 @@
 package com.example.numberfindinggame.repository;
 
-public class OnCheckListener {
+public interface OnCheckListener {
+
+    void onUsernameExists();
+
+    void onEmailExists();
+
+    void onPhoneExists();
+
+    void onSuccess();
 }
