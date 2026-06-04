@@ -149,28 +149,31 @@ public class DangKyActivity extends AppCompatActivity {
                                         task -> {
 
                                             if (task.isSuccessful()) {
+                                                edtUsername.setText("");
+                                                edtEmail.setText("");
+                                                edtPhone.setText("");
+                                                edtPassword.setText("");
 
                                                 Toast.makeText(
                                                         DangKyActivity.this,
                                                         "Đăng ký thành công",
                                                         Toast.LENGTH_SHORT
                                                 ).show();
-                                                txtLoiUser.setText("");
-                                                txtLoiEmail.setText("");
-                                                txtLoiSoDienThoai.setText("");
-                                                txtLoiMatKhau.setText("");
+
+
 
                                             } else {
+                                                edtUsername.setText("");
+                                                edtEmail.setText("");
+                                                edtPhone.setText("");
+                                                edtPassword.setText("");
 
                                                 Toast.makeText(
                                                         DangKyActivity.this,
                                                         "Đăng ký thất bại",
                                                         Toast.LENGTH_SHORT
                                                 ).show();
-                                                txtLoiUser.setText("");
-                                                txtLoiEmail.setText("");
-                                                txtLoiSoDienThoai.setText("");
-                                                txtLoiMatKhau.setText("");
+
 
                                             }
                                         }
