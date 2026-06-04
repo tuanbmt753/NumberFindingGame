@@ -155,6 +155,10 @@ public class DangKyActivity extends AppCompatActivity {
                                                         "Đăng ký thành công",
                                                         Toast.LENGTH_SHORT
                                                 ).show();
+                                                txtLoiUser.setText("");
+                                                txtLoiEmail.setText("");
+                                                txtLoiSoDienThoai.setText("");
+                                                txtLoiMatKhau.setText("");
 
                                             } else {
 
@@ -163,6 +167,10 @@ public class DangKyActivity extends AppCompatActivity {
                                                         "Đăng ký thất bại",
                                                         Toast.LENGTH_SHORT
                                                 ).show();
+                                                txtLoiUser.setText("");
+                                                txtLoiEmail.setText("");
+                                                txtLoiSoDienThoai.setText("");
+                                                txtLoiMatKhau.setText("");
 
                                             }
                                         }
