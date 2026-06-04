@@ -4,6 +4,7 @@ public class NguoiDung {
     private String maNguoiDung;
     private String tenNguoiDung;
     private String email;
+    private String phone;
     private String hinhDaiDien;
     private String hinhNen;
     private String matKhau;
@@ -18,6 +19,7 @@ public class NguoiDung {
     public NguoiDung(String maNguoiDung,
                      String tenNguoiDung,
                      String email,
+                     String phone,
                      String hinhDaiDien,
                      String hinhNen,
                      String matKhau,
@@ -29,6 +31,7 @@ public class NguoiDung {
         this.maNguoiDung = maNguoiDung;
         this.tenNguoiDung = tenNguoiDung;
         this.email = email;
+        this.phone = phone;
         this.hinhDaiDien = hinhDaiDien;
         this.hinhNen = hinhNen;
         this.matKhau = matKhau;
@@ -118,12 +121,21 @@ public class NguoiDung {
         this.ngayTao = ngayTao;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public String toString() {
         return "NguoiDung{" +
                 "maNguoiDung='" + maNguoiDung + '\'' +
                 ", tenNguoiDung='" + tenNguoiDung + '\'' +
                 ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", hinhDaiDien='" + hinhDaiDien + '\'' +
                 ", hinhNen='" + hinhNen + '\'' +
                 ", matKhau='" + matKhau + '\'' +

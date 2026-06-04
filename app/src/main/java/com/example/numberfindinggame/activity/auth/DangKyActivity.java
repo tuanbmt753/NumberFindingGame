@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,10 +15,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
+import com.google.android.material.card.MaterialCardView;
 
 public class DangKyActivity extends AppCompatActivity {
 
-     private TextView txtLogin ;
+    TextView txtLogin;
+    EditText edtUsername, edtEmail, edtPhone, edtPassword;
+    ImageView imgShowPassword;
+
+    MaterialCardView cardDangKy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,17 @@ public class DangKyActivity extends AppCompatActivity {
     }
 
     private void getControl() {
-         txtLogin = findViewById(R.id.txtLogin);
+
+        txtLogin = findViewById(R.id.txtLogin);
+
+        edtUsername = findViewById(R.id.edtUsername);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPhone = findViewById(R.id.edtPhone);
+        edtPassword = findViewById(R.id.edtPassword);
+
+        imgShowPassword = findViewById(R.id.imgShowPassword);
+
+        cardDangKy = findViewById(R.id.cardDangKy);
+
     }
 }
