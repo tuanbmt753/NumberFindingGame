@@ -2,6 +2,7 @@ package com.example.numberfindinggame.firebase;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 public class FirebaseManager {
     private static final FirebaseDatabase database =
             FirebaseDatabase.getInstance(

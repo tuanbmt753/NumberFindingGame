@@ -30,6 +30,7 @@
                 app:layout_constraintTop_toTopOf="@id/txtTitle" />
 
             <TextView
+                android:textColor="#000"
                 android:id="@+id/txtTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -36,6 +36,7 @@
                 android:fontFamily="@font/sono"
                 android:gravity="right|center"
                 android:text="Number&#10;Finding&#10;Game"
+                android:textColor="#000"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imgLogo"
@@ -50,6 +51,7 @@
             android:fontFamily="@font/sono"
             android:gravity="center"
             android:text="Đăng ký"
+            android:textColor="#000"
             android:textSize="30sp" />
 
         <com.google.android.material.card.MaterialCardView
@@ -82,9 +84,13 @@
                     android:id="@+id/edtUsername"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@android:color/transparent"
                     android:fontFamily="@font/sono"
                     android:gravity="center"
                     android:hint="Username"
+                    android:inputType="text"
                     android:textColor="#000000"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -92,10 +98,21 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/txtLoiUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="2dp"
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="#FFFFFF"
@@ -122,19 +139,87 @@
                     android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@android:color/transparent"
                     android:fontFamily="@font/sono"
                     android:gravity="center"
                     android:hint="Email"
+                    android:inputType="textEmailAddress"
                     android:textColor="#000000"
                     android:textSize="20sp" />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/txtLoiEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_phone_2" />
+
+                <EditText
+                    android:id="@+id/edtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:hint="Phone"
+                    android:inputType="phone"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/txtLoiSoDienThoai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="2dp"
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="#FFFFFF"
@@ -161,30 +246,45 @@
                     android:id="@+id/edtPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@android:color/transparent"
                     android:fontFamily="@font/sono"
                     android:gravity="center"
                     android:hint="Password"
+                    android:inputType="textPassword"
                     android:textColor="#000000"
                     android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/imgShowPassword"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/ic_mat" />
 
             </LinearLayout>
 
+
         </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/txtLoiMatKhau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardDangKy"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="2dp"
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="#FFFFFF"
@@ -208,18 +308,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:layout_marginTop="20dp"
-          >
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <TextView
-                android:gravity="center"
                 android:id="@+id/txtLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đã có tài khoản?"
                 android:fontFamily="@font/sono"
-                android:textSize="15sp"/>
+                android:gravity="center"
+                android:text="Đã có tài khoản?"
+                android:textColor="#000000"
+                android:textSize="15sp" />
         </LinearLayout>
 
     </LinearLayout>
