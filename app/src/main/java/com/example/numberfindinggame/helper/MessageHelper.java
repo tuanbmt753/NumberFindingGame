@@ -1,4 +1,4 @@
-package com.example.numberfindinggame.utils;
+package com.example.numberfindinggame.helper;
 
 import android.app.Activity;
 import android.graphics.Color;

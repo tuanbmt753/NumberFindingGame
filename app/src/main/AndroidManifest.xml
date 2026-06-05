@@ -25,10 +25,10 @@
             android:name=".activity.home.TrangChuActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.auth.DangNhapActivity"
+            android:name=".activity.auth.DangKyActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.auth.DangKyActivity"
+            android:name=".activity.auth.DangNhapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
