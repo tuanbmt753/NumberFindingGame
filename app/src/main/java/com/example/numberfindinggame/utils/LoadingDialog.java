@@ -1,5 +1,7 @@
 package com.example.numberfindinggame.utils;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -10,17 +12,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
 
-public class LoadingDialog extends AppCompatActivity {
+public class LoadingDialog {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_loading_dialog);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    private Dialog dialog;
+
+    public LoadingDialog(Context context) {
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.activity_loading_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setCancelable(false);
+    }
+
+    public void show() {
+        dialog.show();
+    }
+
+    public void dismiss() {
+        dialog.dismiss();
     }
 }
