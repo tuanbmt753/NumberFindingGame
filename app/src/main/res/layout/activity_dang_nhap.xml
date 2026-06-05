@@ -81,16 +81,16 @@
                     android:src="@drawable/ic_user" />
 
                 <EditText
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="25dp"
-                    android:inputType="textEmailAddress"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/edtUsername"
+                    android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@android:color/transparent"
                     android:fontFamily="@font/sono"
                     android:gravity="center"
                     android:hint="Email"
+                    android:inputType="textEmailAddress"
                     android:textColor="#000000"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -98,10 +98,21 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:id="@+id/txtLoiEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="5dp"
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="#FFFFFF"
@@ -126,16 +137,16 @@
                     android:src="@drawable/ic_pass" />
 
                 <EditText
-                    android:layout_marginLeft="5dp"
-                    android:inputType="textPassword"
-                    android:background="@android:color/transparent"
                     android:id="@+id/edtPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
+                    android:background="@android:color/transparent"
                     android:fontFamily="@font/sono"
                     android:gravity="center"
                     android:hint="Password"
+                    android:inputType="textPassword"
                     android:textColor="#000000"
                     android:textSize="20sp" />
 
@@ -151,11 +162,22 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:id="@+id/txtLoiMatKhau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardDangNhap"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="5dp"
             android:clickable="true"
             android:focusable="true"
             app:cardBackgroundColor="#77BEC4"

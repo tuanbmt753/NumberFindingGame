@@ -80,6 +80,7 @@ public class NguoiDungRepository {
                 .removeValue();
     }
 
+
     public void capNhatDangNhapCuoi(
             String maNguoiDung) {
 
@@ -87,5 +88,39 @@ public class NguoiDungRepository {
                 .child(maNguoiDung)
                 .child("dangNhapCuoi")
                 .setValue(System.currentTimeMillis());
+    }
+
+    public void dangNhap(
+            String email,
+            String matKhau,
+            OnLoginListener listener
+    ) {
+        FirebaseManager.nguoiDung()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        for (DataSnapshot item : snapshot.getChildren()) {
+
+                            NguoiDung nd = item.getValue(NguoiDung.class);
+
+                            if (nd == null) continue;
+
+                            if (email.equalsIgnoreCase(nd.getEmail())
+                                    && matKhau.equals(nd.getMatKhau())) {
+
+                                listener.onSuccess(nd);
+                                return;
+                            }
+                        }
+
+                        listener.onFailed();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        listener.onFailed();
+                    }
+                });
     }
 }
