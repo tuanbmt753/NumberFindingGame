@@ -1,6 +1,7 @@
 package com.example.numberfindinggame.activity.auth;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,10 +24,18 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.NguoiDung;
+import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 
 import com.example.numberfindinggame.repository.OnCheckListener;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.example.numberfindinggame.utils.MessageHelper;
+import com.example.numberfindinggame.utils.Validator;
+
+import com.example.numberfindinggame.utils.NetworkHelper;
 
 public class DangKyActivity extends AppCompatActivity {
 
@@ -39,6 +48,8 @@ public class DangKyActivity extends AppCompatActivity {
     private MaterialCardView cardDangKy;
 
     private boolean isPasswordVisible = false;
+
+    private LoadingDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +95,34 @@ public class DangKyActivity extends AppCompatActivity {
         cardDangKy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (!NetworkHelper.isConnected(DangKyActivity.this)) {
+
+                    MessageHelper.error(
+                            DangKyActivity.this,
+                            "Không có kết nối Internet"
+                    );
+
+                    return;
+                }
+
+                if (NetworkHelper.isWifiConnected(DangKyActivity.this)) {
+
+                    MessageHelper.info(
+                            DangKyActivity.this,
+                            "Đang sử dụng WiFi"
+                    );
+
+                }
+
+                if (NetworkHelper.isMobileDataConnected(DangKyActivity.this)) {
+
+                    MessageHelper.info(
+                            DangKyActivity.this,
+                            "Đang sử dụng dữ liệu di động"
+                    );
+
+                }
 
                 if (!validateInput()) {
                     return;
@@ -144,26 +183,37 @@ public class DangKyActivity extends AppCompatActivity {
                                         currentTime             // ngayTao
                                 );
 
+                                LoadingDialog loading =
+                                        new LoadingDialog(DangKyActivity.this);
+                                loading.show();
+
                                 repository.themNguoiDung(
                                         nguoiDung,
                                         task -> {
 
-                                            if (task.isSuccessful()) {
+                                            loading.dismiss();
 
-                                                Toast.makeText(
+                                            if (task.isSuccessful()) {
+                                                edtUsername.setText("");
+                                                edtEmail.setText("");
+                                                edtPhone.setText("");
+                                                edtPassword.setText("");
+
+                                                MessageHelper.success(
                                                         DangKyActivity.this,
-                                                        "Đăng ký thành công",
-                                                        Toast.LENGTH_SHORT
-                                                ).show();
+                                                        "Đăng ký thành công"
+                                                );
 
                                             } else {
+                                                edtUsername.setText("");
+                                                edtEmail.setText("");
+                                                edtPhone.setText("");
+                                                edtPassword.setText("");
 
-                                                Toast.makeText(
+                                                MessageHelper.error(
                                                         DangKyActivity.this,
-                                                        "Đăng ký thất bại",
-                                                        Toast.LENGTH_SHORT
-                                                ).show();
-
+                                                        "Đăng ký thất bại"
+                                                );
                                             }
                                         }
                                 );
@@ -288,6 +338,11 @@ public class DangKyActivity extends AppCompatActivity {
 
     private boolean validateInput() {
 
+        txtLoiUser.setText("");
+        txtLoiEmail.setText("");
+        txtLoiSoDienThoai.setText("");
+        txtLoiMatKhau.setText("");
+
         boolean isValid = true;
 
         String username = edtUsername.getText().toString().trim();
@@ -295,71 +350,28 @@ public class DangKyActivity extends AppCompatActivity {
         String phone = edtPhone.getText().toString().trim();
         String password = edtPassword.getText().toString();
 
-        // Xóa lỗi cũ
-        txtLoiUser.setText("");
-        txtLoiEmail.setText("");
-        txtLoiSoDienThoai.setText("");
-        txtLoiMatKhau.setText("");
+        String usernameError = Validator.validateUsername(username);
+        String emailError = Validator.validateEmail(email);
+        String phoneError = Validator.validatePhone(phone);
+        String passwordError = Validator.validatePassword(password);
 
-        // ================= USERNAME =================
-
-        if (username.isEmpty()) {
-            txtLoiUser.setText("Vui lòng nhập tên đăng nhập.");
-            isValid = false;
-        } else if (username.length() < 3) {
-            txtLoiUser.setText("Tên đăng nhập phải có ít nhất 3 ký tự.");
-            isValid = false;
-        } else if (username.length() > 50) {
-            txtLoiUser.setText("Tên đăng nhập không được vượt quá 50 ký tự.");
-            isValid = false;
-        } else if (!username.matches("^[a-zA-Z0-9_.]+$")) {
-            txtLoiUser.setText("Tên đăng nhập chỉ được chứa chữ cái, số, dấu _ và dấu .");
+        if (usernameError != null) {
+            txtLoiUser.setText(usernameError);
             isValid = false;
         }
 
-        // ================= EMAIL =================
-
-        String emailRegex =
-                "^[a-zA-Z0-9._%+-]+@(?!(?:[0-9]+\\.)+[a-zA-Z]{2,})[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-
-        if (email.isEmpty()) {
-            txtLoiEmail.setText("Vui lòng nhập email.");
-            isValid = false;
-        } else if (email.length() > 100) {
-            txtLoiEmail.setText("Email không được vượt quá 100 ký tự.");
-            isValid = false;
-        } else if (!email.matches(emailRegex)) {
-            txtLoiEmail.setText("Email không đúng định dạng.");
+        if (emailError != null) {
+            txtLoiEmail.setText(emailError);
             isValid = false;
         }
 
-        // ================= PHONE =================
-
-        if (phone.isEmpty()) {
-            txtLoiSoDienThoai.setText("Vui lòng nhập số điện thoại.");
-            isValid = false;
-        } else if (phone.length() > 20) {
-            txtLoiSoDienThoai.setText("Số điện thoại không được vượt quá 20 ký tự.");
-            isValid = false;
-        } else if (phone.matches(".*[０-９].*")) {
-            txtLoiSoDienThoai.setText("Không được sử dụng ký tự số đặc biệt.");
-            isValid = false;
-        } else if (!phone.matches("^(0|\\+84)[0-9]{9,10}$")) {
-            txtLoiSoDienThoai.setText(
-                    "Số điện thoại phải bắt đầu bằng 0 hoặc +84 và chứa 10-11 chữ số.");
+        if (phoneError != null) {
+            txtLoiSoDienThoai.setText(phoneError);
             isValid = false;
         }
 
-        // ================= PASSWORD =================
-
-        if (password.isEmpty()) {
-            txtLoiMatKhau.setText("Vui lòng nhập mật khẩu.");
-            isValid = false;
-        } else if (password.length() < 6) {
-            txtLoiMatKhau.setText("Mật khẩu phải có ít nhất 6 ký tự.");
-            isValid = false;
-        } else if (password.length() > 225) {
-            txtLoiMatKhau.setText("Mật khẩu không được vượt quá 225 ký tự.");
+        if (passwordError != null) {
+            txtLoiMatKhau.setText(passwordError);
             isValid = false;
         }
 
