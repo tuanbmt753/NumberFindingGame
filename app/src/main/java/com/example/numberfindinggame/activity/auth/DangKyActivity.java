@@ -1,7 +1,6 @@
 package com.example.numberfindinggame.activity.auth;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,13 +12,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.firebase.FirebaseManager;
@@ -29,13 +24,11 @@ import com.google.android.material.card.MaterialCardView;
 
 import com.example.numberfindinggame.repository.OnCheckListener;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.example.numberfindinggame.utils.MessageHelper;
+import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.utils.Validator;
 
-import com.example.numberfindinggame.utils.NetworkHelper;
+import com.example.numberfindinggame.helper.NetworkHelper;
 
 public class DangKyActivity extends AppCompatActivity {
 
@@ -191,7 +184,7 @@ public class DangKyActivity extends AppCompatActivity {
                                         nguoiDung,
                                         task -> {
 
-                                            loading.dismiss();
+                                                loading.dismiss();
 
                                             if (task.isSuccessful()) {
                                                 edtUsername.setText("");
@@ -320,6 +313,7 @@ public class DangKyActivity extends AppCompatActivity {
     private void getControl() {
 
         txtLogin = findViewById(R.id.txtLogin);
+
         txtLoiUser = findViewById(R.id.txtLoiUser);
         txtLoiEmail = findViewById(R.id.txtLoiEmail);
         txtLoiSoDienThoai = findViewById(R.id.txtLoiSoDienThoai);
