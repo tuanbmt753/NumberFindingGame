@@ -7,9 +7,13 @@ import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.helper.PasswordHelper;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NguoiDungRepository {
 
@@ -132,4 +136,70 @@ public class NguoiDungRepository {
                     }
                 });
     }
+
+    public void doiMatKhau(
+            String email,
+            String matKhau,
+            OnCompleteListener<Void> listener
+    ) {
+
+        String hashedPassword =
+                PasswordHelper.hashPassword(matKhau);
+
+        FirebaseManager.nguoiDung()
+                .orderByChild("email")
+                .equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        for (DataSnapshot item : snapshot.getChildren()) {
+
+                            NguoiDung nd =
+                                    item.getValue(NguoiDung.class);
+
+                            if (nd == null) continue;
+
+                            if (LoginType.LOCAL.equals(nd.getLoaiDangNhap())) {
+
+                                Map<String, Object> updates = new HashMap<>();
+
+                                updates.put(
+                                        "matKhau",
+                                        hashedPassword
+                                );
+
+                                updates.put(
+                                        "ngayCapNhat",
+                                        System.currentTimeMillis()
+                                );
+
+                                item.getRef()
+                                        .updateChildren(updates)
+                                        .addOnCompleteListener(listener);
+
+                                return;
+                            }
+                        }
+
+                        listener.onComplete(
+                                Tasks.forException(
+                                        new Exception("Không tìm thấy tài khoản")
+                                )
+                        );
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                        listener.onComplete(
+                                Tasks.forException(
+                                        error.toException()
+                                )
+                        );
+                    }
+                });
+    }
+
 }

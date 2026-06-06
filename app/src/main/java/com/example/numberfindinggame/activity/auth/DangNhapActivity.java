@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.constant.ActivityType;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
@@ -52,6 +54,22 @@ public class DangNhapActivity extends AppCompatActivity {
     private void getView() {
         txtLoiEmail.setText("");
         txtLoiMatKhau.setText("");
+
+        if (getIntent().hasExtra(IntentKey.EMAIL)) {
+
+            String email = getIntent().getStringExtra(IntentKey.EMAIL);
+            String password = getIntent().getStringExtra(IntentKey.PASSWORD);
+            String text = getIntent().getStringExtra(IntentKey.TEXT);
+
+            edtEmail.setText(email);
+            edtPassword.setText(password);
+
+            MessageHelper.success(
+                    DangNhapActivity.this,
+                    text
+            );
+        }
+
         //SessionManager.logout(this);
 
         if (!SessionManager.getUserId(this).isEmpty()) {
@@ -242,6 +260,8 @@ public class DangNhapActivity extends AppCompatActivity {
                         DangNhapActivity.this,
                         XacThucEmailActivity.class
                 );
+
+                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DOI_MAT_KHAU);
                 startActivity(intent);
                 //finish();
             }

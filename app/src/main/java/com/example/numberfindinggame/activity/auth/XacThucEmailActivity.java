@@ -1,5 +1,6 @@
 package com.example.numberfindinggame.activity.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -12,10 +13,14 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.constant.ActivityType;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.model.XacThucEmail;
 import com.example.numberfindinggame.repository.XacThucEmailRepository;
+import com.example.numberfindinggame.utils.LoadingDialog;
 import com.example.numberfindinggame.utils.Validator;
 import com.google.android.material.card.MaterialCardView;
 
@@ -54,7 +59,19 @@ public class XacThucEmailActivity extends AppCompatActivity {
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+                    String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+                    if (activityType.toString().trim().equals(ActivityType.DOI_MAT_KHAU)) {
+
+                        Intent intent = new Intent(
+                                XacThucEmailActivity.this,
+                                DangNhapActivity.class
+                        );
+
+                        startActivity(intent);
+                        finish();
+                    }
+                }
             }
         });
 
@@ -94,6 +111,11 @@ public class XacThucEmailActivity extends AppCompatActivity {
                     return;
                 }
 
+                LoadingDialog loading =
+                        new LoadingDialog(XacThucEmailActivity.this);
+                loading.setMessage("Đang xác thực email...");
+                loading.show();
+
                 String email = edtEmail.getText().toString().trim();
 
                 int otp = 100000 + new Random().nextInt(900000);
@@ -120,6 +142,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                         "Tạo OTP thành công"
                                 );
 
+                                loading.dismiss();
                                 emailHienTai = email;
                                 showChucNangOTP();
                                 batDauDemNguoc();
@@ -154,6 +177,10 @@ public class XacThucEmailActivity extends AppCompatActivity {
                         System.currentTimeMillis(),
                         otp
                 );
+                LoadingDialog loading =
+                        new LoadingDialog(XacThucEmailActivity.this);
+                loading.setMessage("Loading...");
+                loading.show();
 
                 repository.them(
                         xacThucEmail,
@@ -168,6 +195,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                 );
 
                                 batDauDemNguoc();
+                                loading.dismiss();
                             }
 
                             @Override
@@ -177,6 +205,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                         XacThucEmailActivity.this,
                                         message
                                 );
+                                loading.dismiss();
                             }
                         }
                 );
@@ -325,6 +354,11 @@ public class XacThucEmailActivity extends AppCompatActivity {
             return;
         }
 
+        LoadingDialog loading =
+                new LoadingDialog(XacThucEmailActivity.this);
+        loading.setMessage("Đang kiểm tra otp...");
+        loading.show();
+
         String otpNhap = edtOTP.getText().toString().trim();
 
         repository.timTheoEmail(
@@ -341,7 +375,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
                             txtLoiOTP.setText(
                                     "Mã OTP đã hết hạn"
                             );
-
+                            loading.dismiss();
                             return;
                         }
 
@@ -354,7 +388,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
                             txtLoiOTP.setText(
                                     "Mã OTP không chính xác"
                             );
-
+                            loading.dismiss();
                             return;
                         }
 
@@ -371,6 +405,20 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                     public void onSuccess() {
 
                                         // Chuyển màn hình hoặc finish()
+                                        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+                                            String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+                                            if (activityType.toString().trim().equals(ActivityType.DOI_MAT_KHAU)) {
+
+                                                Intent intent = new Intent(
+                                                        XacThucEmailActivity.this,
+                                                        DoiMatKhauActivity.class
+                                                );
+                                                intent.putExtra(IntentKey.EMAIL, emailHienTai);
+                                                startActivity(intent);
+
+                                                finish();
+                                            }
+                                        }
                                     }
 
                                     @Override

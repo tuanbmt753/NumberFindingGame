@@ -93,4 +93,25 @@ public class Validator {
 
         return null;
     }
+
+    public static String validateNhapLaiPassword(String password, String nhapLai) {
+
+        if (nhapLai.isEmpty()) {
+            return "Vui lòng nhập mật khẩu.";
+        }
+
+        if (nhapLai.length() < 6) {
+            return "Mật khẩu phải có ít nhất 6 ký tự.";
+        }
+
+        if (nhapLai.length() > 225) {
+            return "Mật khẩu không được vượt quá 225 ký tự.";
+        }
+
+        if (!nhapLai.equals(password)) {
+            return "Mật khẩu nhập lại không khớp.";
+        }
+
+        return null;
+    }
 }

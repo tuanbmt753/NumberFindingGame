@@ -17,6 +17,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -185,18 +187,33 @@ public class DangKyActivity extends AppCompatActivity {
                                         nguoiDung,
                                         task -> {
 
-                                                loading.dismiss();
+                                            loading.dismiss();
 
                                             if (task.isSuccessful()) {
-                                                edtUsername.setText("");
-                                                edtEmail.setText("");
-                                                edtPhone.setText("");
-                                                edtPassword.setText("");
+
 
                                                 MessageHelper.success(
                                                         DangKyActivity.this,
                                                         "Đăng ký thành công"
                                                 );
+
+                                                // Chuyển màn hình
+                                                Intent intent = new Intent(
+                                                        DangKyActivity.this,
+                                                        DangNhapActivity.class
+                                                );
+
+                                                intent.putExtra(IntentKey.EMAIL, email);
+                                                intent.putExtra(IntentKey.PASSWORD, edtPassword.getText().toString()); // nếu cần
+                                                intent.putExtra(IntentKey.TEXT, "Đăng ký tài khoản thành công!"); // nếu cần
+
+                                                startActivity(intent);
+                                                finish();
+
+                                                edtUsername.setText("");
+                                                edtEmail.setText("");
+                                                edtPhone.setText("");
+                                                edtPassword.setText("");
 
                                             } else {
                                                 edtUsername.setText("");
