@@ -80,4 +80,17 @@ public class Validator {
 
         return null;
     }
+
+    public static String validateOTP(String otp) {
+
+        if (otp.isEmpty()) {
+            return "Vui lòng nhập otp.";
+        }
+
+        if (!otp.matches("\\d{6}")) {
+            return "OTP phải gồm 6 chữ số.";
+        }
+
+        return null;
+    }
 }

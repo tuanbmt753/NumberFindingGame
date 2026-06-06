@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,11 +12,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="60dp"
-        android:paddingTop="70dp"
+        android:paddingTop="55dp"
         android:paddingBottom="70dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtQuayLai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:gravity="left"
+                android:text="&lt; Quay lại"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+        </LinearLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
@@ -51,11 +71,12 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/sono"
             android:gravity="center"
-            android:text="Quên mật khẩu"
+            android:text="Nội dung"
             android:textColor="#000"
             android:textSize="30sp" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEdtEmail"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
@@ -110,27 +131,66 @@
             android:textColor="#F44336"
             android:textSize="15sp" />
 
-        <LinearLayout
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEdtOTP"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/ic_pass" />
+
+                <EditText
+                    android:id="@+id/edtOTP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:hint="xxx xxx"
+                    android:inputType="number"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/txtLoiOTP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtQuenMatKhau"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Thời gian còn lại 1:00"
-                android:textColor="#000"
-                android:textSize="15sp" />
-        </LinearLayout>
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
 
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardQuenMatKhau"
+            android:id="@+id/cardEmail"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="5dp"
@@ -149,7 +209,34 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Xác nhận"
+                android:text="Tiếp tục"
+                android:textColor="#000"
+                android:textSize="23sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOTP"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#77BEC4"
+
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:id="@+id/txtOTP"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="Xác nhận 1:30"
                 android:textColor="#000"
                 android:textSize="23sp" />
 

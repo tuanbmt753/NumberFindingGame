@@ -31,7 +31,7 @@ public class DangNhapActivity extends AppCompatActivity {
     private MaterialCardView cardDangNhap, cardDangKy;
     private EditText edtEmail, edtPassword;
 
-    private TextView txtLoiEmail, txtLoiMatKhau;
+    private TextView txtLoiEmail, txtLoiMatKhau, txtQuenMatKhau;
 
     private ImageView imgShowPassword;
     private boolean isPasswordVisible = false;
@@ -234,6 +234,18 @@ public class DangNhapActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        txtQuenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        DangNhapActivity.this,
+                        XacThucEmailActivity.class
+                );
+                startActivity(intent);
+                //finish();
+            }
+        });
     }
 
     private void getControl() {
@@ -245,6 +257,7 @@ public class DangNhapActivity extends AppCompatActivity {
 
         txtLoiEmail = findViewById(R.id.txtLoiEmail);
         txtLoiMatKhau = findViewById(R.id.txtLoiMatKhau);
+        txtQuenMatKhau = findViewById(R.id.txtQuenMatKhau);
 
         imgShowPassword = findViewById(R.id.imgShowPassword);
     }

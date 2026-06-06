@@ -17,6 +17,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.utils.LoadingDialog;
@@ -170,7 +171,7 @@ public class DangKyActivity extends AppCompatActivity {
                                         "",                     // hinhDaiDien
                                         "",                     // hinhNen
                                         edtPassword.getText().toString(),
-                                        "LOCAL",                // loaiDangNhap
+                                        LoginType.LOCAL,                // loaiDangNhap
                                         currentTime,            // dangNhapCuoi
                                         currentTime,            // ngayCapNhat
                                         currentTime             // ngayTao

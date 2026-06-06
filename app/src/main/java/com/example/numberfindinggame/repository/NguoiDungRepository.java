@@ -2,7 +2,9 @@ package com.example.numberfindinggame.repository;
 
 import androidx.annotation.NonNull;
 
+import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
+import com.example.numberfindinggame.helper.PasswordHelper;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
@@ -58,19 +60,19 @@ public class NguoiDungRepository {
             NguoiDung nguoiDung,
             OnCompleteListener<Void> listener
     ) {
+
+        // Hash mật khẩu trước khi lưu
+        String hashedPassword =
+                PasswordHelper.hashPassword(
+                        nguoiDung.getMatKhau()
+                );
+
+        nguoiDung.setMatKhau(hashedPassword);
+
         FirebaseManager.nguoiDung()
                 .child(nguoiDung.getMaNguoiDung())
                 .setValue(nguoiDung)
                 .addOnCompleteListener(listener);
-    }
-
-    public void layNguoiDung(
-            String maNguoiDung,
-            ValueEventListener listener) {
-
-        FirebaseManager.nguoiDung()
-                .child(maNguoiDung)
-                .addListenerForSingleValueEvent(listener);
     }
 
     public void xoaNguoiDung(String maNguoiDung) {
@@ -95,8 +97,15 @@ public class NguoiDungRepository {
             String matKhau,
             OnLoginListener listener
     ) {
+
+        String hashedPassword =
+                PasswordHelper.hashPassword(matKhau);
+
         FirebaseManager.nguoiDung()
+                .orderByChild("email")
+                .equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -106,8 +115,8 @@ public class NguoiDungRepository {
 
                             if (nd == null) continue;
 
-                            if (email.equalsIgnoreCase(nd.getEmail())
-                                    && matKhau.equals(nd.getMatKhau())) {
+                            if (LoginType.LOCAL.equals(nd.getLoaiDangNhap())
+                                    && hashedPassword.equals(nd.getMatKhau())) {
 
                                 listener.onSuccess(nd);
                                 return;
