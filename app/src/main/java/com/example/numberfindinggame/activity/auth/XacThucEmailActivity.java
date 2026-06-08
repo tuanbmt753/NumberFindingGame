@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,7 +19,12 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.model.Emailjs;
 import com.example.numberfindinggame.model.XacThucEmail;
+import com.example.numberfindinggame.repository.EmailCallback;
+import com.example.numberfindinggame.repository.EmailJsSelectCallback;
+import com.example.numberfindinggame.repository.EmailjsRepository;
+import com.example.numberfindinggame.repository.FirebaseCallback;
 import com.example.numberfindinggame.repository.XacThucEmailRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;
 import com.example.numberfindinggame.utils.Validator;
@@ -35,6 +41,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
     private XacThucEmailRepository repository;
     private String emailHienTai;
+
     private CountDownTimer countDownTimer;
     private boolean hetHanOTP = false;
 
@@ -49,6 +56,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
     }
 
     private void getView() {
+        //themEmailjs();
 
         txtNoiDung.setText("Xác thực email");
         txtLoiEmail.setText("");
@@ -79,33 +87,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (!NetworkHelper.isConnected(XacThucEmailActivity.this)) {
-
-                    MessageHelper.error(
-                            XacThucEmailActivity.this,
-                            "Không có kết nối Internet"
-                    );
-
-                    return;
-                }
-
-                if (NetworkHelper.isWifiConnected(XacThucEmailActivity.this)) {
-
-                    MessageHelper.info(
-                            XacThucEmailActivity.this,
-                            "Đang sử dụng WiFi"
-                    );
-
-                }
-
-                if (NetworkHelper.isMobileDataConnected(XacThucEmailActivity.this)) {
-
-                    MessageHelper.info(
-                            XacThucEmailActivity.this,
-                            "Đang sử dụng dữ liệu di động"
-                    );
-
-                }
+                kiemTraMang();
 
                 if (!validateInput()) {
                     return;
@@ -137,15 +119,9 @@ public class XacThucEmailActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess() {
 
-                                MessageHelper.success(
-                                        XacThucEmailActivity.this,
-                                        "Tạo OTP thành công"
-                                );
-
                                 loading.dismiss();
                                 emailHienTai = email;
-                                showChucNangOTP();
-                                batDauDemNguoc();
+                                layEmailJsSuDungNhoNhat(email, otp);
 
                             }
 
@@ -154,8 +130,9 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
                                 MessageHelper.error(
                                         XacThucEmailActivity.this,
-                                        "message"
+                                        message
                                 );
+                                loading.dismiss();
                             }
                         }
                 );
@@ -443,6 +420,174 @@ public class XacThucEmailActivity extends AppCompatActivity {
                         MessageHelper.error(
                                 XacThucEmailActivity.this,
                                 message
+                        );
+                    }
+                }
+        );
+    }
+
+    private void layEmailJsSuDungNhoNhat(String email, int otp) {
+        EmailjsRepository emailjsRepository =
+                new EmailjsRepository();
+
+
+        emailjsRepository.layEmailJsSuDungNhoNhat(
+                new EmailJsSelectCallback() {
+
+                    @Override
+                    public void onSuccess(
+                            Emailjs emailjs,
+                            String key
+                    ) {
+                        sendOTP(email, otp, emailjs.getServiceID(), emailjs.getTemplateID(), emailjs.getPublicKey(), key);
+
+                    }
+
+                    @Override
+                    public void onFailure(
+                            String message
+                    ) {
+
+                        MessageHelper.error(XacThucEmailActivity.this, message);
+                    }
+                }
+        );
+
+    }
+
+    private void sendOTP(String email, int otp,
+                         String service_id,
+                         String template_id,
+                         String user_id,
+                         String key) {
+        LoadingDialog loading =
+                new LoadingDialog(XacThucEmailActivity.this);
+        loading.setMessage("Đang gửi mã OTP...");
+        loading.show();
+        EmailjsRepository repository =
+                new EmailjsRepository();
+
+        repository.sendOTP(
+                email,
+                String.valueOf(otp),
+                service_id,
+                template_id,
+                user_id,
+                new EmailCallback() {
+
+                    @Override
+                    public void onSuccess() {
+
+                        runOnUiThread(() -> {
+
+                            MessageHelper.success(
+                                    XacThucEmailActivity.this,
+                                    "Đã gửi OTP"
+                            );
+                            repository.capNhatSuDung(
+                                    key,
+                                    new FirebaseCallback() {
+
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.d(
+                                                    "EMAILJS",
+                                                    "Cập nhật suDung thành công"
+                                            );
+                                        }
+
+                                        @Override
+                                        public void onFailure(
+                                                String message
+                                        ) {
+
+                                            MessageHelper.error(XacThucEmailActivity.this, message);
+                                        }
+                                    }
+                            );
+
+                            showChucNangOTP();
+                            batDauDemNguoc();
+                            loading.dismiss();
+
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                        runOnUiThread(() -> {
+
+                            MessageHelper.success(
+                                    XacThucEmailActivity.this,
+                                    error
+                            );
+
+                            loading.dismiss();
+
+                        });
+                    }
+                }
+        );
+    }
+
+    private void kiemTraMang() {
+        if (!NetworkHelper.isConnected(XacThucEmailActivity.this)) {
+
+            MessageHelper.error(
+                    XacThucEmailActivity.this,
+                    "Không có kết nối Internet"
+            );
+
+            return;
+        }
+
+        if (NetworkHelper.isWifiConnected(XacThucEmailActivity.this)) {
+
+            MessageHelper.info(
+                    XacThucEmailActivity.this,
+                    "Đang sử dụng WiFi"
+            );
+
+        }
+
+        if (NetworkHelper.isMobileDataConnected(XacThucEmailActivity.this)) {
+
+            MessageHelper.info(
+                    XacThucEmailActivity.this,
+                    "Đang sử dụng dữ liệu di động"
+            );
+
+        }
+    }
+
+    private void themEmailjs() {
+        EmailjsRepository repository =
+                new EmailjsRepository();
+
+        repository.themEmailJs(
+                "service_adkno1f",
+                "template_fa9h6g6",
+                "8UVhvzVFiJxKiR8oA",
+                "numberfindinggame2@gmail.com",
+                new FirebaseCallback() {
+
+                    @Override
+                    public void onSuccess() {
+
+                        MessageHelper.success(
+                                XacThucEmailActivity.this,
+                                "Thêm EmailJS thành công"
+                        );
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                        MessageHelper.error(
+                                XacThucEmailActivity.this,
+                                error
                         );
                     }
                 }

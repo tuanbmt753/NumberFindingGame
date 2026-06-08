@@ -59,11 +59,16 @@ public class DangNhapActivity extends AppCompatActivity {
 
             String email = getIntent().getStringExtra(IntentKey.EMAIL);
             String password = getIntent().getStringExtra(IntentKey.PASSWORD);
-            String text = getIntent().getStringExtra(IntentKey.TEXT);
+
 
             edtEmail.setText(email);
             edtPassword.setText(password);
 
+
+        }
+
+        if (getIntent().hasExtra(IntentKey.TEXT)) {
+            String text = getIntent().getStringExtra(IntentKey.TEXT);
             MessageHelper.success(
                     DangNhapActivity.this,
                     text
@@ -263,7 +268,7 @@ public class DangNhapActivity extends AppCompatActivity {
 
                 intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DOI_MAT_KHAU);
                 startActivity(intent);
-                //finish();
+                finish();
             }
         });
     }

@@ -64,6 +64,22 @@ public class DoiMatKhauActivity extends AppCompatActivity {
             );
         }
 
+        txtDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Chuyển màn hình
+                Intent intent = new Intent(
+                        DoiMatKhauActivity.this,
+                        DangNhapActivity.class
+                );
+
+                intent.putExtra(IntentKey.TEXT, "Đã hủy đổi mật khẩu!"); // nếu cần
+
+                startActivity(intent);
+                finish();
+            }
+        });
+
         cardXacNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

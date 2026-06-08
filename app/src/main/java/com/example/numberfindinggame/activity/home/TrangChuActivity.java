@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.google.android.material.card.MaterialCardView;
@@ -47,6 +48,8 @@ public class TrangChuActivity extends AppCompatActivity {
                         TrangChuActivity.this,
                         DangNhapActivity.class
                 );
+                intent.putExtra(IntentKey.TEXT, "Đăng xuất tài khoản thành công!"); // nếu cần
+
                 startActivity(intent);
                 SessionManager.logout(TrangChuActivity.this);
                 finish();

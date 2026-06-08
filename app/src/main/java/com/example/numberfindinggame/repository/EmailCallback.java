@@ -1,4 +1,6 @@
 package com.example.numberfindinggame.repository;
 
-public class EmailCallback {
+public interface EmailCallback {
+    void onSuccess();
+    void onFailure(String error);
 }
