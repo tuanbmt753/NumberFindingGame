@@ -60,7 +60,6 @@ public class DangNhapActivity extends AppCompatActivity {
             String email = getIntent().getStringExtra(IntentKey.EMAIL);
             String password = getIntent().getStringExtra(IntentKey.PASSWORD);
 
-
             edtEmail.setText(email);
             edtPassword.setText(password);
 
