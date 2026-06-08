@@ -123,6 +123,17 @@ public class XacThucEmailActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
+
+                    if (activityType.toString().trim().equals(ActivityType.DANG_KY)) {
+
+                        Intent intent = new Intent(
+                                XacThucEmailActivity.this,
+                                DangKyActivity.class
+                        );
+
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         });
