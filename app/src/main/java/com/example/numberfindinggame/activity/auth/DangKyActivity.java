@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
@@ -46,6 +47,13 @@ public class DangKyActivity extends AppCompatActivity {
     private boolean isPasswordVisible = false;
 
     private LoadingDialog loading;
+    public static String DANG_KY = "";
+
+    public static NguoiDungRepository repository = new NguoiDungRepository();
+    public static NguoiDung nguoiDung = new NguoiDung();
+
+    public static String emailNguoiDung = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,22 @@ public class DangKyActivity extends AppCompatActivity {
                     )
             );
         }
+
+        if (getIntent().hasExtra(IntentKey.NGUOI_DUNG)) {
+
+            NguoiDung nguoiDung =
+                    (NguoiDung) getIntent().getSerializableExtra(
+                            IntentKey.NGUOI_DUNG
+                    );
+
+            if (nguoiDung != null) {
+                themNguoiDung(repository, nguoiDung);
+            } else {
+
+                MessageHelper.error(DangKyActivity.this, "Thêm dữ liệu không thành công");
+            }
+        }
+
         txtLoiUser.setText("");
         txtLoiEmail.setText("");
         txtLoiSoDienThoai.setText("");
@@ -128,7 +152,6 @@ public class DangKyActivity extends AppCompatActivity {
                 txtLoiEmail.setText("");
                 txtLoiSoDienThoai.setText("");
 
-                NguoiDungRepository repository = new NguoiDungRepository();
 
                 String username = edtUsername.getText().toString().trim();
                 String email = edtEmail.getText().toString().trim();
@@ -165,7 +188,7 @@ public class DangKyActivity extends AppCompatActivity {
 
                                 long currentTime = System.currentTimeMillis();
 
-                                NguoiDung nguoiDung = new NguoiDung(
+                                nguoiDung = new NguoiDung(
                                         maNguoiDung,
                                         username,
                                         email,
@@ -179,55 +202,24 @@ public class DangKyActivity extends AppCompatActivity {
                                         currentTime             // ngayTao
                                 );
 
-                                LoadingDialog loading =
-                                        new LoadingDialog(DangKyActivity.this);
-                                loading.show();
+                                emailNguoiDung = email;
+                                //themNguoiDung(repository, nguoiDung, email);
 
-                                repository.themNguoiDung(
-                                        nguoiDung,
-                                        task -> {
-
-                                            loading.dismiss();
-
-                                            if (task.isSuccessful()) {
-
-
-                                                MessageHelper.success(
-                                                        DangKyActivity.this,
-                                                        "Đăng ký thành công"
-                                                );
-
-                                                // Chuyển màn hình
-                                                Intent intent = new Intent(
-                                                        DangKyActivity.this,
-                                                        DangNhapActivity.class
-                                                );
-
-                                                intent.putExtra(IntentKey.EMAIL, email);
-                                                intent.putExtra(IntentKey.PASSWORD, edtPassword.getText().toString()); // nếu cần
-                                                intent.putExtra(IntentKey.TEXT, "Đăng ký tài khoản thành công!"); // nếu cần
-
-                                                startActivity(intent);
-                                                finish();
-
-                                                edtUsername.setText("");
-                                                edtEmail.setText("");
-                                                edtPhone.setText("");
-                                                edtPassword.setText("");
-
-                                            } else {
-                                                edtUsername.setText("");
-                                                edtEmail.setText("");
-                                                edtPhone.setText("");
-                                                edtPassword.setText("");
-
-                                                MessageHelper.error(
-                                                        DangKyActivity.this,
-                                                        "Đăng ký thất bại"
-                                                );
-                                            }
-                                        }
+                                //Chuyển màn hình xác thực email
+                                Intent intent = new Intent(
+                                        DangKyActivity.this,
+                                        XacThucEmailActivity.class
                                 );
+
+                                intent.putExtra(IntentKey.EMAIL, email);
+                                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_KY); // nếu cần
+                                intent.putExtra(
+                                        IntentKey.NGUOI_DUNG,
+                                        nguoiDung
+                                );
+
+                                startActivity(intent);
+                                finish();
 
                             }
                         }
@@ -346,6 +338,58 @@ public class DangKyActivity extends AppCompatActivity {
 
         cardDangKy = findViewById(R.id.cardDangKy);
 
+    }
+
+    private void themNguoiDung(NguoiDungRepository repository, NguoiDung nguoiDung) {
+        LoadingDialog loading =
+                new LoadingDialog(DangKyActivity.this);
+        loading.show();
+
+        repository.themNguoiDung(
+                nguoiDung,
+                task -> {
+
+                    loading.dismiss();
+
+                    if (task.isSuccessful()) {
+
+
+                        MessageHelper.success(
+                                DangKyActivity.this,
+                                "Đăng ký thành công"
+                        );
+
+                        // Chuyển màn hình
+                        Intent intent = new Intent(
+                                DangKyActivity.this,
+                                DangNhapActivity.class
+                        );
+
+                        intent.putExtra(IntentKey.EMAIL, nguoiDung.getEmail());
+                        intent.putExtra(IntentKey.PASSWORD, edtPassword.getText()); // nếu cần
+                        intent.putExtra(IntentKey.TEXT, "Đăng ký tài khoản thành công!"); // nếu cần
+
+                        startActivity(intent);
+                        finish();
+
+                        edtUsername.setText("");
+                        edtEmail.setText("");
+                        edtPhone.setText("");
+                        edtPassword.setText("");
+
+                    } else {
+                        edtUsername.setText("");
+                        edtEmail.setText("");
+                        edtPhone.setText("");
+                        edtPassword.setText("");
+
+                        MessageHelper.error(
+                                DangKyActivity.this,
+                                "Đăng ký thất bại"
+                        );
+                    }
+                }
+        );
     }
 
     private boolean validateInput() {

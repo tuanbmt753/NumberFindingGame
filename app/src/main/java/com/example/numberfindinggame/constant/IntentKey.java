@@ -7,4 +7,6 @@ public class IntentKey {
 
     public static final String TEXT = "TEXT";
 
+    public static final String NGUOI_DUNG = "NGUOI_DUNG";
+
 }

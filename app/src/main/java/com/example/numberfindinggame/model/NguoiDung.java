@@ -1,6 +1,8 @@
 package com.example.numberfindinggame.model;
 
-public class NguoiDung {
+import java.io.Serializable;
+
+public class NguoiDung implements Serializable {
     private String maNguoiDung;
     private String tenNguoiDung;
     private String email;

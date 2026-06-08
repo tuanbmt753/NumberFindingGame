@@ -152,4 +152,30 @@ public class XacThucEmailRepository {
                 });
     }
 
+    public void themXacThucEmail(
+            XacThucEmail xacThucEmail,
+            OnCompleteListener listener
+    ) {
+
+        String key =
+                xacThucEmail.getEmail()
+                        .replace(".", ",");
+
+        FirebaseManager.xacThucEmail()
+                .child(key)
+                .setValue(xacThucEmail)
+                .addOnSuccessListener(unused -> {
+
+                    if (listener != null) {
+                        listener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(e -> {
+
+                    if (listener != null) {
+                        listener.onFailure(e.getMessage());
+                    }
+                });
+    }
+
 }
