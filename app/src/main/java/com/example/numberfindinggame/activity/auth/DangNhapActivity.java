@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.constant.ActivityType;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
@@ -31,7 +33,7 @@ public class DangNhapActivity extends AppCompatActivity {
     private MaterialCardView cardDangNhap, cardDangKy;
     private EditText edtEmail, edtPassword;
 
-    private TextView txtLoiEmail, txtLoiMatKhau;
+    private TextView txtLoiEmail, txtLoiMatKhau, txtQuenMatKhau;
 
     private ImageView imgShowPassword;
     private boolean isPasswordVisible = false;
@@ -52,6 +54,27 @@ public class DangNhapActivity extends AppCompatActivity {
     private void getView() {
         txtLoiEmail.setText("");
         txtLoiMatKhau.setText("");
+
+        if (getIntent().hasExtra(IntentKey.EMAIL)) {
+
+            String email = getIntent().getStringExtra(IntentKey.EMAIL);
+            String password = getIntent().getStringExtra(IntentKey.PASSWORD);
+
+
+            edtEmail.setText(email);
+            edtPassword.setText(password);
+
+
+        }
+
+        if (getIntent().hasExtra(IntentKey.TEXT)) {
+            String text = getIntent().getStringExtra(IntentKey.TEXT);
+            MessageHelper.success(
+                    DangNhapActivity.this,
+                    text
+            );
+        }
+
         //SessionManager.logout(this);
 
         if (!SessionManager.getUserId(this).isEmpty()) {
@@ -234,6 +257,20 @@ public class DangNhapActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        txtQuenMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        DangNhapActivity.this,
+                        XacThucEmailActivity.class
+                );
+
+                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DOI_MAT_KHAU);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void getControl() {
@@ -245,6 +282,7 @@ public class DangNhapActivity extends AppCompatActivity {
 
         txtLoiEmail = findViewById(R.id.txtLoiEmail);
         txtLoiMatKhau = findViewById(R.id.txtLoiMatKhau);
+        txtQuenMatKhau = findViewById(R.id.txtQuenMatKhau);
 
         imgShowPassword = findViewById(R.id.imgShowPassword);
     }

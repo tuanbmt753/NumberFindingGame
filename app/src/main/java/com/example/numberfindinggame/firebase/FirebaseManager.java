@@ -13,4 +13,12 @@ public class FirebaseManager {
         return database.getReference("NguoiDung");
     }
 
+    public static DatabaseReference xacThucEmail() {
+        return database.getReference("XacThucEmail");
+    }
+
+    public static DatabaseReference Emailjs() {
+        return database.getReference("Emailjs");
+    }
+
 }
