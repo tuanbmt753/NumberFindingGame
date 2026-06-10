@@ -16,6 +16,9 @@
         android:theme="@style/Theme.NumberFindingGame"
         tools:targetApi="31">
         <activity
+            android:name=".activity.setting.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.auth.DoiMatKhauActivity"
             android:exported="false" />
         <activity

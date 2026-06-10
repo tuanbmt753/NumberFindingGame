@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
+import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -20,7 +21,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
-    private MaterialCardView cardThoat;
+    private MaterialCardView cardThoat, cardCaiDat;
     private ValueEventListener dangHoatDongListener;
 
     @Override
@@ -66,10 +67,24 @@ public class TrangChuActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        cardCaiDat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        TrangChuActivity.this,
+                        SettingActivity.class
+                );
+
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void getControl() {
         cardThoat = findViewById(R.id.cardThoat);
+        cardCaiDat = findViewById(R.id.cardCaiDat);
 
     }
 

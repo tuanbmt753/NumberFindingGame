@@ -2,6 +2,7 @@ package com.example.numberfindinggame.repository;
 
 import androidx.annotation.NonNull;
 
+import com.example.numberfindinggame.callback.DanhSachThietBiCallback;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -10,7 +11,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ThietBiDangNhapRepository {
@@ -132,6 +135,79 @@ public class ThietBiDangNhapRepository {
         ref.addValueEventListener(listener);
 
         return listener;
+    }
+
+    public ValueEventListener theoDoiDanhSachThietBi(
+            String maNguoiDung,
+            DanhSachThietBiCallback callback
+    ) {
+
+        ValueEventListener listener =
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(
+                            @NonNull DataSnapshot snapshot
+                    ) {
+
+                        List<ThietBiDangNhap> danhSach =
+                                new ArrayList<>();
+
+                        for (DataSnapshot item : snapshot.getChildren()) {
+
+                            ThietBiDangNhap thietBi =
+                                    item.getValue(
+                                            ThietBiDangNhap.class
+                                    );
+
+                            if (thietBi != null) {
+
+                                // Lấy từ key Firebase
+                                thietBi.setMaNguoiDung(
+                                        maNguoiDung
+                                );
+
+                                thietBi.setMaThietBi(
+                                        item.getKey()
+                                );
+
+                                danhSach.add(thietBi);
+                            }
+                        }
+
+                        callback.onResult(danhSach);
+                    }
+
+                    @Override
+                    public void onCancelled(
+                            @NonNull DatabaseError error
+                    ) {
+
+                        callback.onResult(
+                                new ArrayList<>()
+                        );
+                    }
+                };
+
+        FirebaseManager.ThietBiDangNhap()
+                .child(maNguoiDung)
+                .addValueEventListener(listener);
+
+        return listener;
+    }
+
+    public void voHieuHoaThietBi(
+            String maNguoiDung,
+            String maThietBi,
+            OnCompleteListener<Void> listener
+    ) {
+
+        FirebaseManager.ThietBiDangNhap()
+                .child(maNguoiDung)
+                .child(maThietBi)
+                .child("dangHoatDong")
+                .setValue(false)
+                .addOnCompleteListener(listener);
     }
 
 

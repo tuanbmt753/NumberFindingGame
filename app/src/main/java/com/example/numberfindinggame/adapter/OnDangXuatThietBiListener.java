@@ -1,4 +1,7 @@
 package com.example.numberfindinggame.adapter;
 
-public class OnDangXuatThietBiListener {
+import com.example.numberfindinggame.model.ThietBiDangNhap;
+
+public interface OnDangXuatThietBiListener {
+    void onDangXuat(ThietBiDangNhap thietBi);
 }

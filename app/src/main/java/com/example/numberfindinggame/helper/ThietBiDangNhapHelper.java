@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
+import com.example.numberfindinggame.callback.DanhSachThietBiCallback;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
@@ -93,30 +94,49 @@ public class ThietBiDangNhapHelper {
                 maThietBi,
                 dangHoatDong -> {
 
-                    if (dangHoatDong == null
-                            || Boolean.FALSE.equals(dangHoatDong)) {
+                    if (!NetworkHelper.isConnected(activity)) {
 
-                        SessionManager.logout(activity);
-
-                        Intent intent = new Intent(
+                        MessageHelper.error(
                                 activity,
-                                DangNhapActivity.class
+                                "Không có kết nối Internet"
                         );
 
-                        intent.putExtra(
-                                IntentKey.FALSE,
-                                dangHoatDong == null
-                                        ? "Không tìm thấy thiết bị!"
-                                        : "Thiết bị đã bị vô hiệu hóa!"
-                        );
+                    } else if (NetworkHelper.isWifiConnected(activity) || NetworkHelper.isMobileDataConnected(activity)) {
+                        if (dangHoatDong == null
+                                || Boolean.FALSE.equals(dangHoatDong)) {
 
-                        activity.startActivity(intent);
-                        activity.finish();
-                    }
-                    else{
+                            SessionManager.logout(activity);
 
+                            Intent intent = new Intent(
+                                    activity,
+                                    DangNhapActivity.class
+                            );
+
+                            intent.putExtra(
+                                    IntentKey.FALSE,
+                                    dangHoatDong == null
+                                            ? "Không tìm thấy thiết bị!"
+                                            : "Thiết bị đã bị vô hiệu hóa!"
+                            );
+
+                            activity.startActivity(intent);
+                            activity.finish();
+                        } else {
+
+                        }
                     }
                 }
+        );
+    }
+
+    public static ValueEventListener theoDoiDanhSachThietBi(
+            String maNguoiDung,
+            DanhSachThietBiCallback callback
+    ) {
+
+        return repository.theoDoiDanhSachThietBi(
+                maNguoiDung,
+                callback
         );
     }
 
@@ -134,4 +154,19 @@ public class ThietBiDangNhapHelper {
                     .removeEventListener(listener);
         }
     }
+
+    public static void stopTheoDoiDanhSachThietBi(
+            String maNguoiDung,
+            ValueEventListener listener
+    ) {
+
+        if (listener != null) {
+
+            FirebaseManager.ThietBiDangNhap()
+                    .child(maNguoiDung)
+                    .removeEventListener(listener);
+        }
+    }
+
+
 }

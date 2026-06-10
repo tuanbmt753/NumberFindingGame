@@ -46,13 +46,10 @@ public class DangKyActivity extends AppCompatActivity {
 
     private boolean isPasswordVisible = false;
 
-    private LoadingDialog loading;
-    public static String DANG_KY = "";
+    private NguoiDungRepository repository = new NguoiDungRepository();
+    private NguoiDung nguoiDung = new NguoiDung();
 
-    public static NguoiDungRepository repository = new NguoiDungRepository();
-    public static NguoiDung nguoiDung = new NguoiDung();
-
-    public static String emailNguoiDung = "";
+    private String emailNguoiDung = "";
 
 
     @Override
