@@ -97,14 +97,18 @@ public class DangNhapActivity extends AppCompatActivity {
         //SessionManager.logout(this);
 
         if (!SessionManager.getUserId(this).isEmpty()) {
+
+            Intent intent = new Intent(this, TrangChuActivity.class);
+            intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
+
             startActivity(
-                    new Intent(this, TrangChuActivity.class)
+                    intent
             );
             finish();
-            MessageHelper.success(
-                    DangNhapActivity.this,
-                    "Đăng nhập thành công"
-            );
+//            MessageHelper.success(
+//                    DangNhapActivity.this,
+//                    "Đăng nhập thành công"
+//            );
         }
 
         cardDangKy.setOnClickListener(v -> {
@@ -112,6 +116,7 @@ public class DangNhapActivity extends AppCompatActivity {
                     DangNhapActivity.this,
                     DangKyActivity.class
             );
+
             startActivity(intent);
             finish();
         });
@@ -230,7 +235,7 @@ public class DangNhapActivity extends AppCompatActivity {
                                                             DangNhapActivity.this,
                                                             TrangChuActivity.class
                                                     );
-
+                                                    intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
                                                     startActivity(intent);
                                                     finish();
 
@@ -248,6 +253,7 @@ public class DangNhapActivity extends AppCompatActivity {
                                                             TrangChuActivity.class
                                                     );
 
+                                                    intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
                                                     startActivity(intent);
                                                     finish();
 

@@ -14,12 +14,14 @@ import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
     private MaterialCardView cardThoat;
-    private ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
+    private ValueEventListener dangHoatDongListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,13 @@ public class TrangChuActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_trang_chu);
 
-        kiemTraThietBiDangNhap(SessionManager.getUserId(this), DeviceHelper.getDeviceId(TrangChuActivity.this));
+        dangHoatDongListener =
+                ThietBiDangNhapHelper.kiemTraHoatDongThietBi(
+                        this,
+                        SessionManager.getUserId(this),
+                        DeviceHelper.getDeviceId(TrangChuActivity.this)
+
+                );
 
         getControl();
         getView();
@@ -35,6 +43,14 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void getView() {
+
+        if (getIntent().hasExtra(IntentKey.TRUE)) {
+            String text = getIntent().getStringExtra(IntentKey.TRUE);
+            MessageHelper.success(
+                    TrangChuActivity.this,
+                    text
+            );
+        }
 
         cardThoat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,67 +73,16 @@ public class TrangChuActivity extends AppCompatActivity {
 
     }
 
-    private void kiemTraThietBiDangNhap(String maNguoiDung, String maThietBi) {
-        thietBiDangNhapRepository.kiemTraDangHoatDong(
-                maNguoiDung,
-                maThietBi,
-                dangHoatDong -> {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
-                    if (dangHoatDong == null) {
-
-                        Log.d(
-                                "THIETBI",
-                                "Không tìm thấy thiết bị" + maThietBi
-                        );
-
-                        Intent intent = new Intent(
-                                TrangChuActivity.this,
-                                DangNhapActivity.class
-                        );
-
-                        //intent.putExtra(IntentKey.TEXT, "Thiết bị đã bị vô hiệu hóa!"); // nếu cần
-                        intent.putExtra(IntentKey.FALSE, "Không tìm thấy thiết bị!"); // nếu cần
-
-                        startActivity(intent);
-                        //SessionManager.logout(TrangChuActivity.this);
-                        finish();
-
-                    } else if (dangHoatDong) {
-
-                        Log.d(
-                                "THIETBI",
-                                "Thiết bị đang hoạt động"
-                        );
-
-                        if (!SessionManager.getUserId(this).isEmpty()) {
-                            MessageHelper.success(
-                                    TrangChuActivity.this,
-                                    "Đăng nhập thành công"
-                            );
-                        }
-
-                    } else {
-
-                        Log.d(
-                                "THIETBI",
-                                "Thiết bị đã bị vô hiệu hóa"
-                        );
-
-                        Intent intent = new Intent(
-                                TrangChuActivity.this,
-                                DangNhapActivity.class
-                        );
-
-                        //intent.putExtra(IntentKey.TEXT, "Thiết bị đã bị vô hiệu hóa!"); // nếu cần
-                        intent.putExtra(IntentKey.FALSE, "Thiết bị đã bị vô hiệu hóa!"); // nếu cần
-
-                        startActivity(intent);
-                        SessionManager.logout(TrangChuActivity.this);
-                        finish();
-
-                    }
-
-                }
+        ThietBiDangNhapHelper.stopTheoDoi(
+                SessionManager.getUserId(this),
+                DeviceHelper.getDeviceId(TrangChuActivity.this),
+                dangHoatDongListener
         );
     }
+
+
 }

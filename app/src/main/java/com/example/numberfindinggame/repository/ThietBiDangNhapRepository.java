@@ -1,8 +1,13 @@
 package com.example.numberfindinggame.repository;
 
+import androidx.annotation.NonNull;
+
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -87,6 +92,48 @@ public class ThietBiDangNhapRepository {
 
                 });
     }
+
+
+    public ValueEventListener theoDoiDangHoatDong(
+            String maNguoiDung,
+            String maThietBi,
+            DangHoatDongCallback callback
+    ) {
+
+        DatabaseReference ref =
+                FirebaseManager.ThietBiDangNhap()
+                        .child(maNguoiDung)
+                        .child(maThietBi);
+
+
+        ValueEventListener listener = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (!snapshot.exists()) {
+                    callback.onResult(null);
+                    return;
+                }
+
+                Boolean dangHoatDong =
+                        snapshot.child("dangHoatDong")
+                                .getValue(Boolean.class);
+
+                callback.onResult(dangHoatDong);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onResult(null);
+            }
+        };
+
+        ref.addValueEventListener(listener);
+
+        return listener;
+    }
+
 
     public interface DangHoatDongCallback {
         void onResult(Boolean dangHoatDong);
