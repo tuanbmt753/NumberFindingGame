@@ -20,6 +20,7 @@ import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.model.Emailjs;
+import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.XacThucEmail;
 import com.example.numberfindinggame.repository.EmailCallback;
 import com.example.numberfindinggame.repository.EmailJsSelectCallback;
@@ -45,6 +46,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private boolean hetHanOTP = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,48 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
         showChucNangEmail();
 
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+
+            if (activityType.equals(ActivityType.DANG_KY)) {
+
+                showChucNangOTP();
+                String email = getIntent().getStringExtra(IntentKey.EMAIL);
+                emailHienTai = email;
+
+                int otp = 100000 + new Random().nextInt(900000);
+
+                XacThucEmail xacThucEmail = new XacThucEmail();
+                xacThucEmail.setEmail(email);
+                xacThucEmail.setMaXacThuc("" + System.currentTimeMillis());
+                xacThucEmail.setNgayTao(System.currentTimeMillis());
+                xacThucEmail.setMaOTP(otp);
+
+                repository = new XacThucEmailRepository();
+
+                repository.themXacThucEmail(
+                        xacThucEmail,
+                        new XacThucEmailRepository.OnCompleteListener() {
+                            @Override
+                            public void onSuccess() {
+                                layEmailJsSuDungNhoNhat(emailHienTai, otp);
+                            }
+
+                            @Override
+                            public void onFailure(String message) {
+
+                                MessageHelper.error(
+                                        XacThucEmailActivity.this,
+                                        message
+                                );
+                            }
+                        }
+                );
+            }
+
+
+        }
+
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +118,17 @@ public class XacThucEmailActivity extends AppCompatActivity {
                         Intent intent = new Intent(
                                 XacThucEmailActivity.this,
                                 DangNhapActivity.class
+                        );
+
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    if (activityType.toString().trim().equals(ActivityType.DANG_KY)) {
+
+                        Intent intent = new Intent(
+                                XacThucEmailActivity.this,
+                                DangKyActivity.class
                         );
 
                         startActivity(intent);
@@ -121,7 +176,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
                                 loading.dismiss();
                                 emailHienTai = email;
-                                layEmailJsSuDungNhoNhat(email, otp);
+                                layEmailJsSuDungNhoNhat(emailHienTai, otp);
 
                             }
 
@@ -395,6 +450,27 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
                                                 finish();
                                             }
+
+                                            if (activityType.toString().trim().equals(ActivityType.DANG_KY)) {
+                                                Intent intent = new Intent(
+                                                        XacThucEmailActivity.this,
+                                                        DangKyActivity.class
+                                                );
+
+                                                NguoiDung nguoiDung =
+                                                        (NguoiDung) getIntent().getSerializableExtra(
+                                                                IntentKey.NGUOI_DUNG
+                                                        );
+                                                intent.putExtra(
+                                                        IntentKey.NGUOI_DUNG,
+                                                        nguoiDung
+                                                );
+
+                                                startActivity(intent);
+                                                finish();
+                                            }
+
+
                                         }
                                     }
 

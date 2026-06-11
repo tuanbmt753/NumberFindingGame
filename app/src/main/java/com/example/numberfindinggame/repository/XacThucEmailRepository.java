@@ -2,6 +2,7 @@ package com.example.numberfindinggame.repository;
 
 import androidx.annotation.NonNull;
 
+import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.XacThucEmail;
@@ -27,7 +28,6 @@ public class XacThucEmailRepository {
     }
 
 
-
     // Thêm mã xác thực
     public void them(XacThucEmail xacThucEmail,
                      OnCompleteListener listener) {
@@ -45,6 +45,7 @@ public class XacThucEmailRepository {
                                     item.getValue(NguoiDung.class);
 
                             if (nguoiDung != null
+                                    && LoginType.LOCAL.equals(nguoiDung.getLoaiDangNhap())
                                     && nguoiDung.getEmail() != null
                                     && nguoiDung.getEmail()
                                     .equalsIgnoreCase(xacThucEmail.getEmail())) {
@@ -147,6 +148,32 @@ public class XacThucEmailRepository {
                         if (listener != null) {
                             listener.onFailure(error.getMessage());
                         }
+                    }
+                });
+    }
+
+    public void themXacThucEmail(
+            XacThucEmail xacThucEmail,
+            OnCompleteListener listener
+    ) {
+
+        String key =
+                xacThucEmail.getEmail()
+                        .replace(".", ",");
+
+        FirebaseManager.xacThucEmail()
+                .child(key)
+                .setValue(xacThucEmail)
+                .addOnSuccessListener(unused -> {
+
+                    if (listener != null) {
+                        listener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(e -> {
+
+                    if (listener != null) {
+                        listener.onFailure(e.getMessage());
                     }
                 });
     }

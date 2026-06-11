@@ -21,4 +21,7 @@ public class FirebaseManager {
         return database.getReference("Emailjs");
     }
 
+    public static DatabaseReference ThietBiDangNhap() {
+        return database.getReference("ThietBiDangNhap");
+    }
 }

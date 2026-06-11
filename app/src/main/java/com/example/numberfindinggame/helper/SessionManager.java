@@ -1,6 +1,9 @@
 package com.example.numberfindinggame.helper;
 
+import android.app.Activity;
 import android.content.Context;
+
+import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 
 public class SessionManager {
 
