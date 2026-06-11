@@ -127,19 +127,36 @@ public class ThietBiDangNhapAdapter
         cardDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
-                thietBiDangNhapRepository.voHieuHoaThietBi(
-                        thietBi.getMaNguoiDung(),
-                        thietBi.getMaThietBi(),
-                        task -> {
 
-                            if (task.isSuccessful()) {
-                                MessageHelper.success((Activity) context, "Đã đăng xuất thiết bị");
+                new ConfirmDialog(
+                        context,
+                        "Xác nhận",
+                        "Bạn có muốn đăng xuất từ xa khỏi thiết bị này không?",
+                        new ConfirmDialog.ConfirmCallback() {
+
+                            @Override
+                            public void onYes() {
+                                ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
+                                thietBiDangNhapRepository.voHieuHoaThietBi(
+                                        thietBi.getMaNguoiDung(),
+                                        thietBi.getMaThietBi(),
+                                        task -> {
+
+                                            if (task.isSuccessful()) {
+                                                MessageHelper.success((Activity) context, "Đã đăng xuất thiết bị");
+                                            }
+
+
+                                        }
+                                );
                             }
 
+                            @Override
+                            public void onNo() {
 
+                            }
                         }
-                );
+                ).show();
             }
         });
 
