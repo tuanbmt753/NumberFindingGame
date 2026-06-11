@@ -187,95 +187,8 @@ public class DangNhapActivity extends AppCompatActivity {
                                         nguoiDung.getMaNguoiDung()
                                 );
 
-                                String maNguoiDung = nguoiDung.getMaNguoiDung();
-                                String maThietBi = DeviceHelper.getDeviceId(DangNhapActivity.this);
-
-                                repository.layThietBi(
-                                        maNguoiDung,
-                                        maThietBi,
-                                        new ValueEventListener() {
-
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                                Long ngayHienTai =
-                                                        System.currentTimeMillis();
-
-                                                if (!snapshot.exists()) {
-
-                                                    // Chưa có thiết bị
-                                                    ThietBiDangNhap thietBi =
-                                                            new ThietBiDangNhap();
-
-                                                    thietBi.setMaNguoiDung(maNguoiDung);
-                                                    thietBi.setMaThietBi(maThietBi);
-                                                    thietBi.setTenThietBi(
-                                                            Build.MANUFACTURER + " " + Build.MODEL
-                                                    );
-                                                    thietBi.setNgayTao(ngayHienTai);
-                                                    thietBi.setNgayCapNhatCuoi(ngayHienTai);
-                                                    thietBi.setDangHoatDong(true);
-
-                                                    repository.luuThietBiDangNhap(
-                                                            thietBi,
-                                                            task -> {
-
-                                                                if (task.isSuccessful()) {
-                                                                    Log.d(
-                                                                            "THIET_BI",
-                                                                            "Lưu thành công"
-                                                                    );
-                                                                }
-
-                                                            }
-                                                    );
-
-                                                    // Chuyển màn hình
-                                                    Intent intent = new Intent(
-                                                            DangNhapActivity.this,
-                                                            TrangChuActivity.class
-                                                    );
-                                                    intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
-                                                    startActivity(intent);
-                                                    finish();
-
-                                                } else {
-
-                                                    // Đã có thiết bị
-                                                    repository.capNhatLanDangNhapCuoi(
-                                                            maNguoiDung,
-                                                            maThietBi
-                                                    );
-
-                                                    // Chuyển màn hình
-                                                    Intent intent = new Intent(
-                                                            DangNhapActivity.this,
-                                                            TrangChuActivity.class
-                                                    );
-
-                                                    intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
-                                                    startActivity(intent);
-                                                    finish();
-
-                                                    Log.d(
-                                                            "THIETBI",
-                                                            "Đã cập nhật lần đăng nhập cuối"
-                                                    );
-
-
-                                                }
-
-                                            }
-
-                                            @Override
-                                            public void onCancelled(
-                                                    @NonNull DatabaseError error
-                                            ) {
-
-                                            }
-
-                                        }
-                                );
+                                //Lưu thiết bị đăng nhập
+                                luuThietBi(nguoiDung);
 
 
                                 loading.dismiss();
@@ -376,6 +289,98 @@ public class DangNhapActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void luuThietBi(NguoiDung nguoiDung) {
+        String maNguoiDung = nguoiDung.getMaNguoiDung();
+        String maThietBi = DeviceHelper.getDeviceId(DangNhapActivity.this);
+
+        repository.layThietBi(
+                maNguoiDung,
+                maThietBi,
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        Long ngayHienTai =
+                                System.currentTimeMillis();
+
+                        if (!snapshot.exists()) {
+
+                            // Chưa có thiết bị
+                            ThietBiDangNhap thietBi =
+                                    new ThietBiDangNhap();
+
+                            thietBi.setMaNguoiDung(maNguoiDung);
+                            thietBi.setMaThietBi(maThietBi);
+                            thietBi.setTenThietBi(
+                                    Build.MANUFACTURER + " " + Build.MODEL
+                            );
+                            thietBi.setNgayTao(ngayHienTai);
+                            thietBi.setNgayCapNhatCuoi(ngayHienTai);
+                            thietBi.setDangHoatDong(true);
+
+                            repository.luuThietBiDangNhap(
+                                    thietBi,
+                                    task -> {
+
+                                        if (task.isSuccessful()) {
+                                            Log.d(
+                                                    "THIET_BI",
+                                                    "Lưu thành công"
+                                            );
+                                        }
+
+                                    }
+                            );
+
+                            // Chuyển màn hình
+                            Intent intent = new Intent(
+                                    DangNhapActivity.this,
+                                    TrangChuActivity.class
+                            );
+                            intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+
+                            // Đã có thiết bị
+                            repository.capNhatLanDangNhapCuoi(
+                                    maNguoiDung,
+                                    maThietBi
+                            );
+
+                            // Chuyển màn hình
+                            Intent intent = new Intent(
+                                    DangNhapActivity.this,
+                                    TrangChuActivity.class
+                            );
+
+                            intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
+                            startActivity(intent);
+                            finish();
+
+                            Log.d(
+                                    "THIETBI",
+                                    "Đã cập nhật lần đăng nhập cuối"
+                            );
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(
+                            @NonNull DatabaseError error
+                    ) {
+
+                    }
+
+                }
+        );
     }
 
     private void getControl() {

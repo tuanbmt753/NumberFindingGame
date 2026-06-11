@@ -1,6 +1,9 @@
 package com.example.numberfindinggame.helper;
 
+import android.app.Activity;
 import android.content.Context;
+
+import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 
 public class SessionManager {
 
@@ -28,6 +31,20 @@ public class SessionManager {
     }
 
     public static void logout(Context context) {
+        ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
+        thietBiDangNhapRepository.voHieuHoaThietBi(
+                SessionManager.getUserId(context),
+                DeviceHelper.getDeviceId(context),
+                task -> {
+
+                    if (task.isSuccessful()) {
+                        MessageHelper.success((Activity) context, "Đã đăng xuất thiết bị");
+                    }
+
+
+                }
+        );
+
         context.getSharedPreferences(
                 PREF_NAME,
                 Context.MODE_PRIVATE

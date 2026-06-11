@@ -112,6 +112,15 @@ public class ThietBiDangNhapAdapter
             cardDangXuat.setEnabled(true);
         }
 
+        if (thietBi.getMaThietBi().equals(DeviceHelper.getDeviceId(context))) {
+            cardDangXuat.setCardBackgroundColor(
+                    Color.parseColor("#FFFFFF")
+            );
+            txtNoiDung.setText("Thiết bị đang dùng");
+
+            cardDangXuat.setEnabled(false);
+        }
+
         cardDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
