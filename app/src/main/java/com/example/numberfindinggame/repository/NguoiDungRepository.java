@@ -32,7 +32,14 @@ public class NguoiDungRepository {
 
                             NguoiDung nd = item.getValue(NguoiDung.class);
 
-                            if (nd == null) continue;
+                            if (nd == null) {
+                                continue;
+                            }
+
+                            // Chỉ kiểm tra tài khoản LOCAL
+                            if (!LoginType.LOCAL.equals(nd.getLoaiDangNhap())) {
+                                continue;
+                            }
 
                             if (username.equalsIgnoreCase(nd.getTenNguoiDung())) {
                                 listener.onUsernameExists();
