@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -17,7 +18,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.auth.DangKyActivity;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
+import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
 import com.example.numberfindinggame.constant.IntentKey;
@@ -45,6 +48,8 @@ public class SettingActivity extends AppCompatActivity {
 
     private ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
 
+    private TextView txtQuayLai;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,19 @@ public class SettingActivity extends AppCompatActivity {
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
 
         khoiTao();
+
+        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        SettingActivity.this,
+                        TrangChuActivity.class
+                );
+                startActivity(intent);
+                finish();
+
+            }
+        });
     }
 
     private void khoiTao() {
@@ -84,6 +102,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private void setControl() {
         lvThietBiDangNhap = findViewById(R.id.lvThietBiDangNhap);
+        txtQuayLai = findViewById(R.id.txtQuayLai);
     }
 
     private void luuThietBi(String maNguoiDung) {

@@ -1,5 +1,6 @@
 package com.example.numberfindinggame.activity.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
@@ -21,7 +23,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
-    private MaterialCardView cardThoat, cardCaiDat;
+    private MaterialCardView cardDangXuat, cardCaiDat, cardThoat;
     private ValueEventListener dangHoatDongListener;
 
     @Override
@@ -53,17 +55,34 @@ public class TrangChuActivity extends AppCompatActivity {
             );
         }
 
-        cardThoat.setOnClickListener(new View.OnClickListener() {
+        cardDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(
                         TrangChuActivity.this,
                         DangNhapActivity.class
                 );
-                intent.putExtra(IntentKey.TEXT, "Đăng xuất tài khoản thành công!"); // nếu cần
 
-                startActivity(intent);
+
                 SessionManager.logout(TrangChuActivity.this);
+
+                ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
+                thietBiDangNhapRepository.voHieuHoaThietBi(
+                        SessionManager.getUserId(TrangChuActivity.this),
+                        DeviceHelper.getDeviceId(TrangChuActivity.this),
+                        task -> {
+
+                            if (task.isSuccessful()) {
+
+                            }
+
+
+                        }
+                );
+
+                //intent.putExtra(IntentKey.TEXT, "Đăng xuất tài khoản thành công!"); // nếu cần
+                intent.putExtra(IntentKey.TRUE, "Đăng xuất tài khoản thành công!");
+                startActivity(intent);
                 finish();
             }
         });
@@ -80,11 +99,35 @@ public class TrangChuActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        cardThoat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ConfirmDialog(
+                        TrangChuActivity.this,
+                        "Xác nhận",
+                        "Bạn có muốn thoát khỏi ứng dụng này không?",
+                        new ConfirmDialog.ConfirmCallback() {
+
+                            @Override
+                            public void onYes() {
+                                finish();
+                            }
+
+                            @Override
+                            public void onNo() {
+
+                            }
+                        }
+                ).show();
+            }
+        });
     }
 
     private void getControl() {
-        cardThoat = findViewById(R.id.cardThoat);
+        cardDangXuat = findViewById(R.id.cardDangXuat);
         cardCaiDat = findViewById(R.id.cardCaiDat);
+        cardThoat = findViewById(R.id.cardThoat);
 
     }
 

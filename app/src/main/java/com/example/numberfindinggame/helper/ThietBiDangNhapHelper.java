@@ -121,6 +121,7 @@ public class ThietBiDangNhapHelper {
 
                             activity.startActivity(intent);
                             activity.finish();
+
                         } else {
 
                         }

@@ -210,6 +210,20 @@ public class ThietBiDangNhapRepository {
                 .addOnCompleteListener(listener);
     }
 
+    //Xóa thiết bị dùng removeValue
+    public void xoaThietBi(
+            String maNguoiDung,
+            String maThietBi,
+            OnCompleteListener<Void> listener
+    ) {
+
+        FirebaseManager.ThietBiDangNhap()
+                .child(maNguoiDung)
+                .child(maThietBi)
+                .removeValue()
+                .addOnCompleteListener(listener);
+    }
+
 
     public interface DangHoatDongCallback {
         void onResult(Boolean dangHoatDong);

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
@@ -75,6 +76,9 @@ public class ThietBiDangNhapAdapter
         MaterialCardView cardDangXuat =
                 convertView.findViewById(R.id.cardDangXuat);
 
+        MaterialCardView cardXoaThietBi =
+                convertView.findViewById(R.id.cardXoaThietBi);
+
         ThietBiDangNhap thietBi =
                 dsThietBi.get(position);
 
@@ -99,7 +103,6 @@ public class ThietBiDangNhapAdapter
                     Color.parseColor("#FFFFFF")
             );
             txtNoiDung.setText("Đã đăng xuất");
-
             cardDangXuat.setEnabled(false);
 
         } else {
@@ -108,7 +111,6 @@ public class ThietBiDangNhapAdapter
                     Color.parseColor("#77BEC4")
             );
             txtNoiDung.setText("Đăng xuất");
-
             cardDangXuat.setEnabled(true);
         }
 
@@ -119,6 +121,7 @@ public class ThietBiDangNhapAdapter
             txtNoiDung.setText("Thiết bị đang dùng");
 
             cardDangXuat.setEnabled(false);
+            cardXoaThietBi.setVisibility(View.GONE);
         }
 
         cardDangXuat.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +143,57 @@ public class ThietBiDangNhapAdapter
             }
         });
 
+        cardXoaThietBi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new ConfirmDialog(
+                        context,
+                        "Xác nhận",
+                        "Bạn có muốn xóa thiết bị này không?",
+                        new ConfirmDialog.ConfirmCallback() {
+
+                            @Override
+                            public void onYes() {
+                                xoaThietBi(context, thietBi);
+                            }
+
+                            @Override
+                            public void onNo() {
+
+                            }
+                        }
+                ).show();
+
+
+            }
+        });
+
         return convertView;
+    }
+
+    private void xoaThietBi(Context context, ThietBiDangNhap thietBi) {
+        ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
+        thietBiDangNhapRepository.xoaThietBi(
+                thietBi.getMaNguoiDung(),
+                thietBi.getMaThietBi(),
+                task -> {
+
+                    if (task.isSuccessful()) {
+
+                        MessageHelper.success(
+                                (Activity) context,
+                                "Đã xóa thiết bị"
+                        );
+
+                    } else {
+
+                        MessageHelper.error(
+                                (Activity) context,
+                                "Xóa thiết bị thất bại"
+                        );
+                    }
+                }
+        );
     }
 }

@@ -81,6 +81,31 @@
             android:textSize="17sp" />
 
     </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardXoaThietBi"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="#ffffff"
+        android:padding="2sp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="12dp"
+        app:rippleColor="#33000000"
+        app:strokeColor="#000000"
+        app:strokeWidth="0.5dp">
+
+        <TextView
+            android:id="@+id/txtXoa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/sono"
+            android:gravity="center"
+            android:text="Xóa thiết bị"
+            android:textColor="#000"
+            android:textSize="17sp" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.widget.TextView;
 
+
 import com.google.android.material.snackbar.Snackbar;
 
 public class MessageHelper {
@@ -17,12 +18,7 @@ public class MessageHelper {
         );
 
         snackbar.setBackgroundTint(Color.WHITE);
-
-        TextView textView = snackbar.getView()
-                .findViewById(com.google.android.material.R.id.snackbar_text);
-
-        textView.setTextColor(Color.BLACK);
-
+        snackbar.setTextColor(Color.BLACK);
         snackbar.setAction("✕", v -> snackbar.dismiss());
         snackbar.setActionTextColor(Color.BLUE);
 
@@ -38,12 +34,7 @@ public class MessageHelper {
         );
 
         snackbar.setBackgroundTint(Color.WHITE);
-
-        TextView textView = snackbar.getView()
-                .findViewById(com.google.android.material.R.id.snackbar_text);
-
-        textView.setTextColor(Color.BLACK);
-
+        snackbar.setTextColor(Color.BLACK);
         snackbar.setAction("✕", v -> snackbar.dismiss());
         snackbar.setActionTextColor(Color.RED);
 
@@ -59,11 +50,7 @@ public class MessageHelper {
         );
 
         snackbar.setBackgroundTint(Color.WHITE);
-
-        TextView textView = snackbar.getView()
-                .findViewById(com.google.android.material.R.id.snackbar_text);
-
-        textView.setTextColor(Color.BLACK);
+        snackbar.setTextColor(Color.BLACK);
 
         snackbar.setAction("✕", v -> snackbar.dismiss());
         snackbar.setActionTextColor(Color.parseColor("#FFA000"));
@@ -80,11 +67,7 @@ public class MessageHelper {
         );
 
         snackbar.setBackgroundTint(Color.WHITE);
-
-        TextView textView = snackbar.getView()
-                .findViewById(com.google.android.material.R.id.snackbar_text);
-
-        textView.setTextColor(Color.BLACK);
+        snackbar.setTextColor(Color.BLACK);
 
         snackbar.setAction("✕", v -> snackbar.dismiss());
         snackbar.setActionTextColor(Color.BLUE);

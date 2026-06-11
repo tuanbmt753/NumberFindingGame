@@ -80,12 +80,25 @@ public class DangNhapActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra(IntentKey.TEXT)) {
             String text = getIntent().getStringExtra(IntentKey.TEXT);
+
             MessageHelper.success(
                     DangNhapActivity.this,
                     text
             );
 
         }
+
+        if (getIntent().hasExtra(IntentKey.TRUE)) {
+            String text = getIntent().getStringExtra(IntentKey.TRUE);
+
+            MessageHelper.success(
+                    DangNhapActivity.this,
+                    text
+            );
+
+        }
+
+
         if (getIntent().hasExtra(IntentKey.FALSE)) {
             String text = getIntent().getStringExtra(IntentKey.FALSE);
             MessageHelper.error(
