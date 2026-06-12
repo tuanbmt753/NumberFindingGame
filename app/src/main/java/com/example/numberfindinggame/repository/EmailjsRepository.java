@@ -1,24 +1,19 @@
 package com.example.numberfindinggame.repository;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
+import com.example.numberfindinggame.callback.EmailCallback;
+import com.example.numberfindinggame.callback.EmailJsSelectCallback;
+import com.example.numberfindinggame.callback.FirebaseCallback;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.model.Emailjs;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;

@@ -1,4 +1,9 @@
 package com.example.numberfindinggame.callback;
 
-public class CaiDatCallback {
+import com.example.numberfindinggame.model.CaiDat;
+
+public interface CaiDatCallback {
+    void onSuccess(CaiDat caiDat);
+
+    void onFailure(String message);
 }

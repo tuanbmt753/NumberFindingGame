@@ -8,6 +8,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +23,9 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
+import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.model.NguoiDung;
+import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 
@@ -355,6 +358,7 @@ public class DangKyActivity extends AppCompatActivity {
                                 DangKyActivity.this,
                                 "Đăng ký thành công"
                         );
+                        taoCaiDatMatDinh();
 
                         // Chuyển màn hình
                         Intent intent = new Intent(
@@ -383,6 +387,23 @@ public class DangKyActivity extends AppCompatActivity {
                         MessageHelper.error(
                                 DangKyActivity.this,
                                 "Đăng ký thất bại"
+                        );
+                    }
+                }
+        );
+    }
+
+    private void taoCaiDatMatDinh() {
+        CaiDatRepository.taoMacDinhNeuChuaCo(
+                SessionManager.getUserId(this),
+                task -> {
+
+                    if (task.isSuccessful()) {
+                        Log.d("CAIDAT", "Đã có hoặc đã tạo mới thành công");
+                    } else {
+                        Log.e(
+                                "CAIDAT",
+                                task.getException().getMessage()
                         );
                     }
                 }

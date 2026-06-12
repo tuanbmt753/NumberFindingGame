@@ -24,4 +24,8 @@ public class FirebaseManager {
     public static DatabaseReference ThietBiDangNhap() {
         return database.getReference("ThietBiDangNhap");
     }
+
+    public static DatabaseReference CaiDat() {
+        return database.getReference("CaiDat");
+    }
 }
