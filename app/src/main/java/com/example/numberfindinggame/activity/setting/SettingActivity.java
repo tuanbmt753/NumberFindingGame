@@ -23,7 +23,9 @@ import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -61,10 +63,37 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
-
         khoiTao();
+
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+            if (activityType.equals(ActivityType.DANG_XUAT_TU_XA)) {
+                String text = getIntent().getStringExtra(IntentKey.TEXT);
+                MessageHelper.success(SettingActivity.this, "" + text);
+
+                new ConfirmDialog(
+                        SettingActivity.this,
+                        "Xác nhận",
+                        "✅ "+text+" .⚠️ Hành động này chỉ có tác dụng ở màn hình Setting, khi thoát ứng dụng bạn sẽ cần phải xác thực lại để có thể đăng xuất, và xóa thiết bị! ",
+                        new ConfirmDialog.ConfirmCallback() {
+
+                            @Override
+                            public void onYes() {
+
+                            }
+
+                            @Override
+                            public void onNo() {
+
+                            }
+                        }
+                ).show();
+            }
+        }
+
 
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
