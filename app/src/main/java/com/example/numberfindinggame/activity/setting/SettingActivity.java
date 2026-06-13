@@ -330,7 +330,7 @@ public class SettingActivity extends AppCompatActivity {
                         public void onYes() {
                             imgQR.setDrawingCacheEnabled(true);
 
-                            Bitmap bitmap =d
+                            Bitmap bitmap =
                                     Bitmap.createBitmap(
                                             imgQR.getDrawingCache()
                                     );
