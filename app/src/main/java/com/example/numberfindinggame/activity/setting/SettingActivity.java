@@ -1,11 +1,20 @@
 package com.example.numberfindinggame.activity.setting;
 
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -35,18 +44,32 @@ import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
+import com.example.numberfindinggame.model.MaKhoiPhuc;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.example.numberfindinggame.repository.CaiDatRepository;
+import com.example.numberfindinggame.repository.MaKhoiPhucRepository;
+import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
 
 import android.graphics.Color;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -62,8 +85,11 @@ public class SettingActivity extends AppCompatActivity {
     private SeekBar seekBarBackground, seekBarEffect;
 
     private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo;
+    private NguoiDungRepository repository = new NguoiDungRepository();
 
     private CaiDat caiDat;
+
+    private ImageView imgQR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +116,7 @@ public class SettingActivity extends AppCompatActivity {
                 new ConfirmDialog(
                         SettingActivity.this,
                         "Xác nhận",
-                        "✅ " + text + " .⚠️ Hành động này chỉ có tác dụng ở màn hình Setting, khi thoát ứng dụng bạn sẽ cần phải xác thực lại để có thể đăng xuất, và xóa thiết bị! ",
+                        "✅ " + text + " .⚠️ Hành động này chỉ có tác dụng ở màn hình Setting, khi thoát ứng dụng bạn sẽ cần phải xác thực lại để có thể thực hiện các hành động cài đặt xác thực, đăng xuất từ xa, và xóa thiết bị, ...! ",
                         new ConfirmDialog.ConfirmCallback() {
 
                             @Override
@@ -124,7 +150,54 @@ public class SettingActivity extends AppCompatActivity {
         cardMaKhoiPhucDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                luuCaiDat(0, 1, 0, 0);
+                if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+                    String text = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+                    if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
+                        luuCaiDat(0, 1, 0, 0);
+                    }
+                } else {
+
+                    repository.layEmailTheoMaNguoiDung(
+                            SessionManager.getUserId(SettingActivity.this),
+                            new NguoiDungRepository.OnGetEmailListener() {
+
+                                @Override
+                                public void onSuccess(String email) {
+
+                                    if (email != null) {
+                                        new ConfirmDialog(
+                                                SettingActivity.this,
+                                                "Xác nhận",
+                                                "Bạn phải xác thực email " + email + " để có thể mở xác thực bằng mã khôi phục mỗi khi đăng nhập ? ",
+                                                new ConfirmDialog.ConfirmCallback() {
+
+                                                    @Override
+                                                    public void onYes() {
+                                                        Intent intent = new Intent(SettingActivity.this, XacThucEmailActivity.class);
+                                                        intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
+                                                        intent.putExtra(IntentKey.EMAIL, email);
+
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onNo() {
+
+                                                    }
+                                                }
+                                        ).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailed(String message) {
+                                    MessageHelper.error(SettingActivity.this, "" + message);
+                                }
+                            }
+                    );
+
+                }
             }
         });
 
@@ -193,10 +266,198 @@ public class SettingActivity extends AppCompatActivity {
         cardXacThucEmailDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                luuCaiDat(1, 0, 0, 0);
+                if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+                    String text = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+                    if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
+                        luuCaiDat(1, 0, 0, 0);
+                    }
+                } else {
+
+                    repository.layEmailTheoMaNguoiDung(
+                            SessionManager.getUserId(SettingActivity.this),
+                            new NguoiDungRepository.OnGetEmailListener() {
+
+                                @Override
+                                public void onSuccess(String email) {
+
+                                    if (email != null) {
+                                        new ConfirmDialog(
+                                                SettingActivity.this,
+                                                "Xác nhận",
+                                                "Bạn phải xác thực email " + email + " để có thể mở xác thực email mỗi khi đăng nhập?",
+                                                new ConfirmDialog.ConfirmCallback() {
+
+                                                    @Override
+                                                    public void onYes() {
+                                                        Intent intent = new Intent(SettingActivity.this, XacThucEmailActivity.class);
+                                                        intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
+                                                        intent.putExtra(IntentKey.EMAIL, email);
+
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+
+                                                    @Override
+                                                    public void onNo() {
+
+                                                    }
+                                                }
+                                        ).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailed(String message) {
+                                    MessageHelper.error(SettingActivity.this, "" + message);
+                                }
+                            }
+                    );
+
+                }
 
             }
         });
+
+        imgQR.setOnClickListener(v -> {
+
+            new ConfirmDialog(
+                    SettingActivity.this,
+                    "Xác nhận",
+                    "Bạn có muốn lưu ảnh mã khôi phục gốc để dùng sau này không?",
+                    new ConfirmDialog.ConfirmCallback() {
+
+                        @Override
+                        public void onYes() {
+                            imgQR.setDrawingCacheEnabled(true);
+
+                            Bitmap bitmap =d
+                                    Bitmap.createBitmap(
+                                            imgQR.getDrawingCache()
+                                    );
+
+                            imgQR.setDrawingCacheEnabled(false);
+
+                            luuAnh(bitmap);
+                        }
+
+                        @Override
+                        public void onNo() {
+
+                        }
+                    }
+            ).show();
+        });
+
+    }
+
+    private void luuAnh(Bitmap bitmap) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+            // Android 10+
+
+            ContentValues values = new ContentValues();
+
+            values.put(
+                    MediaStore.Images.Media.DISPLAY_NAME,
+                    "QR_" + System.currentTimeMillis() + ".png"
+            );
+
+            values.put(
+                    MediaStore.Images.Media.MIME_TYPE,
+                    "image/png"
+            );
+
+            values.put(
+                    MediaStore.Images.Media.RELATIVE_PATH,
+                    Environment.DIRECTORY_PICTURES
+                            + "/NumberFindingGame"
+            );
+
+            Uri uri = getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    values
+            );
+
+            try {
+
+                OutputStream os =
+                        getContentResolver()
+                                .openOutputStream(uri);
+
+                bitmap.compress(
+                        Bitmap.CompressFormat.PNG,
+                        100,
+                        os
+                );
+
+                os.close();
+
+                MessageHelper.success(SettingActivity.this, "Đã lưu ảnh ở đường dẫn bộ nhớ trong ../Pictures/NumberFindingGame/OR...png" + uri);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        } else {
+
+            // Android 9 trở xuống
+
+            File folder = new File(
+                    Environment
+                            .getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_PICTURES
+                            ),
+                    "NumberFindingGame"
+            );
+
+            if (!folder.exists()) {
+
+                folder.mkdirs();
+
+            }
+
+            File file = new File(
+                    folder,
+                    "QR_"
+                            + System.currentTimeMillis()
+                            + ".png"
+            );
+
+            try {
+
+                FileOutputStream fos =
+                        new FileOutputStream(file);
+
+                bitmap.compress(
+                        Bitmap.CompressFormat.PNG,
+                        100,
+                        fos);
+
+                fos.flush();
+
+                fos.close();
+
+                MediaScannerConnection.scanFile(
+                        this,
+                        new String[]{
+                                file.getAbsolutePath()
+                        },
+                        null,
+                        null
+                );
+
+                MessageHelper.success(SettingActivity.this, "Đã lưu ảnh ở đường dẫn bộ nhớ trong ../Pictures/NumberFindingGame/OR...png");
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        }
 
     }
 
@@ -226,6 +487,7 @@ public class SettingActivity extends AppCompatActivity {
                                 caiDat2.setMaKhoiPhuc(false);
                             } else {
                                 caiDat2.setMaKhoiPhuc(true);
+                                layMaKhoiPhuc();
                             }
                         }
 
@@ -268,6 +530,99 @@ public class SettingActivity extends AppCompatActivity {
         );
 
 
+    }
+
+    private void layMaKhoiPhuc() {
+        MaKhoiPhucRepository.layMaKhoiPhuc(
+                SessionManager.getUserId(this),
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(
+                            @NonNull DataSnapshot snapshot
+                    ) {
+
+                        if (snapshot.exists()) {
+
+                            MaKhoiPhuc maKhoiPhuc = snapshot.getValue(MaKhoiPhuc.class);
+
+                            int ma = maKhoiPhuc.getMaKhoiPhuc();
+                            long ngayTao = maKhoiPhuc.getNgayTao();
+
+
+                            Log.d("TEST", "" + ma);
+
+                        } else {
+
+                            Log.d(
+                                    "TEST",
+                                    "Không tìm thấy mã khôi phục"
+                            );
+
+                            new ConfirmDialog(
+                                    SettingActivity.this,
+                                    "Xác nhận",
+                                    "Không tìm thấy mã khôi phục. Bạn có muốn thêm mã khôi phục không?",
+                                    new ConfirmDialog.ConfirmCallback() {
+
+                                        @Override
+                                        public void onYes() {
+                                            themMaKhoiPhuc();
+                                        }
+
+                                        @Override
+                                        public void onNo() {
+
+                                        }
+                                    }
+                            ).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(
+                            @NonNull DatabaseError error
+                    ) {
+
+                        Log.d(
+                                "TEST",
+                                error.getMessage()
+                        );
+
+                    }
+
+                }
+        );
+    }
+
+    private void themMaKhoiPhuc() {
+
+        String maNguoiDung = SessionManager.getUserId(this);
+        int maKhoiPhuc = 100000 + new Random().nextInt(900000);
+
+        MaKhoiPhuc ma = new MaKhoiPhuc();
+
+        ma.setMaNguoiDung(maNguoiDung);
+        ma.setMaKhoiPhuc((maKhoiPhuc));
+        ma.setNgayTao(System.currentTimeMillis());
+
+        MaKhoiPhucRepository.themMaKhoiPhuc(
+                ma,
+                task -> {
+
+                    if (task.isSuccessful()) {
+
+                        MessageHelper.success(SettingActivity.this, "Lưu mã thành công");
+
+                    } else {
+
+                        MessageHelper.success(SettingActivity.this, "Lỗi: " + task.getException().getMessage());
+
+                    }
+
+                }
+        );
     }
 
     private void khoiTao() {
@@ -319,11 +674,15 @@ public class SettingActivity extends AppCompatActivity {
 
                         if (maKhoiPhuc == true) {
                             txtMaKhoiPhucDongMo.setText("✅");
+                            imgQR.setVisibility(View.VISIBLE);
+                            layMaKhoiPhuc();
+                            theoDoiMaKhoiPhuc();
                             //cardMaKhoiPhucDongMo.setCardBackgroundColor(Color.parseColor("#78C0C6"));
                             //cardXacThucEmailDongMo.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 
                         } else {
                             txtMaKhoiPhucDongMo.setText("❌");
+                            imgQR.setVisibility(View.GONE);
                             //cardMaKhoiPhucDongMo.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                         }
 
@@ -338,6 +697,117 @@ public class SettingActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private void theoDoiMaKhoiPhuc() {
+        MaKhoiPhucRepository.theoDoiMaKhoiPhuc(
+                SessionManager.getUserId(this),
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(
+                            @NonNull DataSnapshot snapshot
+                    ) {
+
+                        if (!snapshot.exists()) {
+                            return;
+                        }
+
+                        MaKhoiPhuc maKhoiPhuc =
+                                snapshot.getValue(
+                                        MaKhoiPhuc.class
+                                );
+
+                        if (maKhoiPhuc != null) {
+
+                            taoMaOR(maKhoiPhuc);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(
+                            @NonNull DatabaseError error
+                    ) {
+
+                    }
+
+                }
+        );
+    }
+
+    private void taoMaOR(MaKhoiPhuc maKhoiPhuc) {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+
+            jsonObject.put(
+                    "maNguoiDung",
+                    maKhoiPhuc.getMaNguoiDung()
+            );
+
+            jsonObject.put(
+                    "maKhoiPhuc",
+                    maKhoiPhuc.getMaKhoiPhuc()
+            );
+
+        } catch (JSONException e) {
+
+            //e.printStackTrace();
+
+        }
+
+        String dataQR = jsonObject.toString();
+
+        Bitmap bitmap = taoQRCode(dataQR);
+
+        imgQR.setImageBitmap(bitmap);
+    }
+
+    public Bitmap taoQRCode(String text) {
+
+        try {
+
+            BitMatrix bitMatrix =
+                    new MultiFormatWriter().encode(
+                            text,
+                            BarcodeFormat.QR_CODE,
+                            500,
+                            500
+                    );
+
+            Bitmap bitmap = Bitmap.createBitmap(
+                    500,
+                    500,
+                    Bitmap.Config.RGB_565
+            );
+
+            for (int x = 0; x < 500; x++) {
+
+                for (int y = 0; y < 500; y++) {
+
+                    bitmap.setPixel(
+                            x,
+                            y,
+                            bitMatrix.get(x, y)
+                                    ? Color.BLACK
+                                    : Color.WHITE
+                    );
+
+                }
+
+            }
+
+            return bitmap;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return null;
+
+        }
+
     }
 
     private void taoCaiDatMatDinh() {
@@ -379,7 +849,7 @@ public class SettingActivity extends AppCompatActivity {
         cardXacThucEmailDongMo = findViewById(R.id.cardXacThucEmailDongMo);
         cardMaKhoiPhucDongMo = findViewById(R.id.cardMaKhoiPhucDongMo);
 
-
+        imgQR = findViewById(R.id.imgQR);
     }
 
     private void luuThietBi(String maNguoiDung) {

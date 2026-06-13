@@ -220,7 +220,6 @@ public class DangKyActivity extends AppCompatActivity {
 
                                 startActivity(intent);
                                 finish();
-
                             }
                         }
                 );

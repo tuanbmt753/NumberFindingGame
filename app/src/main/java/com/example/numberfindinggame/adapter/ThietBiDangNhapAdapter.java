@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
@@ -30,6 +31,7 @@ import com.example.numberfindinggame.model.XacThucEmail;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 import com.example.numberfindinggame.utils.DateUtils;
+import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
@@ -108,7 +110,7 @@ public class ThietBiDangNhapAdapter
 
         txtNgayDangNhap.setText(
                 "Đăng nhập: "
-                        + DateUtils.format(thietBi.getNgayTao())
+                        + DateUtils.format(thietBi.getNgayCapNhatCuoi())
         );
 
         if (Boolean.FALSE.equals(thietBi.getDangHoatDong())) {
@@ -186,7 +188,15 @@ public class ThietBiDangNhapAdapter
 
                                     @Override
                                     public void onYes() {
+                                        LoadingDialog loading =
+                                                new LoadingDialog(context);
+                                        loading.setMessage("Đang vô hiệu hóa thiết bị...");
+                                        loading.show();
+
                                         voHieuHoaThietBi(context, thietBi);
+
+                                        loading.dismiss();
+
                                     }
 
                                     @Override
@@ -258,7 +268,13 @@ public class ThietBiDangNhapAdapter
 
                                     @Override
                                     public void onYes() {
+
+                                        LoadingDialog loading =
+                                                new LoadingDialog(context);
+                                        loading.setMessage("Đang xóa thiết bị...");
+                                        loading.show();
                                         xoaThietBi(context, thietBi);
+                                        loading.dismiss();
                                     }
 
                                     @Override
