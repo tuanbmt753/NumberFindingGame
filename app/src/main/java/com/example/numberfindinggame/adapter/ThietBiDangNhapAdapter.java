@@ -16,11 +16,13 @@ import androidx.annotation.NonNull;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
+import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
@@ -162,6 +164,16 @@ public class ThietBiDangNhapAdapter
 
                 Activity activity = (Activity) context;
 
+                if (!NetworkHelper.isConnected(context)) {
+
+                    MessageHelper.error(
+                            (Activity) context,
+                            "Không có kết nối Internet"
+                    );
+
+                    return;
+                }
+
                 if (activity.getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
                     String text = activity.getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
                     if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
@@ -223,6 +235,16 @@ public class ThietBiDangNhapAdapter
             public void onClick(View view) {
 
                 Activity activity = (Activity) context;
+                if (!NetworkHelper.isConnected(context)) {
+
+                    MessageHelper.error(
+                            (Activity) context,
+                            "Không có kết nối Internet"
+                    );
+
+                    return;
+                }
+
 
                 if (activity.getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
                     String text = activity.getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);

@@ -31,6 +31,7 @@ import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
+import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
@@ -205,6 +206,17 @@ public class SettingActivity extends AppCompatActivity {
                 new CaiDatCallback() {
                     @Override
                     public void onSuccess(CaiDat caiDat) {
+
+                        if (!NetworkHelper.isConnected(SettingActivity.this)) {
+
+                            MessageHelper.error(
+                                    SettingActivity.this,
+                                    "Không có kết nối Internet"
+                            );
+
+                            return;
+                        }
+
                         CaiDat caiDat2 = new CaiDat(caiDat);
 
                         Log.d("CAIDAT", caiDat.toString());
@@ -287,8 +299,6 @@ public class SettingActivity extends AppCompatActivity {
                 new CaiDatCallback() {
                     @Override
                     public void onSuccess(CaiDat caiDat) {
-                        caiDat = new CaiDat(caiDat);
-
                         Log.d("CAIDAT", caiDat.toString());
 
                         int amThanhNen = caiDat.getAmThanhNen();
@@ -331,6 +341,16 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void taoCaiDatMatDinh() {
+        if (!NetworkHelper.isConnected(SettingActivity.this)) {
+
+            MessageHelper.error(
+                    SettingActivity.this,
+                    "Không có kết nối Internet"
+            );
+
+            return;
+        }
+
         CaiDatRepository.taoMacDinhNeuChuaCo(
                 SessionManager.getUserId(this),
                 task -> {

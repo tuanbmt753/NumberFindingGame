@@ -358,7 +358,7 @@ public class DangKyActivity extends AppCompatActivity {
                                 DangKyActivity.this,
                                 "Đăng ký thành công"
                         );
-                        taoCaiDatMatDinh();
+                        taoCaiDatMatDinh(nguoiDung);
 
                         // Chuyển màn hình
                         Intent intent = new Intent(
@@ -393,9 +393,9 @@ public class DangKyActivity extends AppCompatActivity {
         );
     }
 
-    private void taoCaiDatMatDinh() {
+    private void taoCaiDatMatDinh(NguoiDung nguoiDung) {
         CaiDatRepository.taoMacDinhNeuChuaCo(
-                SessionManager.getUserId(this),
+                nguoiDung.getMaNguoiDung(),
                 task -> {
 
                     if (task.isSuccessful()) {
