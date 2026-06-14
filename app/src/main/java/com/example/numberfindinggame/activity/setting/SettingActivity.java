@@ -561,23 +561,7 @@ public class SettingActivity extends AppCompatActivity {
                                     "Không tìm thấy mã khôi phục"
                             );
 
-                            new ConfirmDialog(
-                                    SettingActivity.this,
-                                    "Xác nhận",
-                                    "Không tìm thấy mã khôi phục. Bạn có muốn thêm mã khôi phục không?",
-                                    new ConfirmDialog.ConfirmCallback() {
-
-                                        @Override
-                                        public void onYes() {
-                                            themMaKhoiPhuc();
-                                        }
-
-                                        @Override
-                                        public void onNo() {
-
-                                        }
-                                    }
-                            ).show();
+                            themMaKhoiPhuc();
                         }
 
                     }
@@ -673,21 +657,24 @@ public class SettingActivity extends AppCompatActivity {
 
                         } else {
                             txtXacThucEmailDongMo.setText("❌");
+
+                            //cardXacThucEmailDongMo.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                             cardMaKhoiPhucDongMo.setEnabled(false);
                             cardMaKhoiPhucDongMo.setVisibility(View.GONE);
-                            
-                            //cardXacThucEmailDongMo.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-                            caiDat.setMaKhoiPhuc(false);
-                            CaiDatRepository.luuCaiDat(
-                                    caiDat,
-                                    task -> {
-                                        if (task.isSuccessful()) {
-                                            Log.d("CAIDAT", "Lưu thành công");
-                                        } else {
-                                            Log.d("CAIDAT", "Lưu thất bại");
+
+                            if (maKhoiPhuc == true) {
+                                caiDat.setMaKhoiPhuc(false);
+                                CaiDatRepository.luuCaiDat(
+                                        caiDat,
+                                        task -> {
+                                            if (task.isSuccessful()) {
+                                                Log.d("CAIDAT", "Lưu thành công");
+                                            } else {
+                                                Log.d("CAIDAT", "Lưu thất bại");
+                                            }
                                         }
-                                    }
-                            );
+                                );
+                            }
 
 
                         }

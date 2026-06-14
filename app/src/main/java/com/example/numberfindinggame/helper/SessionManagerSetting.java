@@ -9,7 +9,7 @@ public class SessionManagerSetting {
     private static final String KEY_EXPIRE_TIME = "EXPIRE_TIME";
 
     // 10 phút
-    private static final long EXPIRE_DURATION = 10 * 60 * 1000;
+    private static final long EXPIRE_DURATION = 20 * 60 * 1000;
 
     public static void saveSetting(
             Context context,
