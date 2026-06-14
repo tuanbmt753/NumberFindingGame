@@ -25,6 +25,7 @@ import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.SessionManagerSetting;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.example.numberfindinggame.model.XacThucEmail;
@@ -176,38 +177,34 @@ public class ThietBiDangNhapAdapter
                     return;
                 }
 
-                if (activity.getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
-                    String text = activity.getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
-                    if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
+                String setting = SessionManagerSetting.getSetting(context);
+                if (setting != null && !setting.isEmpty()) {
 
-                        new ConfirmDialog(
-                                context,
-                                "Xác nhận",
-                                "Bạn có muốn đăng xuất từ xa khỏi thiết bị này không?",
-                                new ConfirmDialog.ConfirmCallback() {
+                    new ConfirmDialog(
+                            context,
+                            "Xác nhận",
+                            "Bạn có muốn đăng xuất từ xa khỏi thiết bị này không?",
+                            new ConfirmDialog.ConfirmCallback() {
 
-                                    @Override
-                                    public void onYes() {
-                                        LoadingDialog loading =
-                                                new LoadingDialog(context);
-                                        loading.setMessage("Đang vô hiệu hóa thiết bị...");
-                                        loading.show();
+                                @Override
+                                public void onYes() {
+                                    LoadingDialog loading =
+                                            new LoadingDialog(context);
+                                    loading.setMessage("Đang vô hiệu hóa thiết bị...");
+                                    loading.show();
 
-                                        voHieuHoaThietBi(context, thietBi);
+                                    voHieuHoaThietBi(context, thietBi);
 
-                                        loading.dismiss();
+                                    loading.dismiss();
 
-                                    }
-
-                                    @Override
-                                    public void onNo() {
-
-                                    }
                                 }
-                        ).show();
 
+                                @Override
+                                public void onNo() {
 
-                    }
+                                }
+                            }
+                    ).show();
 
                 } else {
                     new ConfirmDialog(
@@ -256,36 +253,33 @@ public class ThietBiDangNhapAdapter
                 }
 
 
-                if (activity.getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
-                    String text = activity.getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
-                    if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
+                String setting = SessionManagerSetting.getSetting(context);
+                if (setting != null && !setting.isEmpty()) {
 
-                        new ConfirmDialog(
-                                context,
-                                "Xác nhận",
-                                "Bạn có muốn đăng xuất từ xa khỏi thiết bị này không?",
-                                new ConfirmDialog.ConfirmCallback() {
+                    new ConfirmDialog(
+                            context,
+                            "Xác nhận",
+                            "Bạn có muốn đăng xuất từ xa khỏi thiết bị này không?",
+                            new ConfirmDialog.ConfirmCallback() {
 
-                                    @Override
-                                    public void onYes() {
+                                @Override
+                                public void onYes() {
 
-                                        LoadingDialog loading =
-                                                new LoadingDialog(context);
-                                        loading.setMessage("Đang xóa thiết bị...");
-                                        loading.show();
-                                        xoaThietBi(context, thietBi);
-                                        loading.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onNo() {
-
-                                    }
+                                    LoadingDialog loading =
+                                            new LoadingDialog(context);
+                                    loading.setMessage("Đang xóa thiết bị...");
+                                    loading.show();
+                                    xoaThietBi(context, thietBi);
+                                    loading.dismiss();
                                 }
-                        ).show();
 
+                                @Override
+                                public void onNo() {
 
-                    }
+                                }
+                            }
+                    ).show();
+
 
                 } else {
                     new ConfirmDialog(

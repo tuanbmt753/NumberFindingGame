@@ -19,6 +19,8 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.SessionManagerSetting;
 import com.example.numberfindinggame.model.Emailjs;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.XacThucEmail;
@@ -490,6 +492,10 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
                                                 intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
                                                 intent.putExtra(IntentKey.TEXT, "Xác thực email thành công!");
+                                                SessionManagerSetting.saveSetting(
+                                                        XacThucEmailActivity.this,
+                                                        "XacThuc"
+                                                );
 
                                                 startActivity(intent);
                                                 finish();

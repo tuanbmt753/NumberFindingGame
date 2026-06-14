@@ -42,6 +42,7 @@ import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.SessionManagerSetting;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.MaKhoiPhuc;
@@ -107,29 +108,32 @@ public class SettingActivity extends AppCompatActivity {
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
         khoiTao();
 
-        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
-            String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
-            if (activityType.equals(ActivityType.DANG_XUAT_TU_XA)) {
-                String text = getIntent().getStringExtra(IntentKey.TEXT);
-                MessageHelper.success(SettingActivity.this, "" + text);
+        String setting = SessionManagerSetting.getSetting(SettingActivity.this);
+        if (setting != null && !setting.isEmpty()) {
+            if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+                String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+                if (activityType.equals(ActivityType.DANG_XUAT_TU_XA)) {
+                    String text = getIntent().getStringExtra(IntentKey.TEXT);
+                    MessageHelper.success(SettingActivity.this, "" + text);
 
-                new ConfirmDialog(
-                        SettingActivity.this,
-                        "Xác nhận",
-                        "✅ " + text + " .⚠️ Hành động này chỉ có tác dụng ở màn hình Setting, khi thoát ứng dụng bạn sẽ cần phải xác thực lại để có thể thực hiện các hành động cài đặt xác thực, đăng xuất từ xa, và xóa thiết bị, ...! ",
-                        new ConfirmDialog.ConfirmCallback() {
+                    new ConfirmDialog(
+                            SettingActivity.this,
+                            "Xác nhận",
+                            "✅ " + text + " .⚠️ Hành động này chỉ có tác dụng 10 phút ở màn hình Setting, khi hết 10 phút bạn sẽ cần phải xác thực lại để có thể thực hiện các hành động như cài đặt xác thực, đăng xuất từ xa, và xóa thiết bị, ...! ",
+                            new ConfirmDialog.ConfirmCallback() {
 
-                            @Override
-                            public void onYes() {
+                                @Override
+                                public void onYes() {
 
+                                }
+
+                                @Override
+                                public void onNo() {
+
+                                }
                             }
-
-                            @Override
-                            public void onNo() {
-
-                            }
-                        }
-                ).show();
+                    ).show();
+                }
             }
         }
 
@@ -150,11 +154,9 @@ public class SettingActivity extends AppCompatActivity {
         cardMaKhoiPhucDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
-                    String text = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
-                    if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
-                        luuCaiDat(0, 1, 0, 0);
-                    }
+                String setting = SessionManagerSetting.getSetting(SettingActivity.this);
+                if (setting != null && !setting.isEmpty()) {
+                    luuCaiDat(0, 1, 0, 0);
                 } else {
 
                     repository.layEmailTheoMaNguoiDung(
@@ -266,11 +268,10 @@ public class SettingActivity extends AppCompatActivity {
         cardXacThucEmailDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
-                    String text = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
-                    if (text.equals(ActivityType.DANG_XUAT_TU_XA)) {
-                        luuCaiDat(1, 0, 0, 0);
-                    }
+
+                String setting = SessionManagerSetting.getSetting(SettingActivity.this);
+                if (setting != null && !setting.isEmpty()) {
+                    luuCaiDat(1, 0, 0, 0);
                 } else {
 
                     repository.layEmailTheoMaNguoiDung(
@@ -494,6 +495,7 @@ public class SettingActivity extends AppCompatActivity {
                         if (xacThuc > 0) {
                             if (caiDat.getXacThucEmail() == true) {
                                 caiDat2.setXacThucEmail(false);
+                                caiDat2.setMaKhoiPhuc(false);
                             } else {
                                 caiDat2.setXacThucEmail(true);
                             }
@@ -664,12 +666,30 @@ public class SettingActivity extends AppCompatActivity {
 
                         if (xacThucEmail == true) {
                             txtXacThucEmailDongMo.setText("✅");
+                            cardMaKhoiPhucDongMo.setEnabled(true);
+                            cardMaKhoiPhucDongMo.setVisibility(View.VISIBLE);
                             //cardXacThucEmailDongMo.setCardBackgroundColor(Color.parseColor("#78C0C6"));
                             //cardXacThucEmailDongMo.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 
                         } else {
                             txtXacThucEmailDongMo.setText("❌");
+                            cardMaKhoiPhucDongMo.setEnabled(false);
+                            cardMaKhoiPhucDongMo.setVisibility(View.GONE);
+                            
                             //cardXacThucEmailDongMo.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                            caiDat.setMaKhoiPhuc(false);
+                            CaiDatRepository.luuCaiDat(
+                                    caiDat,
+                                    task -> {
+                                        if (task.isSuccessful()) {
+                                            Log.d("CAIDAT", "Lưu thành công");
+                                        } else {
+                                            Log.d("CAIDAT", "Lưu thất bại");
+                                        }
+                                    }
+                            );
+
+
                         }
 
                         if (maKhoiPhuc == true) {
