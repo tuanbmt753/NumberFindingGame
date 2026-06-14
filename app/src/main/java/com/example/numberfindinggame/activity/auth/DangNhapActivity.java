@@ -237,7 +237,7 @@ public class DangNhapActivity extends AppCompatActivity {
                                                     // Chuyển màn hình
                                                     Intent intent = new Intent(
                                                             DangNhapActivity.this,
-                                                            XacThucEmailActivity.class
+                                                            ChonXacThucActivity.class
                                                     );
 
                                                     intent.putExtra(IntentKey.EMAIL, nguoiDung.getEmail());
