@@ -1,10 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.auth.MaKhoiPhucActivity">
+    android:fillViewport="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="60dp"
+        android:paddingTop="55dp"
+        android:paddingBottom="70dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtQuayLai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:gravity="left"
+                android:text="&lt; Quay lại"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/logo"
+                app:layout_constraintBottom_toBottomOf="@id/txtTitle"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txtTitle" />
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:gravity="right|center"
+                android:text="Number&#10;Finding&#10;Game"
+                android:textColor="#000"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imgLogo"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txtNoiDung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/sono"
+            android:gravity="center"
+            android:text="Nội dung"
+            android:textColor="#000"
+            android:textSize="30sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEdtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/ic_pass" />
+
+                <EditText
+                    android:id="@+id/edtMaKhoiPhuc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:hint="Mã khôi phục"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/txtLoiMaKhoiPhuc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/sono"
+            android:gravity="left"
+            android:text="aa"
+            android:textColor="#F44336"
+            android:textSize="15sp" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardXacNhan"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#77BEC4"
+
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:id="@+id/txtXacNhan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="Xác nhận"
+                android:textColor="#000"
+                android:textSize="23sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+</ScrollView>

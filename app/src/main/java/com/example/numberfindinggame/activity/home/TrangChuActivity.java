@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
+import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
@@ -53,6 +55,28 @@ public class TrangChuActivity extends AppCompatActivity {
                     TrangChuActivity.this,
                     text
             );
+        }
+
+        if (getIntent().hasExtra(IntentKey.MA_KHOI_PHUC)) {
+
+            new ConfirmDialog(
+                    TrangChuActivity.this,
+                    "Xác nhận",
+                    "✅ Đăng nhập thành công! ⚠️ Mã khôi phục đã được làm mới, xem ở phần cài đặt !",
+                    new ConfirmDialog.ConfirmCallback() {
+
+                        @Override
+                        public void onYes() {
+
+                        }
+
+                        @Override
+                        public void onNo() {
+
+                        }
+                    }
+            ).show();
+
         }
 
         cardDangXuat.setOnClickListener(new View.OnClickListener() {

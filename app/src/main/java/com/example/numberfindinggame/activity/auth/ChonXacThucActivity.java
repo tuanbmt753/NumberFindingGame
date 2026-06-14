@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class ChonXacThucActivity extends AppCompatActivity {
     private Boolean xacThucEmail = false;
     private Boolean maKhoiPhuc = false;
 
+    private TextView txtQuayLai;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +44,20 @@ public class ChonXacThucActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        nguoiDung =
-                (NguoiDung) getIntent().getSerializableExtra(
-                        IntentKey.NGUOI_DUNG
-                );
+
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+            if (activityType.toString().trim().equals(ActivityType.DANG_NHAP)) {
+                nguoiDung =
+                        (NguoiDung) getIntent().getSerializableExtra(
+                                IntentKey.NGUOI_DUNG
+                        );
 
 
-        layCaiDat();
+                layCaiDat();
+            }
+        }
+
 
         cardXacThucEmail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +84,7 @@ public class ChonXacThucActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (xacThucEmail == true) {
+
                     // Chuyển màn hình
                     Intent intent = new Intent(
                             ChonXacThucActivity.this,
@@ -93,8 +104,35 @@ public class ChonXacThucActivity extends AppCompatActivity {
 
                 if (maKhoiPhuc == true) {
 
+                    Intent intent = new Intent(
+                            ChonXacThucActivity.this,
+                            MaKhoiPhucActivity.class
+                    );
+
+                    intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_NHAP); // nếu cần
+                    intent.putExtra(
+                            IntentKey.NGUOI_DUNG,
+                            nguoiDung
+                    );
+
+                    startActivity(intent);
+                    finish();
                 }
 
+            }
+        });
+
+        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        ChonXacThucActivity.this,
+                        DangNhapActivity.class
+                );
+
+
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -136,5 +174,7 @@ public class ChonXacThucActivity extends AppCompatActivity {
         cardXacThucEmail = findViewById(R.id.cardXacThucEmail);
         cardMaKhoiPhuc = findViewById(R.id.cardMaKhoiPhuc);
         cardTiepTuc = findViewById(R.id.cardTiepTuc);
+
+        txtQuayLai = findViewById(R.id.txtQuayLai);
     }
 }

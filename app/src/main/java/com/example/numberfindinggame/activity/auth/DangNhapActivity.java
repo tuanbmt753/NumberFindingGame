@@ -423,6 +423,10 @@ public class DangNhapActivity extends AppCompatActivity {
                                     DangNhapActivity.this,
                                     TrangChuActivity.class
                             );
+                            if (getIntent().hasExtra(IntentKey.MA_KHOI_PHUC)) {
+                                intent.putExtra(IntentKey.MA_KHOI_PHUC, IntentKey.MA_KHOI_PHUC); // nếu cần
+                            }
+
                             intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
                             startActivity(intent);
                             finish();
@@ -440,6 +444,9 @@ public class DangNhapActivity extends AppCompatActivity {
                                     DangNhapActivity.this,
                                     TrangChuActivity.class
                             );
+                            if (getIntent().hasExtra(IntentKey.MA_KHOI_PHUC)) {
+                                intent.putExtra(IntentKey.MA_KHOI_PHUC, IntentKey.MA_KHOI_PHUC); // nếu cần
+                            }
 
                             intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
                             startActivity(intent);
