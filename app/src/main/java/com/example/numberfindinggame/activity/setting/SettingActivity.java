@@ -36,6 +36,7 @@ import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.constant.MusicType;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
@@ -86,7 +87,7 @@ public class SettingActivity extends AppCompatActivity {
     private TextView txtQuayLai, txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
     private SeekBar seekBarBackground, seekBarEffect;
 
-    private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo;
+    private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo, cardNhacNen1, cardNhacNen2;
     private NguoiDungRepository repository = new NguoiDungRepository();
 
     private CaiDat caiDat;
@@ -137,6 +138,41 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         }
+
+        if (MusicManager.getCurrentMusic(SettingActivity.this) == MusicType.DEFAULT) {
+            cardNhacNen1.setStrokeWidth(dpToPx(1));
+            cardNhacNen2.setStrokeWidth(dpToPx(0));
+
+        }
+
+        if (MusicManager.getCurrentMusic(SettingActivity.this) == MusicType.MUSIC_2) {
+            cardNhacNen1.setStrokeWidth(dpToPx(0));
+            cardNhacNen2.setStrokeWidth(dpToPx(1));
+        }
+
+        cardNhacNen1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MusicManager.changeMusic(
+                        SettingActivity.this,
+                        MusicType.DEFAULT);
+
+                cardNhacNen1.setStrokeWidth(dpToPx(1));
+                cardNhacNen2.setStrokeWidth(dpToPx(0));
+            }
+        });
+
+        cardNhacNen2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MusicManager.changeMusic(
+                        SettingActivity.this,
+                        MusicType.MUSIC_2);
+
+                cardNhacNen1.setStrokeWidth(dpToPx(0));
+                cardNhacNen2.setStrokeWidth(dpToPx(1));
+            }
+        });
 
 
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
@@ -350,6 +386,10 @@ public class SettingActivity extends AppCompatActivity {
             ).show();
         });
 
+    }
+
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
     }
 
     private void luuAnh(Bitmap bitmap) {
@@ -860,6 +900,9 @@ public class SettingActivity extends AppCompatActivity {
 
         cardXacThucEmailDongMo = findViewById(R.id.cardXacThucEmailDongMo);
         cardMaKhoiPhucDongMo = findViewById(R.id.cardMaKhoiPhucDongMo);
+
+        cardNhacNen1 = findViewById(R.id.cardNhacNen1);
+        cardNhacNen2 = findViewById(R.id.cardNhacNen2);
 
         imgQR = findViewById(R.id.imgQR);
     }

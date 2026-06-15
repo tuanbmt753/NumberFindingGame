@@ -3,6 +3,8 @@ package com.example.numberfindinggame.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.numberfindinggame.R;
+
 public class SessionManagerMusic {
 
     private static final String PREF_NAME = "NumberFindingGame";
@@ -12,6 +14,9 @@ public class SessionManagerMusic {
 
     private static final String KEY_MUSIC_VOLUME =
             "music_volume";
+
+    private static final String KEY_CURRENT_MUSIC =
+            "current_music";
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -61,6 +66,24 @@ public class SessionManagerMusic {
         return pref.getInt(
                 KEY_MUSIC_VOLUME,
                 100);
+    }
+
+    public void setCurrentMusic(
+            int musicResId) {
+
+        editor.putInt(
+                KEY_CURRENT_MUSIC,
+                musicResId);
+
+        editor.apply();
+
+    }
+
+    public int getCurrentMusic() {
+
+        return pref.getInt(
+                KEY_CURRENT_MUSIC,
+                R.raw.nhac_nen);
     }
 
 }

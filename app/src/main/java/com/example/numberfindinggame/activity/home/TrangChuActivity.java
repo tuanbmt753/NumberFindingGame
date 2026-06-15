@@ -191,6 +191,10 @@ public class TrangChuActivity extends AppCompatActivity {
                                 TrangChuActivity.this,
                                 caiDat.getAmThanhNen());
 
+//                        MusicManager.changeMusic(
+//                                TrangChuActivity.this,
+//                                R.raw.nhac_nen2);
+
                     }
 
                     @Override
