@@ -218,9 +218,9 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/sono"
                     android:text="Nhịp điệu mở đầu phim vui tươi, đầu phim năng động"
                     android:textColor="#000"
@@ -267,7 +267,104 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/sono"
+            android:text="Âm thanh hiệu ứng"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAmThanhHieuUng1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="#fff"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10sp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sono"
+                    android:text="Âm thanh hiệu ứng 1"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAmThanhHieuUng2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="#fff"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10sp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sono"
+                    android:text="Âm thanh hiệu ứng 2"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAmThanhHieuUng3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="#fff"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10sp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sono"
+                    android:text="Âm thanh hiệu ứng 3"
+                    android:textColor="#000"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
         <!-- Xác thực đăng nhập -->
         <TextView
             android:layout_width="wrap_content"

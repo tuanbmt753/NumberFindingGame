@@ -146,6 +146,8 @@ public class TrangChuActivity extends AppCompatActivity {
                         SettingActivity.class
                 );
 
+                SoundManager.playButton(TrangChuActivity.this);
+
                 startActivity(intent);
                 finish();
             }
@@ -154,6 +156,7 @@ public class TrangChuActivity extends AppCompatActivity {
         cardThoat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SoundManager.playButton(TrangChuActivity.this);
                 new ConfirmDialog(
                         TrangChuActivity.this,
                         "Xác nhận",
@@ -162,12 +165,13 @@ public class TrangChuActivity extends AppCompatActivity {
 
                             @Override
                             public void onYes() {
+                                SoundManager.playButton(TrangChuActivity.this);
                                 finish();
                             }
 
                             @Override
                             public void onNo() {
-
+                                SoundManager.playButton(TrangChuActivity.this);
                             }
                         }
                 ).show();

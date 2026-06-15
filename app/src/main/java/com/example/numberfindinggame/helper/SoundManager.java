@@ -4,11 +4,29 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 
+import com.example.numberfindinggame.R;
+
 public class SoundManager {
 
     private static SoundPool soundPool;
 
-    private static int buttonSound;
+    // load sẵn
+
+    private static int click1;
+
+    private static int click2;
+
+    private static int click3;
+
+    private static int win;
+
+    private static int lose;
+
+    private static int coin;
+
+    // âm thanh nút đang dùng
+
+    private static int currentButtonSound;
 
     public static void init(
             Context context) {
@@ -23,55 +41,182 @@ public class SoundManager {
 
         soundPool =
                 new SoundPool.Builder()
-                        .setMaxStreams(5)
+                        .setMaxStreams(10)
                         .setAudioAttributes(
                                 audioAttributes)
                         .build();
 
+
+        // Load một lần
+
+        click1 =
+                soundPool.load(
+                        context,
+                        R.raw.click_1,
+                        1);
+
+        click2 =
+                soundPool.load(
+                        context,
+                        R.raw.click_2,
+                        1);
+
+        click3 =
+                soundPool.load(
+                        context,
+                        R.raw.click_3,
+                        1);
+
+        win =
+                soundPool.load(
+                        context,
+                        R.raw.win,
+                        1);
+
+        lose =
+                soundPool.load(
+                        context,
+                        R.raw.lose,
+                        1);
+
+        coin =
+                soundPool.load(
+                        context,
+                        R.raw.coin,
+                        1);
+
+
+        // lấy âm thanh đã lưu
+
         SessionManagerSound session =
                 new SessionManagerSound(
                         context);
 
-        buttonSound =
-                soundPool.load(
-                        context,
-                        session.getCurrentSound(),
-                        1);
+        changeButtonSound(
+                context,
+                session.getCurrentSound());
 
     }
 
-    // Đổi hiệu ứng
 
-    public static void changeSound(
+    // Đổi hiệu ứng nút
+    public static void changeButtonSound(
             Context context,
             int soundResId) {
 
         SessionManagerSound session =
-                new SessionManagerSound(
-                        context);
+                new SessionManagerSound(context);
 
-        int currentSound =
-                session.getCurrentSound();
+        session.setCurrentSound(soundResId);
 
-        if (currentSound
-                == soundResId) {
+        if (soundResId == R.raw.click_1) {
+
+            currentButtonSound = click1;
+
+        } else if (soundResId == R.raw.click_2) {
+
+            currentButtonSound = click2;
+
+
+        } else if (soundResId == R.raw.click_3) {
+
+            currentButtonSound = click3;
+
+        } else {
+
+            currentButtonSound = click1;
+
+        }
+
+    }
+
+
+    // Phát hiệu ứng nút
+    public static void playButton(
+            Context context) {
+
+        play(
+                context,
+                currentButtonSound);
+
+    }
+
+
+// Phát thắng
+
+    public static void playWin(
+            Context context) {
+
+        play(
+                context,
+                win);
+
+    }
+
+
+// Phát thua
+
+    public static void playLose(
+            Context context) {
+
+        play(
+                context,
+                lose);
+
+    }
+
+
+// Phát coin
+
+    public static void playCoin(
+            Context context) {
+
+        play(
+                context,
+                coin);
+
+    }
+
+
+// Hàm phát chung
+
+    private static void play(
+            Context context,
+            int soundId) {
+
+        if (soundPool == null) {
 
             return;
 
         }
 
-        session.setCurrentSound(
-                soundResId);
+        SessionManagerSound session =
+                new SessionManagerSound(
+                        context);
 
-        buttonSound =
-                soundPool.load(
-                        context,
-                        soundResId,
-                        1);
+        if (!session.isEnable()) {
+
+            return;
+
+        }
+
+        float volume =
+                session.getVolume()
+                        / 100f;
+
+
+        soundPool.play(
+                soundId,
+                volume,
+                volume,
+                1,
+                0,
+                1f);
 
     }
 
-    // Âm lượng
+
+// Âm lượng
 
     public static void setVolume(
             Context context,
@@ -98,7 +243,8 @@ public class SoundManager {
 
     }
 
-    // Bật tắt
+
+// Bật tắt
 
     public static void setEnable(
             Context context,
@@ -113,42 +259,6 @@ public class SoundManager {
 
     }
 
-    // Phát hiệu ứng
-
-    public static void playButton(
-            Context context) {
-
-        if (soundPool == null) {
-
-            return;
-
-        }
-
-        SessionManagerSound session =
-                new SessionManagerSound(
-                        context);
-
-        if (!session.isEnable()) {
-
-            return;
-
-        }
-
-        float volume =
-                session.getVolume()
-                        / 100f;
-
-        soundPool.play(
-                buttonSound,
-                volume,
-                volume,
-                1,
-                0,
-                1f);
-
-    }
-
-    // Giải phóng
 
     public static void release() {
 
@@ -159,6 +269,16 @@ public class SoundManager {
             soundPool = null;
 
         }
+
+    }
+
+    //Lấy nhạc hiện tại
+    public static int getCurrentSound(
+            Context context) {
+
+        return new SessionManagerSound(
+                context)
+                .getCurrentSound();
 
     }
 

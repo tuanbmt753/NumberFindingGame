@@ -15,9 +15,9 @@ public class SessionManagerSound {
 
     private static final String KEY_ENABLE = "enable";
 
-    private SharedPreferences pref;
+    private final SharedPreferences pref;
 
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences.Editor editor;
 
     public SessionManagerSound(Context context) {
 
@@ -29,7 +29,7 @@ public class SessionManagerSound {
 
     }
 
-    // Hiệu ứng hiện tại
+    // Hiệu ứng nút hiện tại
 
     public void setCurrentSound(
             int soundResId) {
@@ -46,7 +46,7 @@ public class SessionManagerSound {
 
         return pref.getInt(
                 KEY_SOUND,
-                R.raw.arcade_game_power_power_sound);
+                R.raw.click_1);
 
     }
 

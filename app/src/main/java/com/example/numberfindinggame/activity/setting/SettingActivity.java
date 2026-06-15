@@ -1,10 +1,8 @@
 package com.example.numberfindinggame.activity.setting;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -13,9 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -23,13 +19,8 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.auth.DangKyActivity;
-import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
@@ -38,17 +29,16 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.MusicType;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
-import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SessionManagerSetting;
+import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.MaKhoiPhuc;
-import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.repository.MaKhoiPhucRepository;
@@ -63,7 +53,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 
 import android.graphics.Color;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,6 +77,8 @@ public class SettingActivity extends AppCompatActivity {
     private SeekBar seekBarBackground, seekBarEffect;
 
     private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo, cardNhacNen1, cardNhacNen2;
+
+    private MaterialCardView cardAmThanhHieuUng3, cardAmThanhHieuUng1, cardAmThanhHieuUng2;
     private NguoiDungRepository repository = new NguoiDungRepository();
 
     private CaiDat caiDat;
@@ -171,6 +162,67 @@ public class SettingActivity extends AppCompatActivity {
 
                 cardNhacNen1.setStrokeWidth(dpToPx(0));
                 cardNhacNen2.setStrokeWidth(dpToPx(1));
+            }
+        });
+
+        if (SoundManager.getCurrentSound(SettingActivity.this) == R.raw.click_3) {
+            cardAmThanhHieuUng3.setStrokeWidth(dpToPx(1));
+            cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
+            cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
+        }
+
+        if (SoundManager.getCurrentSound(SettingActivity.this) == R.raw.click_1) {
+            cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
+            cardAmThanhHieuUng1.setStrokeWidth(dpToPx(1));
+            cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
+        }
+
+        if (SoundManager.getCurrentSound(SettingActivity.this) == R.raw.click_2) {
+            cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
+            cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
+            cardAmThanhHieuUng2.setStrokeWidth(dpToPx(1));
+        }
+
+        cardAmThanhHieuUng1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.changeButtonSound(
+                        SettingActivity.this,
+                        R.raw.click_1);
+                SoundManager.playButton(SettingActivity.this);
+
+                cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
+                cardAmThanhHieuUng1.setStrokeWidth(dpToPx(1));
+                cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
+            }
+        });
+
+        cardAmThanhHieuUng2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.changeButtonSound(
+                        SettingActivity.this,
+                        R.raw.click_2);
+                SoundManager.playButton(SettingActivity.this);
+
+                cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
+                cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
+                cardAmThanhHieuUng2.setStrokeWidth(dpToPx(1));
+
+            }
+        });
+
+        cardAmThanhHieuUng3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.changeButtonSound(
+                        SettingActivity.this,
+                        R.raw.click_3);
+                SoundManager.playButton(SettingActivity.this);
+
+                cardAmThanhHieuUng3.setStrokeWidth(dpToPx(1));
+                cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
+                cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
             }
         });
 
@@ -690,6 +742,10 @@ public class SettingActivity extends AppCompatActivity {
                                 SettingActivity.this,
                                 amThanhNen);
 
+                        SoundManager.setVolume(
+                                SettingActivity.this,
+                                amThanhHieuUng);
+
                         boolean xacThucEmail = caiDat.getXacThucEmail();
                         boolean maKhoiPhuc = caiDat.getMaKhoiPhuc();
 
@@ -903,6 +959,10 @@ public class SettingActivity extends AppCompatActivity {
 
         cardNhacNen1 = findViewById(R.id.cardNhacNen1);
         cardNhacNen2 = findViewById(R.id.cardNhacNen2);
+
+        cardAmThanhHieuUng3 = findViewById(R.id.cardAmThanhHieuUng3);
+        cardAmThanhHieuUng1 = findViewById(R.id.cardAmThanhHieuUng1);
+        cardAmThanhHieuUng2 = findViewById(R.id.cardAmThanhHieuUng2);
 
         imgQR = findViewById(R.id.imgQR);
     }
