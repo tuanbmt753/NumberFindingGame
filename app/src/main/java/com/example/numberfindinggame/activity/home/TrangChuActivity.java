@@ -21,6 +21,7 @@ import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicManager;
 import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.repository.CaiDatRepository;
@@ -53,6 +54,8 @@ public class TrangChuActivity extends AppCompatActivity {
 
     private void getView() {
         MusicManager.play(this);
+        //Khởi tạo nhạc hiệu ứng 1 lần
+        SoundManager.init(this);
         layCaiDat();
 
         //Bật tắt nhạc trong Setting
@@ -190,6 +193,10 @@ public class TrangChuActivity extends AppCompatActivity {
                         MusicManager.setVolume(
                                 TrangChuActivity.this,
                                 caiDat.getAmThanhNen());
+
+                        SoundManager.setVolume(
+                                TrangChuActivity.this,
+                                caiDat.getAmThanhHieuUng());
 
 //                        MusicManager.changeMusic(
 //                                TrangChuActivity.this,
