@@ -40,6 +40,7 @@ import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
+import com.example.numberfindinggame.helper.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SessionManagerSetting;
@@ -644,6 +645,10 @@ public class SettingActivity extends AppCompatActivity {
 
                         int amThanhNen = caiDat.getAmThanhNen();
                         int amThanhHieuUng = caiDat.getAmThanhHieuUng();
+
+                        MusicManager.setVolume(
+                                SettingActivity.this,
+                                amThanhNen);
 
                         boolean xacThucEmail = caiDat.getXacThucEmail();
                         boolean maKhoiPhuc = caiDat.getMaKhoiPhuc();

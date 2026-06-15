@@ -13,13 +13,17 @@ import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
+import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
+import com.example.numberfindinggame.helper.MusicManager;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
+import com.example.numberfindinggame.model.CaiDat;
+import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
@@ -48,6 +52,26 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void getView() {
+        MusicManager.play(this);
+        layCaiDat();
+
+        //Bật tắt nhạc trong Setting
+        /*
+       switchMusic.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+
+            MusicManager.setEnabled(
+                    this,
+                    isChecked);
+
+        });
+        */
+        /*Khi mở Activity:
+
+        switchMusic.setChecked(
+        MusicManager.isEnabled(this));
+         */
+
 
         if (getIntent().hasExtra(IntentKey.TRUE)) {
             String text = getIntent().getStringExtra(IntentKey.TRUE);
@@ -153,6 +177,28 @@ public class TrangChuActivity extends AppCompatActivity {
         cardCaiDat = findViewById(R.id.cardCaiDat);
         cardThoat = findViewById(R.id.cardThoat);
 
+    }
+
+    private void layCaiDat() {
+        CaiDatRepository.layCaiDat(
+                SessionManager.getUserId(this),
+                new CaiDatCallback() {
+                    @Override
+                    public void onSuccess(CaiDat caiDat) {
+                        Log.d("CAIDAT", caiDat.toString());
+
+                        MusicManager.setVolume(
+                                TrangChuActivity.this,
+                                caiDat.getAmThanhNen());
+
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Log.e("CAIDAT", message);
+                    }
+                }
+        );
     }
 
     @Override
