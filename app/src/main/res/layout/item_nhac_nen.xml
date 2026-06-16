@@ -8,103 +8,43 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardNhacNen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        app:cardBackgroundColor="#fff"
 
-        app:cardCornerRadius="0dp"
-        app:cardElevation="12dp"
+        app:cardBackgroundColor="#fff"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
         app:rippleColor="#33000000"
         app:strokeColor="#000000"
-        app:strokeWidth="0.5dp">
+        app:strokeWidth="0dp">
 
         <LinearLayout
+            android:background="@drawable/bg_caidat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
             android:orientation="vertical"
             android:padding="10sp">
 
             <TextView
-                android:id="@+id/txtTenThietBi"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtTenNhacNen"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sono"
-                android:text="Tên thiết bị: tên thiết bị"
-                android:textColor="#000000"
-                android:textSize="17sp" />
+                android:text="Nhạc nền 1"
+                android:textColor="#000"
+                android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/txtMaThietBi"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtGhiChu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/sono"
-                android:text="Mã thiết bị: xxxx 697f933 xxxx"
-                android:textColor="#000000"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/txtNgayDangNhap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:text="Ngày đăng nhập: xxx 22092 xxx"
-                android:textColor="#000000"
-                android:textSize="17sp" />
-
+                android:text="Nhịp điệu mở đầu phim vui tươi, đầu phim năng động"
+                android:textColor="#000"
+                android:textSize="15sp" />
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardDangXuat"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardBackgroundColor="#77BEC4"
-        android:padding="2sp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="12dp"
-        app:rippleColor="#33000000"
-        app:strokeColor="#000000"
-        app:strokeWidth="0.5dp">
-
-        <TextView
-            android:id="@+id/txtNoiDung"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/sono"
-            android:gravity="center"
-            android:text="Đăng xuất"
-            android:textColor="#000"
-            android:textSize="17sp" />
-
-    </com.google.android.material.card.MaterialCardView>
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardXoaThietBi"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardBackgroundColor="#ffffff"
-        android:padding="2sp"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="12dp"
-        app:rippleColor="#33000000"
-        app:strokeColor="#000000"
-        app:strokeWidth="0.5dp">
-
-        <TextView
-            android:id="@+id/txtXoa"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/sono"
-            android:gravity="center"
-            android:text="Xóa thiết bị"
-            android:textColor="#000"
-            android:textSize="17sp" />
-
     </com.google.android.material.card.MaterialCardView>
 
 

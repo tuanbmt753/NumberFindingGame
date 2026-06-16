@@ -1,10 +1,7 @@
 package com.example.numberfindinggame.adapter;
 
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,45 +11,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
-import com.example.numberfindinggame.constant.ActivityType;
-import com.example.numberfindinggame.constant.IntentKey;
-import com.example.numberfindinggame.constant.MusicType;
-import com.example.numberfindinggame.dialog.ConfirmDialog;
-import com.example.numberfindinggame.helper.DeviceHelper;
-import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicManager;
-import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManagerSetting;
+import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.model.NhacHieuUng;
 import com.example.numberfindinggame.model.NhacNen;
-import com.example.numberfindinggame.model.ThietBiDangNhap;
-import com.example.numberfindinggame.repository.NguoiDungRepository;
-import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
-import com.example.numberfindinggame.utils.DateUtils;
-import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
-public class NhacNenAdapter
-        extends ArrayAdapter<NhacNen> {
+public class NhacHieuUngAdapter
+        extends ArrayAdapter<NhacHieuUng> {
 
     private final Context context;
-    private final List<NhacNen> dsNhacNen;
+    private final List<NhacHieuUng> dsNhacHieuUng;
 
-    public NhacNenAdapter(
+    public NhacHieuUngAdapter(
             Context context,
-            List<NhacNen> dsNhacNen
+            List<NhacHieuUng> dsNhacHieuUng
     ) {
         super(
                 context,
-                R.layout.item_nhac_nen,
-                dsNhacNen
+                R.layout.item_am_thanh_hieu_ung,
+                dsNhacHieuUng
         );
 
         this.context = context;
-        this.dsNhacNen = dsNhacNen;
+        this.dsNhacHieuUng = dsNhacHieuUng;
 
     }
 
@@ -68,34 +53,37 @@ public class NhacNenAdapter
         if (convertView == null) {
             convertView = LayoutInflater.from(context)
                     .inflate(
-                            R.layout.item_nhac_nen,
+                            R.layout.item_am_thanh_hieu_ung,
                             parent,
                             false
                     );
         }
+        NhacHieuUng nhacHieuUng = dsNhacHieuUng.get(position);
 
-        TextView txtTenNhacNen = convertView.findViewById(R.id.txtTenNhacNen);
+        TextView txtTenNhacHieuUng = convertView.findViewById(R.id.txtTenNhacHieuUng);
         TextView txtGhiChu = convertView.findViewById(R.id.txtGhiChu);
 
-        MaterialCardView cardNhacNen = convertView.findViewById(R.id.cardNhacNen);
+        MaterialCardView cardNhacHieuUng = convertView.findViewById(R.id.cardNhacHieuUng);
 
-        NhacNen nhacNen = dsNhacNen.get(position);
-        txtTenNhacNen.setText(nhacNen.getTxtTenNhacNen());
-        txtGhiChu.setText(nhacNen.getTxtGhiChu());
+        txtTenNhacHieuUng.setText(nhacHieuUng.getTenHieuUng());
+        txtGhiChu.setText(nhacHieuUng.getGhiChu());
 
-        if (MusicManager.getCurrentMusic(context) == nhacNen.getMaNhacNen()) {
-            cardNhacNen.setStrokeWidth(dpToPx(1));
+        if (SoundManager.getCurrentSound(context) == nhacHieuUng.getMaHieuUng()) {
+            cardNhacHieuUng.setStrokeWidth(dpToPx(1));
         } else {
-            cardNhacNen.setStrokeWidth(dpToPx(0));
+            cardNhacHieuUng.setStrokeWidth(dpToPx(0));
         }
 
-        cardNhacNen.setOnClickListener(new View.OnClickListener() {
+        cardNhacHieuUng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MusicManager.changeMusic(
-                        context,
-                        nhacNen.getMaNhacNen());
 
+                SoundManager.changeButtonSound(
+                        context,
+                        nhacHieuUng.getMaHieuUng());
+                ;
+
+                SoundManager.playButton(context);
                 notifyDataSetChanged();
             }
         });

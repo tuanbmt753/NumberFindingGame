@@ -100,7 +100,7 @@ public class ThietBiDangNhapAdapter
                 dsThietBi.get(position);
 
         txtTenThietBi.setText(
-                "Tên thiết bị: "
+                ""
                         + thietBi.getTenThietBi()
         );
 
@@ -110,7 +110,7 @@ public class ThietBiDangNhapAdapter
         );
 
         txtNgayDangNhap.setText(
-                "Đăng nhập: "
+                ""
                         + DateUtils.format(thietBi.getNgayCapNhatCuoi())
         );
 

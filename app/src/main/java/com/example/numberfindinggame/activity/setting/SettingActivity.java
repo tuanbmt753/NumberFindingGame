@@ -23,11 +23,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.adapter.NhacHieuUngAdapter;
+import com.example.numberfindinggame.adapter.NhacNenAdapter;
 import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.MusicType;
+import com.example.numberfindinggame.constant.SoundType;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -39,6 +42,8 @@ import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.MaKhoiPhuc;
+import com.example.numberfindinggame.model.NhacHieuUng;
+import com.example.numberfindinggame.model.NhacNen;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.repository.MaKhoiPhucRepository;
@@ -65,9 +70,16 @@ import java.util.Random;
 
 public class SettingActivity extends AppCompatActivity {
 
-    private ListView lvThietBiDangNhap;
+    private ListView lvThietBiDangNhap, lvNhacNen, lvNhacHieuUng;
     private ArrayList<ThietBiDangNhap> dsThietBiDangNhap = new ArrayList<>();
     private ThietBiDangNhapAdapter thietBiDangNhapAdapter;
+
+
+    private ArrayList<NhacNen> dsNhacNen = new ArrayList<>();
+    private NhacNenAdapter nhacNenAdapter;
+
+    private ArrayList<NhacHieuUng> dsNhacHieuUng = new ArrayList<>();
+    private NhacHieuUngAdapter nhacHieuUngAdapter;
 
     private ValueEventListener dsThietBiListener;
 
@@ -76,9 +88,8 @@ public class SettingActivity extends AppCompatActivity {
     private TextView txtQuayLai, txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
     private SeekBar seekBarBackground, seekBarEffect;
 
-    private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo, cardNhacNen1, cardNhacNen2;
+    private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo;
 
-    private MaterialCardView cardAmThanhHieuUng3, cardAmThanhHieuUng1, cardAmThanhHieuUng2;
     private NguoiDungRepository repository = new NguoiDungRepository();
 
     private CaiDat caiDat;
@@ -130,101 +141,6 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
 
-        if (MusicManager.getCurrentMusic(SettingActivity.this) == MusicType.DEFAULT) {
-            cardNhacNen1.setStrokeWidth(dpToPx(1));
-            cardNhacNen2.setStrokeWidth(dpToPx(0));
-
-        }
-
-        if (MusicManager.getCurrentMusic(SettingActivity.this) == MusicType.MUSIC_2) {
-            cardNhacNen1.setStrokeWidth(dpToPx(0));
-            cardNhacNen2.setStrokeWidth(dpToPx(1));
-        }
-
-        cardNhacNen1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MusicManager.changeMusic(
-                        SettingActivity.this,
-                        MusicType.DEFAULT);
-
-                cardNhacNen1.setStrokeWidth(dpToPx(1));
-                cardNhacNen2.setStrokeWidth(dpToPx(0));
-            }
-        });
-
-        cardNhacNen2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MusicManager.changeMusic(
-                        SettingActivity.this,
-                        MusicType.MUSIC_2);
-
-                cardNhacNen1.setStrokeWidth(dpToPx(0));
-                cardNhacNen2.setStrokeWidth(dpToPx(1));
-            }
-        });
-
-        if (SoundManager.getCurrentSound(SettingActivity.this) == R.raw.click_3) {
-            cardAmThanhHieuUng3.setStrokeWidth(dpToPx(1));
-            cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
-            cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
-        }
-
-        if (SoundManager.getCurrentSound(SettingActivity.this) == R.raw.click_1) {
-            cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
-            cardAmThanhHieuUng1.setStrokeWidth(dpToPx(1));
-            cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
-        }
-
-        if (SoundManager.getCurrentSound(SettingActivity.this) == R.raw.click_2) {
-            cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
-            cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
-            cardAmThanhHieuUng2.setStrokeWidth(dpToPx(1));
-        }
-
-        cardAmThanhHieuUng1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SoundManager.changeButtonSound(
-                        SettingActivity.this,
-                        R.raw.click_1);
-                SoundManager.playButton(SettingActivity.this);
-
-                cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
-                cardAmThanhHieuUng1.setStrokeWidth(dpToPx(1));
-                cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
-            }
-        });
-
-        cardAmThanhHieuUng2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SoundManager.changeButtonSound(
-                        SettingActivity.this,
-                        R.raw.click_2);
-                SoundManager.playButton(SettingActivity.this);
-
-                cardAmThanhHieuUng3.setStrokeWidth(dpToPx(0));
-                cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
-                cardAmThanhHieuUng2.setStrokeWidth(dpToPx(1));
-
-            }
-        });
-
-        cardAmThanhHieuUng3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SoundManager.changeButtonSound(
-                        SettingActivity.this,
-                        R.raw.click_3);
-                SoundManager.playButton(SettingActivity.this);
-
-                cardAmThanhHieuUng3.setStrokeWidth(dpToPx(1));
-                cardAmThanhHieuUng1.setStrokeWidth(dpToPx(0));
-                cardAmThanhHieuUng2.setStrokeWidth(dpToPx(0));
-            }
-        });
 
 
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
@@ -725,6 +641,38 @@ public class SettingActivity extends AppCompatActivity {
 
         taoCaiDatMatDinh();
         layCaiDat();
+
+        NhacNen nhacNen = new NhacNen(R.raw.nhac_nen, "Nhạc nền 1", "Nhịp điệu mở đầu phim vui tươi, đầu phim năng động");
+        NhacNen nhacNen2 = new NhacNen(R.raw.nhac_nen2, "Nhạc nền 2", "Giai điệu mở đầu ngắn buồn và đẹp, âm thanh nền thanh lịch");
+
+        dsNhacNen.add(nhacNen);
+        dsNhacNen.add(nhacNen2);
+
+
+        nhacNenAdapter = new NhacNenAdapter(SettingActivity.this, dsNhacNen);
+        lvNhacNen.setAdapter(nhacNenAdapter);
+
+        ListViewHelper
+                .setListViewHeightBasedOnChildren(
+                        lvNhacNen
+                );
+
+        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_1, "Nhạc hiệu ứng 1", "Click 1"));
+        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_2, "Nhạc hiệu ứng 2", "Click 2"));
+        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_3, "Nhạc hiệu ứng 3", "Click 3"));
+        nhacHieuUngAdapter = new NhacHieuUngAdapter(SettingActivity.this, dsNhacHieuUng);
+        lvNhacHieuUng.setAdapter(nhacHieuUngAdapter);
+
+        ListViewHelper
+                .setListViewHeightBasedOnChildren(
+                        lvNhacHieuUng
+                );
+
+
+    }
+
+    private void layDanhSachNhacNen() {
+
     }
 
     private void layCaiDat() {
@@ -947,6 +895,9 @@ public class SettingActivity extends AppCompatActivity {
 
     private void setControl() {
         lvThietBiDangNhap = findViewById(R.id.lvThietBiDangNhap);
+        lvNhacNen = findViewById(R.id.lvNhacNen);
+        lvNhacHieuUng = findViewById(R.id.lvNhacHieuUng);
+
         txtQuayLai = findViewById(R.id.txtQuayLai);
         txtXacThucEmailDongMo = findViewById(R.id.txtXacThucEmailDongMo);
         txtMaKhoiPhucDongMo = findViewById(R.id.txtMaKhoiPhucDongMo);
@@ -957,12 +908,6 @@ public class SettingActivity extends AppCompatActivity {
         cardXacThucEmailDongMo = findViewById(R.id.cardXacThucEmailDongMo);
         cardMaKhoiPhucDongMo = findViewById(R.id.cardMaKhoiPhucDongMo);
 
-        cardNhacNen1 = findViewById(R.id.cardNhacNen1);
-        cardNhacNen2 = findViewById(R.id.cardNhacNen2);
-
-        cardAmThanhHieuUng3 = findViewById(R.id.cardAmThanhHieuUng3);
-        cardAmThanhHieuUng1 = findViewById(R.id.cardAmThanhHieuUng1);
-        cardAmThanhHieuUng2 = findViewById(R.id.cardAmThanhHieuUng2);
 
         imgQR = findViewById(R.id.imgQR);
     }
