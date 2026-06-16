@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    android:background="#FFFFFF"
+    android:elevation="4dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="#fff"
+
+        app:cardCornerRadius="0dp"
+        app:cardElevation="12dp"
+        app:rippleColor="#33000000"
+        app:strokeColor="#000000"
+        app:strokeWidth="0.5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:padding="10sp">
+
+            <TextView
+                android:id="@+id/txtTenThietBi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:text="Tên thiết bị: tên thiết bị"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txtMaThietBi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:text="Mã thiết bị: xxxx 697f933 xxxx"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txtNgayDangNhap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:text="Ngày đăng nhập: xxx 22092 xxx"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardDangXuat"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="#77BEC4"
+        android:padding="2sp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="12dp"
+        app:rippleColor="#33000000"
+        app:strokeColor="#000000"
+        app:strokeWidth="0.5dp">
+
+        <TextView
+            android:id="@+id/txtNoiDung"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/sono"
+            android:gravity="center"
+            android:text="Đăng xuất"
+            android:textColor="#000"
+            android:textSize="17sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardXoaThietBi"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardBackgroundColor="#ffffff"
+        android:padding="2sp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="12dp"
+        app:rippleColor="#33000000"
+        app:strokeColor="#000000"
+        app:strokeWidth="0.5dp">
+
+        <TextView
+            android:id="@+id/txtXoa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/sono"
+            android:gravity="center"
+            android:text="Xóa thiết bị"
+            android:textColor="#000"
+            android:textSize="17sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>
