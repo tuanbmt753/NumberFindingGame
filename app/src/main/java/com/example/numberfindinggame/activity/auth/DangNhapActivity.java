@@ -240,6 +240,9 @@ public class DangNhapActivity extends AppCompatActivity {
                                                             ChonXacThucActivity.class
                                                     );
 
+                                                    nguoiDung.setHinhDaiDien(null);
+                                                    nguoiDung.setHinhNen(null);
+
                                                     intent.putExtra(IntentKey.EMAIL, nguoiDung.getEmail());
                                                     intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_NHAP); // nếu cần
                                                     intent.putExtra(
