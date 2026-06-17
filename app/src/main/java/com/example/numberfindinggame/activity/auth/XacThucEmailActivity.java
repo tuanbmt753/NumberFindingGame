@@ -14,18 +14,20 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.SessionManagerSetting;
 import com.example.numberfindinggame.model.Emailjs;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.XacThucEmail;
-import com.example.numberfindinggame.repository.EmailCallback;
-import com.example.numberfindinggame.repository.EmailJsSelectCallback;
+import com.example.numberfindinggame.callback.EmailCallback;
+import com.example.numberfindinggame.callback.EmailJsSelectCallback;
 import com.example.numberfindinggame.repository.EmailjsRepository;
-import com.example.numberfindinggame.repository.FirebaseCallback;
+import com.example.numberfindinggame.callback.FirebaseCallback;
 import com.example.numberfindinggame.repository.XacThucEmailRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;
 import com.example.numberfindinggame.utils.Validator;
@@ -69,7 +71,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
         if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
             String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
 
-            if (activityType.equals(ActivityType.DANG_KY)) {
+            if (activityType.equals(ActivityType.DANG_KY) || activityType.equals((ActivityType.DANG_XUAT_TU_XA)) || activityType.equals((ActivityType.DANG_NHAP))) {
 
                 showChucNangOTP();
                 String email = getIntent().getStringExtra(IntentKey.EMAIL);
@@ -113,6 +115,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
                     String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+
                     if (activityType.toString().trim().equals(ActivityType.DOI_MAT_KHAU)) {
 
                         Intent intent = new Intent(
@@ -130,6 +133,41 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                 XacThucEmailActivity.this,
                                 DangKyActivity.class
                         );
+
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    if (activityType.toString().trim().equals(ActivityType.DANG_XUAT_TU_XA)) {
+
+                        Intent intent = new Intent(
+                                XacThucEmailActivity.this,
+                                SettingActivity.class
+                        );
+
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    if (activityType.toString().trim().equals(ActivityType.DANG_NHAP)) {
+
+                        Intent intent = new Intent(
+                                XacThucEmailActivity.this,
+                                ChonXacThucActivity.class
+                        );
+
+                        NguoiDung nguoiDung =
+                                (NguoiDung) getIntent().getSerializableExtra(
+                                        IntentKey.NGUOI_DUNG
+                                );
+                        intent.putExtra(IntentKey.EMAIL, nguoiDung.getEmail());
+                        intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_NHAP); // nếu cần
+                        intent.putExtra(
+                                IntentKey.NGUOI_DUNG,
+                                nguoiDung
+                        );
+
+
 
                         startActivity(intent);
                         finish();
@@ -457,6 +495,46 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                                         DangKyActivity.class
                                                 );
 
+                                                NguoiDung nguoiDung =
+                                                        (NguoiDung) getIntent().getSerializableExtra(
+                                                                IntentKey.NGUOI_DUNG
+                                                        );
+                                                intent.putExtra(
+                                                        IntentKey.NGUOI_DUNG,
+                                                        nguoiDung
+                                                );
+
+                                                startActivity(intent);
+                                                finish();
+                                            }
+
+
+                                            if (activityType.toString().trim().equals(ActivityType.DANG_XUAT_TU_XA)) {
+                                                Intent intent = new Intent(
+                                                        XacThucEmailActivity.this,
+                                                        SettingActivity.class
+                                                );
+
+                                                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
+                                                intent.putExtra(IntentKey.TEXT, "Xác thực email thành công!");
+                                                SessionManagerSetting.saveSetting(
+                                                        XacThucEmailActivity.this,
+                                                        "XacThuc"
+                                                );
+
+                                                startActivity(intent);
+                                                finish();
+                                            }
+
+
+                                            if (activityType.toString().trim().equals(ActivityType.DANG_NHAP)) {
+                                                Intent intent = new Intent(
+                                                        XacThucEmailActivity.this,
+                                                        DangNhapActivity.class
+                                                );
+
+                                                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_NHAP);
+                                                intent.putExtra(IntentKey.TEXT, "Xác thực email thành công!");
                                                 NguoiDung nguoiDung =
                                                         (NguoiDung) getIntent().getSerializableExtra(
                                                                 IntentKey.NGUOI_DUNG

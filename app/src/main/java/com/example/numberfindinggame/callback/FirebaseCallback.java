@@ -1,4 +1,4 @@
-package com.example.numberfindinggame.repository;
+package com.example.numberfindinggame.callback;
 
 public interface FirebaseCallback {
     void onSuccess();
