@@ -19,13 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
+import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.repository.OnLoginListener;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
@@ -107,6 +110,7 @@ public class DangNhapActivity extends AppCompatActivity {
             );
         }
 
+
         //SessionManager.logout(this);
 
         if (!SessionManager.getUserId(this).isEmpty()) {
@@ -122,6 +126,39 @@ public class DangNhapActivity extends AppCompatActivity {
 //                    DangNhapActivity.this,
 //                    "Đăng nhập thành công"
 //            );
+        }
+
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+
+            if (activityType.equals(ActivityType.DANG_NHAP)) {
+                String text = getIntent().getStringExtra(IntentKey.TEXT);
+
+                MessageHelper.success(
+                        DangNhapActivity.this,
+                        text
+                );
+
+                NguoiDung nguoiDung =
+                        (NguoiDung) getIntent().getSerializableExtra(
+                                IntentKey.NGUOI_DUNG
+                        );
+
+                nguoiDungRepository.capNhatDangNhapCuoi(
+                        nguoiDung.getMaNguoiDung()
+                );
+
+                SessionManager.saveUser(
+                        DangNhapActivity.this,
+                        nguoiDung.getMaNguoiDung()
+                );
+
+                //Lưu thiết bị đăng nhập
+                luuThietBi(nguoiDung);
+
+
+            }
+
         }
 
         cardDangKy.setOnClickListener(v -> {
@@ -190,23 +227,59 @@ public class DangNhapActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(NguoiDung nguoiDung) {
 
+                                CaiDatRepository.layCaiDat(
+                                        nguoiDung.getMaNguoiDung(),
+                                        new CaiDatCallback() {
+                                            @Override
+                                            public void onSuccess(CaiDat caiDat) {
+                                                if (caiDat.getXacThucEmail() == true) {
 
-                                nguoiDungRepository.capNhatDangNhapCuoi(
-                                        nguoiDung.getMaNguoiDung()
+                                                    // Chuyển màn hình
+                                                    Intent intent = new Intent(
+                                                            DangNhapActivity.this,
+                                                            ChonXacThucActivity.class
+                                                    );
+
+                                                    nguoiDung.setHinhDaiDien(null);
+                                                    nguoiDung.setHinhNen(null);
+
+                                                    intent.putExtra(IntentKey.EMAIL, nguoiDung.getEmail());
+                                                    intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_NHAP); // nếu cần
+                                                    intent.putExtra(
+                                                            IntentKey.NGUOI_DUNG,
+                                                            nguoiDung
+                                                    );
+
+                                                    startActivity(intent);
+                                                    finish();
+
+
+                                                    loading.dismiss();
+
+                                                } else {
+                                                    nguoiDungRepository.capNhatDangNhapCuoi(
+                                                            nguoiDung.getMaNguoiDung()
+                                                    );
+
+                                                    SessionManager.saveUser(
+                                                            DangNhapActivity.this,
+                                                            nguoiDung.getMaNguoiDung()
+                                                    );
+
+                                                    //Lưu thiết bị đăng nhập
+                                                    luuThietBi(nguoiDung);
+
+                                                    loading.dismiss();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(String message) {
+
+                                                Log.e("CAIDAT", message);
+                                            }
+                                        }
                                 );
-
-                                SessionManager.saveUser(
-                                        DangNhapActivity.this,
-                                        nguoiDung.getMaNguoiDung()
-                                );
-
-                                //Lưu thiết bị đăng nhập
-                                luuThietBi(nguoiDung);
-
-
-                                loading.dismiss();
-
-
                             }
 
                             @Override
@@ -353,6 +426,10 @@ public class DangNhapActivity extends AppCompatActivity {
                                     DangNhapActivity.this,
                                     TrangChuActivity.class
                             );
+                            if (getIntent().hasExtra(IntentKey.MA_KHOI_PHUC)) {
+                                intent.putExtra(IntentKey.MA_KHOI_PHUC, IntentKey.MA_KHOI_PHUC); // nếu cần
+                            }
+
                             intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
                             startActivity(intent);
                             finish();
@@ -370,6 +447,9 @@ public class DangNhapActivity extends AppCompatActivity {
                                     DangNhapActivity.this,
                                     TrangChuActivity.class
                             );
+                            if (getIntent().hasExtra(IntentKey.MA_KHOI_PHUC)) {
+                                intent.putExtra(IntentKey.MA_KHOI_PHUC, IntentKey.MA_KHOI_PHUC); // nếu cần
+                            }
 
                             intent.putExtra(IntentKey.TRUE, "Đăng nhập thành công!"); // nếu cần
                             startActivity(intent);
@@ -437,4 +517,5 @@ public class DangNhapActivity extends AppCompatActivity {
 
         return isValid;
     }
+
 }

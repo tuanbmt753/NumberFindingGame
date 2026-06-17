@@ -10,5 +10,6 @@ public class IntentKey {
     public static final String FALSE = "FALSE";
 
     public static final String NGUOI_DUNG = "NGUOI_DUNG";
+    public static final String MA_KHOI_PHUC = "MA_KHOI_PHUC";
 
 }

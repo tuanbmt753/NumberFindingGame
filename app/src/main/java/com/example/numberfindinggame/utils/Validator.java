@@ -114,4 +114,17 @@ public class Validator {
 
         return null;
     }
+
+    public static String validateMaKhoiPhuc(String maKhoiPhuc) {
+
+        if (maKhoiPhuc.isEmpty()) {
+            return "Vui lòng nhập mã khôi phục.";
+        }
+
+        if (!maKhoiPhuc.matches("\\d{6}")) {
+            return "Mã khôi phục phải gồm 6 chữ số.";
+        }
+
+        return null;
+    }
 }

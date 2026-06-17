@@ -209,4 +209,46 @@ public class NguoiDungRepository {
                 });
     }
 
+    public void layEmailTheoMaNguoiDung(
+            String maNguoiDung,
+            OnGetEmailListener listener
+    ) {
+
+        FirebaseManager.nguoiDung()
+                .child(maNguoiDung)
+                .child("email")
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(
+                                    @NonNull DataSnapshot snapshot
+                            ) {
+
+                                String email =
+                                        snapshot.getValue(String.class);
+
+                                listener.onSuccess(email);
+                            }
+
+                            @Override
+                            public void onCancelled(
+                                    @NonNull DatabaseError error
+                            ) {
+
+                                listener.onFailed(
+                                        error.getMessage()
+                                );
+                            }
+                        }
+                );
+    }
+
+    public interface OnGetEmailListener {
+
+        void onSuccess(String email);
+
+        void onFailed(String message);
+    }
+
 }
