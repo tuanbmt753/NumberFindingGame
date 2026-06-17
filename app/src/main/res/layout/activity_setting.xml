@@ -218,6 +218,32 @@
                     android:divider="@android:color/transparent"
                     android:dividerHeight="10dp"
                     android:nestedScrollingEnabled="true" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardThemNhacNen"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="5dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:background="@drawable/bg_caidat"
+                        android:padding="3sp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sono"
+                        android:text="Thêm nhạc nền"
+                        android:textColor="#000"
+                        android:textSize="18sp" />
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

@@ -29,8 +29,6 @@ import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
-import com.example.numberfindinggame.constant.MusicType;
-import com.example.numberfindinggame.constant.SoundType;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -65,6 +63,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -96,6 +95,8 @@ public class SettingActivity extends AppCompatActivity {
 
     private ImageView imgQR;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +112,7 @@ public class SettingActivity extends AppCompatActivity {
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
         khoiTao();
+
 
         String setting = SessionManagerSetting.getSetting(SettingActivity.this);
         if (setting != null && !setting.isEmpty()) {
@@ -159,6 +161,7 @@ public class SettingActivity extends AppCompatActivity {
         cardMaKhoiPhucDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SoundManager.playButton(SettingActivity.this);
                 String setting = SessionManagerSetting.getSetting(SettingActivity.this);
                 if (setting != null && !setting.isEmpty()) {
                     luuCaiDat(0, 1, 0, 0);
@@ -183,14 +186,14 @@ public class SettingActivity extends AppCompatActivity {
                                                         Intent intent = new Intent(SettingActivity.this, XacThucEmailActivity.class);
                                                         intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
                                                         intent.putExtra(IntentKey.EMAIL, email);
-
+                                                        SoundManager.playButton(SettingActivity.this);
                                                         startActivity(intent);
                                                         finish();
                                                     }
 
                                                     @Override
                                                     public void onNo() {
-
+                                                        SoundManager.playButton(SettingActivity.this);
                                                     }
                                                 }
                                         ).show();
@@ -357,9 +360,7 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    private int dpToPx(int dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density);
-    }
+
 
     private void luuAnh(Bitmap bitmap) {
 
@@ -643,14 +644,60 @@ public class SettingActivity extends AppCompatActivity {
         taoCaiDatMatDinh();
         layCaiDat();
 
-        NhacNen nhacNen = new NhacNen(R.raw.nhac_nen, "Nhạc nền 1", "Nhịp điệu mở đầu phim vui tươi, đầu phim năng động");
-        NhacNen nhacNen2 = new NhacNen(R.raw.nhac_nen2, "Nhạc nền 2", "Giai điệu mở đầu ngắn buồn và đẹp, âm thanh nền thanh lịch");
-        NhacNen nhacNen3 = new NhacNen(R.raw.nhac_nen3, "Nhạc nền 3", "Dòng điện chạy qua mạch ngắn âm thanh trò chơi tương tác");
 
-        dsNhacNen.add(nhacNen);
-        dsNhacNen.add(nhacNen2);
-        dsNhacNen.add(nhacNen3);
+        Field[] fields = R.raw.class.getFields();
 
+        int sttNhacNen = 1;
+        int sttHieuUng = 1;
+
+        for (Field field : fields) {
+
+            String tenFile = field.getName();
+
+            if (tenFile.startsWith("nhac_nen")) {
+
+                try {
+
+                    int resId = field.getInt(null);
+
+                    dsNhacNen.add(
+                            new NhacNen(
+                                    resId,
+                                    "Nhạc nền " + sttNhacNen,
+                                    "Tên file: " + tenFile + ".mp3"
+                            )
+                    );
+
+                    sttNhacNen++;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (tenFile.startsWith("click")) {
+
+                try {
+
+                    int resId = field.getInt(null);
+
+                    dsNhacHieuUng.add(
+                            new NhacHieuUng(
+                                    resId,
+                                    "Nhạc hiệu ứng " + sttHieuUng,
+                                    "Tên file: " + tenFile + ".mp3"
+                            )
+                    );
+
+                    sttHieuUng++;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
 
         nhacNenAdapter = new NhacNenAdapter(SettingActivity.this, dsNhacNen);
         lvNhacNen.setAdapter(nhacNenAdapter);
@@ -660,10 +707,10 @@ public class SettingActivity extends AppCompatActivity {
                         lvNhacNen
                 );
 
-        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_1, "Nhạc hiệu ứng 1", "Click 1"));
-        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_2, "Nhạc hiệu ứng 2", "Click 2"));
-        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_3, "Nhạc hiệu ứng 3", "Click 3"));
-        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_4, "Nhạc hiệu ứng 4", "Click 4"));
+//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_1, "Nhạc hiệu ứng 1", "Click 1"));
+//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_2, "Nhạc hiệu ứng 2", "Click 2"));
+//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_3, "Nhạc hiệu ứng 3", "Click 3"));
+//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_4, "Nhạc hiệu ứng 4", "Click 4"));
 
         nhacHieuUngAdapter = new NhacHieuUngAdapter(SettingActivity.this, dsNhacHieuUng);
         lvNhacHieuUng.setAdapter(nhacHieuUngAdapter);
@@ -676,9 +723,6 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    private void layDanhSachNhacNen() {
-
-    }
 
     private void layCaiDat() {
         CaiDatRepository.layCaiDat(
@@ -912,7 +956,6 @@ public class SettingActivity extends AppCompatActivity {
 
         cardXacThucEmailDongMo = findViewById(R.id.cardXacThucEmailDongMo);
         cardMaKhoiPhucDongMo = findViewById(R.id.cardMaKhoiPhucDongMo);
-
 
         imgQR = findViewById(R.id.imgQR);
     }
