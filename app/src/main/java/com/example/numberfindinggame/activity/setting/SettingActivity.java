@@ -142,7 +142,6 @@ public class SettingActivity extends AppCompatActivity {
         }
 
 
-
         txtQuayLai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +149,7 @@ public class SettingActivity extends AppCompatActivity {
                         SettingActivity.this,
                         TrangChuActivity.class
                 );
+                SoundManager.playButton(SettingActivity.this);
                 startActivity(intent);
                 finish();
 
@@ -273,7 +273,7 @@ public class SettingActivity extends AppCompatActivity {
         cardXacThucEmailDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SoundManager.playButton(SettingActivity.this);
                 String setting = SessionManagerSetting.getSetting(SettingActivity.this);
                 if (setting != null && !setting.isEmpty()) {
                     luuCaiDat(1, 0, 0, 0);
@@ -287,6 +287,7 @@ public class SettingActivity extends AppCompatActivity {
                                 public void onSuccess(String email) {
 
                                     if (email != null) {
+
                                         new ConfirmDialog(
                                                 SettingActivity.this,
                                                 "Xác nhận",
@@ -298,14 +299,14 @@ public class SettingActivity extends AppCompatActivity {
                                                         Intent intent = new Intent(SettingActivity.this, XacThucEmailActivity.class);
                                                         intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
                                                         intent.putExtra(IntentKey.EMAIL, email);
-
+                                                        SoundManager.playButton(SettingActivity.this);
                                                         startActivity(intent);
                                                         finish();
                                                     }
 
                                                     @Override
                                                     public void onNo() {
-
+                                                        SoundManager.playButton(SettingActivity.this);
                                                     }
                                                 }
                                         ).show();
@@ -644,9 +645,11 @@ public class SettingActivity extends AppCompatActivity {
 
         NhacNen nhacNen = new NhacNen(R.raw.nhac_nen, "Nhạc nền 1", "Nhịp điệu mở đầu phim vui tươi, đầu phim năng động");
         NhacNen nhacNen2 = new NhacNen(R.raw.nhac_nen2, "Nhạc nền 2", "Giai điệu mở đầu ngắn buồn và đẹp, âm thanh nền thanh lịch");
+        NhacNen nhacNen3 = new NhacNen(R.raw.nhac_nen3, "Nhạc nền 3", "Dòng điện chạy qua mạch ngắn âm thanh trò chơi tương tác");
 
         dsNhacNen.add(nhacNen);
         dsNhacNen.add(nhacNen2);
+        dsNhacNen.add(nhacNen3);
 
 
         nhacNenAdapter = new NhacNenAdapter(SettingActivity.this, dsNhacNen);
@@ -660,6 +663,8 @@ public class SettingActivity extends AppCompatActivity {
         dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_1, "Nhạc hiệu ứng 1", "Click 1"));
         dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_2, "Nhạc hiệu ứng 2", "Click 2"));
         dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_3, "Nhạc hiệu ứng 3", "Click 3"));
+        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_4, "Nhạc hiệu ứng 4", "Click 4"));
+
         nhacHieuUngAdapter = new NhacHieuUngAdapter(SettingActivity.this, dsNhacHieuUng);
         lvNhacHieuUng.setAdapter(nhacHieuUngAdapter);
 

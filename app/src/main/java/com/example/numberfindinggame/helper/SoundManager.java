@@ -17,6 +17,7 @@ public class SoundManager {
     private static int click2;
 
     private static int click3;
+    private static int click4;
 
     private static int win;
 
@@ -65,6 +66,12 @@ public class SoundManager {
                 soundPool.load(
                         context,
                         R.raw.click_3,
+                        1);
+
+        click4 =
+                soundPool.load(
+                        context,
+                        R.raw.click_4,
                         1);
 
         win =
@@ -121,6 +128,11 @@ public class SoundManager {
         } else if (soundResId == R.raw.click_3) {
 
             currentButtonSound = click3;
+
+
+        } else if (soundResId == R.raw.click_4) {
+
+            currentButtonSound = click4;
 
         } else {
 

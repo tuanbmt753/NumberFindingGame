@@ -9,4 +9,7 @@ public class SoundType {
             R.raw.click_2;
     public static final int CLICK_3 =
             R.raw.click_3;
+
+    public static final int CLICK_4 =
+            R.raw.click_4;
 }
