@@ -17,6 +17,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,6 +34,7 @@ import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
+import com.example.numberfindinggame.helper.MusicFileHelper;
 import com.example.numberfindinggame.helper.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
@@ -65,6 +68,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SettingActivity extends AppCompatActivity {
@@ -87,7 +91,7 @@ public class SettingActivity extends AppCompatActivity {
     private TextView txtQuayLai, txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
     private SeekBar seekBarBackground, seekBarEffect;
 
-    private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo;
+    private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo, cardThemNhacNen;
 
     private NguoiDungRepository repository = new NguoiDungRepository();
 
@@ -95,7 +99,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private ImageView imgQR;
 
-
+    private ActivityResultLauncher<Intent> pickMp3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +117,35 @@ public class SettingActivity extends AppCompatActivity {
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
         khoiTao();
 
+        pickMp3 = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+
+                    if (result.getResultCode() == RESULT_OK
+                            &&
+                            result.getData() != null) {
+
+                        Uri uri =
+                                result.getData()
+                                        .getData();
+
+                        boolean success =
+                                MusicFileHelper
+                                        .saveMusic(
+                                                SettingActivity.this,
+                                                uri
+                                        );
+
+                        if (success) {
+                            MessageHelper.success(SettingActivity.this, "Thêm nhạc thành công");
+                            loadLaiNhacNen();
+                        } else {
+                            MessageHelper.info(SettingActivity.this, "Chỉ hỗ trợ file mp3");
+                        }
+
+                    }
+
+                });
 
         String setting = SessionManagerSetting.getSetting(SettingActivity.this);
         if (setting != null && !setting.isEmpty()) {
@@ -358,8 +391,29 @@ public class SettingActivity extends AppCompatActivity {
             ).show();
         });
 
-    }
+        cardThemNhacNen.setOnClickListener(v -> {
 
+            SoundManager.playButton(
+                    SettingActivity.this
+            );
+
+            Intent intent =
+                    new Intent(
+                            Intent.ACTION_OPEN_DOCUMENT
+                    );
+
+            intent.addCategory(
+                    Intent.CATEGORY_OPENABLE
+            );
+
+            intent.setType("audio/*");
+
+            pickMp3.launch(intent);
+
+
+        });
+
+    }
 
 
     private void luuAnh(Bitmap bitmap) {
@@ -699,6 +753,19 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+        List<File> list =
+                MusicFileHelper.getAllMusic(this);
+
+        for (File file : list) {
+
+            Log.e(
+                    "MUSIC",
+                    file.getName()
+            );
+            dsNhacNen.add(new NhacNen(-1, file.getName(), file.getPath()));
+
+        }
+
         nhacNenAdapter = new NhacNenAdapter(SettingActivity.this, dsNhacNen);
         lvNhacNen.setAdapter(nhacNenAdapter);
 
@@ -706,11 +773,6 @@ public class SettingActivity extends AppCompatActivity {
                 .setListViewHeightBasedOnChildren(
                         lvNhacNen
                 );
-
-//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_1, "Nhạc hiệu ứng 1", "Click 1"));
-//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_2, "Nhạc hiệu ứng 2", "Click 2"));
-//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_3, "Nhạc hiệu ứng 3", "Click 3"));
-//        dsNhacHieuUng.add(new NhacHieuUng(SoundType.CLICK_4, "Nhạc hiệu ứng 4", "Click 4"));
 
         nhacHieuUngAdapter = new NhacHieuUngAdapter(SettingActivity.this, dsNhacHieuUng);
         lvNhacHieuUng.setAdapter(nhacHieuUngAdapter);
@@ -720,6 +782,103 @@ public class SettingActivity extends AppCompatActivity {
                         lvNhacHieuUng
                 );
 
+
+    }
+
+    private void loadLaiNhacNen() {
+
+        dsNhacNen.clear();
+
+        Field[] fields =
+                R.raw.class.getFields();
+
+        int stt = 1;
+
+        for (Field field : fields) {
+
+            String tenFile =
+                    field.getName();
+
+            if (tenFile.startsWith("nhac_nen")) {
+
+                try {
+
+                    int resId =
+                            field.getInt(null);
+
+                    dsNhacNen.add(
+
+                            new NhacNen(
+
+                                    resId,
+
+                                    tenFile
+                                            + ".mp3",
+
+                                    tenFile
+                                            + ".mp3"
+
+                            )
+
+                    );
+
+                    stt++;
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
+
+            }
+
+        }
+
+
+        List<File> files =
+                MusicFileHelper
+                        .getAllMusic(this);
+
+
+        Log.e(
+                "MUSIC",
+                "Số file = "
+                        + files.size()
+        );
+
+
+        for (File file : files) {
+
+            Log.e(
+                    "MUSIC",
+                    file.getAbsolutePath()
+            );
+
+
+            dsNhacNen.add(
+
+                    new NhacNen(
+
+                            -1,
+
+                            file.getName(),
+
+                            file.getAbsolutePath()
+
+                    )
+
+            );
+
+        }
+
+
+        nhacNenAdapter.notifyDataSetChanged();
+
+
+        ListViewHelper
+                .setListViewHeightBasedOnChildren(
+                        lvNhacNen
+                );
 
     }
 
@@ -956,6 +1115,8 @@ public class SettingActivity extends AppCompatActivity {
 
         cardXacThucEmailDongMo = findViewById(R.id.cardXacThucEmailDongMo);
         cardMaKhoiPhucDongMo = findViewById(R.id.cardMaKhoiPhucDongMo);
+
+        cardThemNhacNen = findViewById(R.id.cardThemNhacNen);
 
         imgQR = findViewById(R.id.imgQR);
     }

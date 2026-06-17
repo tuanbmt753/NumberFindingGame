@@ -83,18 +83,61 @@ public class NhacNenAdapter
         txtTenNhacNen.setText(nhacNen.getTxtTenNhacNen());
         txtGhiChu.setText(nhacNen.getTxtGhiChu());
 
-        if (MusicManager.getCurrentMusic(context) == nhacNen.getMaNhacNen()) {
-            cardNhacNen.setStrokeWidth(dpToPx(1));
+        String currentMusicPath =
+                MusicManager.getCurrentMusicPath(context);
+
+        if (currentMusicPath == null
+                || currentMusicPath.isEmpty()) {
+
+            // Nhạc trong R.raw
+
+            if (MusicManager.getCurrentMusic(context)
+                    == nhacNen.getMaNhacNen()) {
+
+                cardNhacNen.setStrokeWidth(
+                        dpToPx(1));
+
+            } else {
+
+                cardNhacNen.setStrokeWidth(
+                        dpToPx(0));
+
+            }
+
         } else {
-            cardNhacNen.setStrokeWidth(dpToPx(0));
+
+            // Nhạc ngoài
+
+            if (currentMusicPath.equals(
+                    nhacNen.getTxtGhiChu())) {
+
+                cardNhacNen.setStrokeWidth(
+                        dpToPx(1));
+
+            } else {
+
+                cardNhacNen.setStrokeWidth(
+                        dpToPx(0));
+
+            }
+
         }
+        txtGhiChu.setVisibility(View.GONE);
 
         cardNhacNen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MusicManager.changeMusic(
-                        context,
-                        nhacNen.getMaNhacNen());
+
+                if (nhacNen.getMaNhacNen() > 0) {
+                    MusicManager.changeMusic(
+                            context,
+                            nhacNen.getMaNhacNen());
+                } else {
+                    MusicManager.changeMusic(
+                            context,
+                            nhacNen.getTxtGhiChu());
+                }
+
 
                 notifyDataSetChanged();
             }

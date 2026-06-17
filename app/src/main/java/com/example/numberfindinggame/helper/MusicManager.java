@@ -2,58 +2,148 @@ package com.example.numberfindinggame.helper;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-
-import com.example.numberfindinggame.R;
+import android.text.TextUtils;
 
 public class MusicManager {
 
     private static MediaPlayer mediaPlayer;
 
-    // 0f -> tắt tiếng
-    // 1f -> âm lượng tối đa
     private static float volume = 1f;
 
-    // Nhạc hiện tại
 
-
-    public static void play(Context context) {
+    public static void play(
+            Context context) {
 
         SessionManagerMusic session =
-                new SessionManagerMusic(context);
+                new SessionManagerMusic(
+                        context);
 
         if (!session.isMusicEnabled()) {
 
             return;
+
         }
 
+
         volume =
-                session.getMusicVolume() / 100f;
+                session.getMusicVolume()
+                        / 100f;
+
 
         if (mediaPlayer == null) {
 
+            String musicPath =
+                    session.getCurrentMusicPath();
+
+
+            // phát file ngoài
+            if (!TextUtils.isEmpty(
+                    musicPath)) {
+
+                playFromPath(
+                        context,
+                        musicPath);
+
+                return;
+
+            }
+
+
+            // phát file R.raw
             int currentMusicResId =
                     session.getCurrentMusic();
+
 
             mediaPlayer =
                     MediaPlayer.create(
                             context.getApplicationContext(),
-                            currentMusicResId);
+
+                            currentMusicResId
+
+                    );
+
 
             if (mediaPlayer == null) {
 
                 return;
+
             }
 
-            mediaPlayer.setLooping(true);
+
+            mediaPlayer.setLooping(
+                    true);
 
             mediaPlayer.setVolume(
                     volume,
                     volume);
+
         }
+
 
         if (!mediaPlayer.isPlaying()) {
 
             mediaPlayer.start();
+
+        }
+
+    }
+
+
+    public static void playFromPath(
+            Context context,
+            String musicPath) {
+
+        SessionManagerMusic session =
+                new SessionManagerMusic(
+                        context);
+
+        if (!session.isMusicEnabled()) {
+
+            return;
+
+        }
+
+
+        try {
+
+            volume =
+                    session
+                            .getMusicVolume()
+                            / 100f;
+
+
+            stop();
+
+
+            mediaPlayer =
+                    new MediaPlayer();
+
+
+            mediaPlayer.setDataSource(
+                    musicPath);
+
+
+            mediaPlayer.prepare();
+
+
+            mediaPlayer.setLooping(
+                    true);
+
+
+            mediaPlayer.setVolume(
+                    volume,
+                    volume);
+
+
+            mediaPlayer.start();
+
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
         }
 
     }
@@ -61,10 +151,12 @@ public class MusicManager {
 
     public static void pause() {
 
-        if (mediaPlayer != null &&
+        if (mediaPlayer != null
+                &&
                 mediaPlayer.isPlaying()) {
 
             mediaPlayer.pause();
+
         }
 
     }
@@ -74,30 +166,41 @@ public class MusicManager {
             Context context) {
 
         SessionManagerMusic session =
-                new SessionManagerMusic(context);
+                new SessionManagerMusic(
+                        context);
+
 
         if (!session.isMusicEnabled()) {
 
             return;
+
         }
 
+
         volume =
-                session.getMusicVolume() / 100f;
+                session
+                        .getMusicVolume()
+                        / 100f;
+
 
         if (mediaPlayer == null) {
 
             play(context);
 
             return;
+
         }
+
 
         mediaPlayer.setVolume(
                 volume,
                 volume);
 
+
         if (!mediaPlayer.isPlaying()) {
 
             mediaPlayer.start();
+
         }
 
     }
@@ -112,17 +215,22 @@ public class MusicManager {
                 if (mediaPlayer.isPlaying()) {
 
                     mediaPlayer.stop();
+
                 }
 
-            } catch (Exception e) {
+            }
+
+            catch (Exception e) {
 
                 e.printStackTrace();
 
             }
 
+
             mediaPlayer.release();
 
             mediaPlayer = null;
+
         }
 
     }
@@ -131,7 +239,10 @@ public class MusicManager {
     public static boolean isPlaying() {
 
         return mediaPlayer != null
-                && mediaPlayer.isPlaying();
+
+                &&
+
+                mediaPlayer.isPlaying();
 
     }
 
@@ -141,15 +252,21 @@ public class MusicManager {
             boolean enabled) {
 
         SessionManagerMusic session =
-                new SessionManagerMusic(context);
+                new SessionManagerMusic(
+                        context);
 
-        session.setMusicEnabled(enabled);
+
+        session.setMusicEnabled(
+                enabled);
+
 
         if (enabled) {
 
             play(context);
 
-        } else {
+        }
+
+        else {
 
             pause();
 
@@ -161,10 +278,10 @@ public class MusicManager {
     public static boolean isEnabled(
             Context context) {
 
-        SessionManagerMusic session =
-                new SessionManagerMusic(context);
+        return new SessionManagerMusic(
+                context)
 
-        return session.isMusicEnabled();
+                .isMusicEnabled();
 
     }
 
@@ -176,25 +293,36 @@ public class MusicManager {
         if (percent < 0) {
 
             percent = 0;
+
         }
+
 
         if (percent > 100) {
 
             percent = 100;
+
         }
 
+
         SessionManagerMusic session =
-                new SessionManagerMusic(context);
+                new SessionManagerMusic(
+                        context);
 
-        session.setMusicVolume(percent);
 
-        volume = percent / 100f;
+        session.setMusicVolume(
+                percent);
+
+
+        volume =
+                percent / 100f;
+
 
         if (mediaPlayer != null) {
 
             mediaPlayer.setVolume(
                     volume,
                     volume);
+
         }
 
     }
@@ -203,60 +331,79 @@ public class MusicManager {
     public static int getVolume(
             Context context) {
 
-        SessionManagerMusic session =
-                new SessionManagerMusic(context);
+        return new SessionManagerMusic(
+                context)
 
-        return session.getMusicVolume();
+                .getMusicVolume();
 
     }
 
 
+    // đổi nhạc R.raw
     public static void changeMusic(
             Context context,
             int musicResId) {
 
         SessionManagerMusic session =
-                new SessionManagerMusic(context);
+                new SessionManagerMusic(
+                        context);
 
-        int currentMusicResId =
-                session.getCurrentMusic();
-
-        if (currentMusicResId
-                == musicResId) {
-
-            return;
-        }
 
         session.setCurrentMusic(
                 musicResId);
 
+
+        session.setCurrentMusicPath(
+                "");
+
         stop();
+
 
         play(context);
 
     }
 
 
-    //Lấy nhạc hiện tại
+    // đổi nhạc file ngoài
+    public static void changeMusic(
+            Context context,
+            String musicPath) {
+
+        SessionManagerMusic session =
+                new SessionManagerMusic(
+                        context);
+
+
+        session.setCurrentMusicPath(
+                musicPath);
+
+
+        stop();
+
+
+        play(context);
+
+    }
+
+
     public static int getCurrentMusic(
             Context context) {
 
         return new SessionManagerMusic(
                 context)
+
                 .getCurrentMusic();
 
     }
 
-    //Đổi nhạc mà không phát ngay
-    public static void setCurrentMusic(
-            Context context,
-            int musicResId) {
 
-        SessionManagerMusic session =
-                new SessionManagerMusic(context);
+    public static String getCurrentMusicPath(
+            Context context) {
 
-        session.setCurrentMusic(
-                musicResId);
+        return new SessionManagerMusic(
+                context)
+
+                .getCurrentMusicPath();
 
     }
 
