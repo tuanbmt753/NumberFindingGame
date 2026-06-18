@@ -12,4 +12,7 @@ public class IntentKey {
     public static final String NGUOI_DUNG = "NGUOI_DUNG";
     public static final String MA_KHOI_PHUC = "MA_KHOI_PHUC";
 
+    public static final String ANH_DAI_DIEN = "ANH_DAI_DIEN";
+    public static final String ANH_NEN = "ANH_NEN";
+
 }

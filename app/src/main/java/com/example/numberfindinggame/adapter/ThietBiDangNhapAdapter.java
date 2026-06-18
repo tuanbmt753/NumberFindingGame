@@ -26,6 +26,7 @@ import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SessionManagerSetting;
+import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.example.numberfindinggame.model.XacThucEmail;
@@ -166,6 +167,7 @@ public class ThietBiDangNhapAdapter
             public void onClick(View view) {
 
                 Activity activity = (Activity) context;
+                SoundManager.playButton(context);
 
                 if (!NetworkHelper.isConnected(context)) {
 
@@ -188,6 +190,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onYes() {
+                                    SoundManager.playButton(context);
                                     LoadingDialog loading =
                                             new LoadingDialog(context);
                                     loading.setMessage("Đang vô hiệu hóa thiết bị...");
@@ -201,7 +204,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onNo() {
-
+                                    SoundManager.playButton(context);
                                 }
                             }
                     ).show();
@@ -215,6 +218,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onYes() {
+                                    SoundManager.playButton(context);
                                     Intent intent = new Intent(context, XacThucEmailActivity.class);
                                     intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
                                     intent.putExtra(IntentKey.EMAIL, emailNguoiDung);
@@ -225,7 +229,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onNo() {
-
+                                    SoundManager.playButton(context);
                                 }
                             }
                     ).show();
@@ -242,6 +246,7 @@ public class ThietBiDangNhapAdapter
             public void onClick(View view) {
 
                 Activity activity = (Activity) context;
+                SoundManager.playButton(context);
                 if (!NetworkHelper.isConnected(context)) {
 
                     MessageHelper.error(
@@ -264,7 +269,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onYes() {
-
+                                    SoundManager.playButton(context);
                                     LoadingDialog loading =
                                             new LoadingDialog(context);
                                     loading.setMessage("Đang xóa thiết bị...");
@@ -275,7 +280,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onNo() {
-
+                                    SoundManager.playButton(context);
                                 }
                             }
                     ).show();
@@ -290,6 +295,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onYes() {
+                                    SoundManager.playButton(context);
                                     Intent intent = new Intent(context, XacThucEmailActivity.class);
                                     intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DANG_XUAT_TU_XA);
                                     intent.putExtra(IntentKey.EMAIL, emailNguoiDung);
@@ -300,7 +306,7 @@ public class ThietBiDangNhapAdapter
 
                                 @Override
                                 public void onNo() {
-
+                                    SoundManager.playButton(context);
                                 }
                             }
                     ).show();

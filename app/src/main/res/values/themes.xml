@@ -6,4 +6,22 @@
     </style>
 
     <style name="Theme.NumberFindingGame" parent="Base.Theme.NumberFindingGame" />
+
+    <style name="CircleImage">
+
+        <item name="cornerFamily">rounded</item>
+
+        <item name="cornerSize">50%</item>
+
+    </style>
+
+    <style name="BottomRoundImage">
+
+        <item name="cornerFamily">rounded</item>
+
+        <item name="cornerSizeBottomLeft">0dp</item>
+
+        <item name="cornerSizeBottomRight">35dp</item>
+
+    </style>
 </resources>

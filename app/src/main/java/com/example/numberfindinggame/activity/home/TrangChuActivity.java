@@ -1,10 +1,15 @@
 package com.example.numberfindinggame.activity.home;
 
+import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenByteSangBitMap;
+import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSangByte;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
+import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
@@ -24,14 +30,21 @@ import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
+import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;
+import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
+import com.example.numberfindinggame.utils.DateUtils;
+import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
-    private MaterialCardView cardDangXuat, cardCaiDat, cardThoat;
+    private MaterialCardView cardDangXuat, cardCaiDat, cardThoat, cardTaiKhoan;
     private ValueEventListener dangHoatDongListener;
+
+    private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
+    private ImageView imgLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +70,7 @@ public class TrangChuActivity extends AppCompatActivity {
         //Khởi tạo nhạc hiệu ứng 1 lần
         SoundManager.init(this);
         layCaiDat();
-
+        layThongTinNguoiDung();
         //Bật tắt nhạc trong Setting
         /*
        switchMusic.setOnCheckedChangeListener(
@@ -153,6 +166,21 @@ public class TrangChuActivity extends AppCompatActivity {
             }
         });
 
+        cardTaiKhoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        TrangChuActivity.this,
+                        ThongTinNguoiDungActivity.class
+                );
+
+                SoundManager.playButton(TrangChuActivity.this);
+
+                startActivity(intent);
+                finish();
+            }
+        });
+
         cardThoat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,10 +207,45 @@ public class TrangChuActivity extends AppCompatActivity {
         });
     }
 
+    private void layThongTinNguoiDung() {
+        LoadingDialog loading =
+                new LoadingDialog(TrangChuActivity.this);
+        loading.setMessage("Đang lấy thông tin người dùng...");
+        loading.show();
+
+        nguoiDungRepository.layNguoiDungTheoMa(
+                SessionManager.getUserId(TrangChuActivity.this),
+                task -> {
+
+                    if (task.isSuccessful() && task.getResult().exists()) {
+                        NguoiDung nguoiDung = task.getResult().getValue(NguoiDung.class);
+                        try {
+                            if (!nguoiDung.getHinhDaiDien().equals("")) {
+                                byte[] byteArrayHinh = chuyenStringSangByte(nguoiDung.getHinhDaiDien());
+                                imgLogo.setImageBitmap(chuyenByteSangBitMap(byteArrayHinh));
+                            } else {
+                                imgLogo.setImageResource(R.drawable.avatar_default);
+                            }
+                        } catch (Exception exception) {
+                            imgLogo.setImageResource(R.drawable.avatar_default);
+                        }
+
+
+                        loading.dismiss();
+
+
+                    }
+                }
+        );
+    }
+
     private void getControl() {
         cardDangXuat = findViewById(R.id.cardDangXuat);
         cardCaiDat = findViewById(R.id.cardCaiDat);
         cardThoat = findViewById(R.id.cardThoat);
+        cardTaiKhoan = findViewById(R.id.cardTaiKhoan);
+
+        imgLogo = findViewById(R.id.imgLogo);
 
     }
 

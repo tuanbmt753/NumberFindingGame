@@ -25,6 +25,7 @@ import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManagerSetting;
+import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.model.NhacNen;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
@@ -127,7 +128,7 @@ public class NhacNenAdapter
         cardNhacNen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SoundManager.playButton(context);
                 if (nhacNen.getMaNhacNen() > 0) {
                     MusicManager.changeMusic(
                             context,
