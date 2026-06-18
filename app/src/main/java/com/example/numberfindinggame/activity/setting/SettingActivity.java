@@ -1,5 +1,8 @@
 package com.example.numberfindinggame.activity.setting;
 
+import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenByteSangBitMap;
+import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSangByte;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,6 +46,7 @@ import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.MaKhoiPhuc;
+import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.NhacHieuUng;
 import com.example.numberfindinggame.model.NhacNen;
 import com.example.numberfindinggame.model.ThietBiDangNhap;
@@ -50,6 +54,7 @@ import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.repository.MaKhoiPhucRepository;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
+import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -97,9 +102,11 @@ public class SettingActivity extends AppCompatActivity {
 
     private CaiDat caiDat;
 
-    private ImageView imgQR;
+    private ImageView imgQR, imgLogo;
 
     private ActivityResultLauncher<Intent> pickMp3;
+
+    private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +123,7 @@ public class SettingActivity extends AppCompatActivity {
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
         khoiTao();
+        layThongTinNguoiDung();
 
         pickMp3 = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -413,6 +421,38 @@ public class SettingActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void layThongTinNguoiDung() {
+        LoadingDialog loading =
+                new LoadingDialog(SettingActivity.this);
+        loading.setMessage("Đang lấy thông tin người dùng...");
+        loading.show();
+
+        nguoiDungRepository.layNguoiDungTheoMa(
+                SessionManager.getUserId(SettingActivity.this),
+                task -> {
+
+                    if (task.isSuccessful() && task.getResult().exists()) {
+                        NguoiDung nguoiDung = task.getResult().getValue(NguoiDung.class);
+                        try {
+                            if (!nguoiDung.getHinhDaiDien().equals("")) {
+                                byte[] byteArrayHinh = chuyenStringSangByte(nguoiDung.getHinhDaiDien());
+                                imgLogo.setImageBitmap(chuyenByteSangBitMap(byteArrayHinh));
+                            } else {
+                                imgLogo.setImageResource(R.drawable.avatar_default);
+                            }
+                        } catch (Exception exception) {
+                            imgLogo.setImageResource(R.drawable.avatar_default);
+                        }
+
+
+                        loading.dismiss();
+
+
+                    }
+                }
+        );
     }
 
 
@@ -1119,6 +1159,7 @@ public class SettingActivity extends AppCompatActivity {
         cardThemNhacNen = findViewById(R.id.cardThemNhacNen);
 
         imgQR = findViewById(R.id.imgQR);
+        imgLogo = findViewById(R.id.imgLogo);
     }
 
     private void luuThietBi(String maNguoiDung) {

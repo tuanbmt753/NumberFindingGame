@@ -42,6 +42,7 @@
                 android:id="@+id/imgLogo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/logo"
                 app:layout_constraintBottom_toBottomOf="@id/txtTitle"
                 app:layout_constraintDimensionRatio="1:1"
@@ -177,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sono"
-                    android:text="Thấp"
+                    android:text="Cao"
                     android:textColor="#000"
                     android:textSize="20sp" />
 
