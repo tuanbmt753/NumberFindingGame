@@ -23,6 +23,7 @@ import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.HinhAnhHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SoundManager;
@@ -204,7 +205,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
                 // Đọc ảnh an toàn
                 Bitmap bitmap =
-                        decodeSampledBitmapFromUri(
+                        HinhAnhHelper.decodeSampledBitmapFromUri(
+                                this,
                                 uri,
                                 512,
                                 512
@@ -212,7 +214,10 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
                 // Resize giữ tỉ lệ
                 Bitmap resizedBitmap =
-                        resizeBitmap(bitmap);
+                        HinhAnhHelper.resizeBitmap(
+                                bitmap,
+                                512
+                        );
 
                 // Hiển thị avatar
                 if (themAnh.equals(IntentKey.ANH_DAI_DIEN)) {
@@ -226,8 +231,9 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
                 // Chuyển thành byte[]
                 byteArrayHinh =
-                        compressTo1MB(
-                                resizedBitmap
+                        HinhAnhHelper.compressToMaxSize(
+                                resizedBitmap,
+                                1
                         );
 
                 Log.d(
@@ -301,132 +307,6 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         ).show();
     }
 
-    private Bitmap decodeSampledBitmapFromUri(Uri uri, int reqWidth, int reqHeight)
-            throws IOException {
-
-        InputStream input1 = getContentResolver().openInputStream(uri);
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-        options.inJustDecodeBounds = true;
-
-        BitmapFactory.decodeStream(input1, null, options);
-
-        input1.close();
-
-
-        options.inSampleSize =
-                calculateInSampleSize(
-                        options,
-                        reqWidth,
-                        reqHeight
-                );
-
-        options.inJustDecodeBounds = false;
-
-        InputStream input2 =
-                getContentResolver().openInputStream(uri);
-
-        Bitmap bitmap =
-                BitmapFactory.decodeStream(
-                        input2,
-                        null,
-                        options
-                );
-
-        input2.close();
-
-        return bitmap;
-
-    }
-
-    private int calculateInSampleSize(
-            BitmapFactory.Options options,
-            int reqWidth,
-            int reqHeight) {
-
-        int height = options.outHeight;
-
-        int width = options.outWidth;
-
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            int halfHeight = height / 2;
-
-            int halfWidth = width / 2;
-
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-
-                inSampleSize *= 2;
-
-            }
-
-        }
-
-        return inSampleSize;
-
-    }
-
-
-    //giữ tỉ lệ ảnh , cách này để ảnh không bị méo.
-    private Bitmap resizeBitmap(Bitmap bitmap) {
-
-        int width = bitmap.getWidth();
-
-        int height = bitmap.getHeight();
-
-        float ratio = Math.min(
-                512f / width,
-                512f / height
-        );
-
-        int newWidth = Math.round(width * ratio);
-
-        int newHeight = Math.round(height * ratio);
-
-        return Bitmap.createScaledBitmap(
-                bitmap,
-                newWidth,
-                newHeight,
-                true
-        );
-
-    }
-
-    private byte[] compressTo1MB(Bitmap bitmap) {
-
-        ByteArrayOutputStream stream =
-                new ByteArrayOutputStream();
-
-        int quality = 100;
-
-        bitmap.compress(
-                Bitmap.CompressFormat.JPEG,
-                quality,
-                stream
-        );
-
-        while (stream.size() > 1024 * 1024
-                && quality > 10) {
-
-            stream.reset();
-
-            quality -= 5;
-
-            bitmap.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    quality,
-                    stream
-            );
-
-        }
-
-        return stream.toByteArray();
-
-    }
 
     private void capNhapAnhDaiDien(String maHoaHinhAnh) {
 
