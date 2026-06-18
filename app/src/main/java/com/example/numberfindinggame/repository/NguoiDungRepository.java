@@ -1,5 +1,7 @@
 package com.example.numberfindinggame.repository;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.constant.LoginType;
@@ -244,11 +246,92 @@ public class NguoiDungRepository {
                 );
     }
 
+    public void layNguoiDungTheoMa(
+            String maNguoiDung,
+            OnCompleteListener<DataSnapshot> listener
+    ) {
+
+        FirebaseManager.nguoiDung()
+                .child(maNguoiDung)
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    public void capNhatHinhDaiDien(
+            String maNguoiDung,
+            String hinhDaiDien,
+            OnUpdateListener listener
+    ) {
+
+        FirebaseManager.nguoiDung()
+
+                .child(maNguoiDung)
+
+                .child("hinhDaiDien")
+
+                .setValue(hinhDaiDien)
+
+                .addOnSuccessListener(unused -> {
+
+                    listener.onSuccess();
+
+                })
+
+                .addOnFailureListener(e -> {
+
+                    listener.onFailed(
+                            e.getMessage()
+                    );
+
+                });
+
+    }
+
+    public void capNhatHinhNen(
+            String maNguoiDung,
+            String hinhNen,
+            OnUpdateListener listener
+    ) {
+
+        FirebaseManager.nguoiDung()
+
+                .child(maNguoiDung)
+
+                .child("hinhNen")
+
+                .setValue(hinhNen)
+
+                .addOnSuccessListener(unused -> {
+
+                    listener.onSuccess();
+
+                })
+
+                .addOnFailureListener(e -> {
+
+                    listener.onFailed(
+                            e.getMessage()
+                    );
+
+                });
+
+    }
+
+
     public interface OnGetEmailListener {
 
         void onSuccess(String email);
 
         void onFailed(String message);
     }
+
+    public interface OnUpdateListener {
+
+        void onSuccess();
+
+        void onFailed(String message);
+
+    }
+
 
 }
