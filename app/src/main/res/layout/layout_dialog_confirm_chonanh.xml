@@ -2,11 +2,12 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="300sp"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_loading"
     android:gravity="center"
     android:orientation="vertical"
+    android:layout_margin="10dp"
     android:padding="20dp">
 
     <TextView
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="❌ NO"
+                android:text="❌ Hủy"
                 android:textColor="#000"
                 android:textSize="17sp" />
 
@@ -69,7 +70,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_weight="1"
-            android:id="@+id/cardYes"
+            android:id="@+id/cardNenTinh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -89,7 +90,35 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="✔️ YES"
+                android:text="Nền tĩnh"
+                android:textColor="#000"
+                android:textSize="17sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_weight="1"
+            android:id="@+id/cardNenDong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:padding="5sp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="Nền động"
                 android:textColor="#000"
                 android:textSize="17sp" />
 

@@ -1,4 +1,11 @@
 package com.example.numberfindinggame.dialog;
 
-public class BackgroundDialogCallback {
+import com.example.numberfindinggame.model.BackgroundItem;
+
+public interface BackgroundDialogCallback {
+
+    void onSelect(
+            BackgroundItem item
+    );
+
 }

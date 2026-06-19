@@ -14,7 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="180dp">
 
             <!-- Quay lại -->
             <TextView
@@ -27,6 +28,25 @@
                 android:text="&lt; Quay lại"
                 android:textColor="#000000"
                 android:textSize="15sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.media3.ui.PlayerView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/playerView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="16:9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:resize_mode="fit"
+                    app:use_controller="false" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <!-- Ảnh nền -->
             <com.google.android.material.imageview.ShapeableImageView

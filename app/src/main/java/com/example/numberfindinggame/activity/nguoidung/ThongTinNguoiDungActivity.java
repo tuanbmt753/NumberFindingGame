@@ -12,11 +12,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.Player;
+import androidx.media3.common.VideoSize;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangKyActivity;
@@ -26,7 +32,9 @@ import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.dialog.BackgroundDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
+import com.example.numberfindinggame.dialog.ConfirmDialogAnhNen;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.HinhAnhHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -56,6 +64,9 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private String themAnh = IntentKey.ANH_DAI_DIEN;
 
     private MaterialCardView cardDangXuat, cardDoiMatKhau;
+
+    private ExoPlayer exoPlayer;
+    private PlayerView playerView;
 
 
     @Override
@@ -121,16 +132,119 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         imgHinhNen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                themAnh = IntentKey.ANH_NEN;
-                SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
-                //Mở thư viên
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 1);
+                new ConfirmDialogAnhNen(
+                        ThongTinNguoiDungActivity.this,
+                        "Xác nhận",
+                        "Bạn muốn chọn loại ảnh gì làm ảnh nền? ",
+                        new ConfirmDialogAnhNen.ConfirmCallback() {
+                            @Override
+                            public void onNenTinh() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                                imgHinhNen.setVisibility(View.VISIBLE);
+                                playerView.setVisibility(View.GONE);
+
+                                themAnh = IntentKey.ANH_NEN;
+                                //Mở thư viên
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, 1);
+                            }
+
+                            @Override
+                            public void onNenDong() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                themAnh = IntentKey.ANH_NEN_DONG;
+
+                                imgHinhNen.setVisibility(View.GONE);
+                                playerView.setVisibility(View.VISIBLE);
+
+                                new BackgroundDialog(
+
+                                        ThongTinNguoiDungActivity.this,
+
+                                        item -> {
+
+                                            MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getName());
+                                            int resId = item.getResId();
+                                            phatVideoNen(resId);
+                                            capNhapHinhNen("" + resId);
 
 
+                                        }
+
+                                ).show();
+
+                            }
+
+                            @Override
+                            public void onNo() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                            }
+                        }
+                ).show();
             }
         });
+
+        playerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new ConfirmDialogAnhNen(
+                        ThongTinNguoiDungActivity.this,
+                        "Xác nhận",
+                        "Bạn muốn chọn loại ảnh gì làm ảnh nền? ",
+                        new ConfirmDialogAnhNen.ConfirmCallback() {
+                            @Override
+                            public void onNenTinh() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                                imgHinhNen.setVisibility(View.VISIBLE);
+                                playerView.setVisibility(View.GONE);
+
+                                themAnh = IntentKey.ANH_NEN;
+                                //Mở thư viên
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, 1);
+                            }
+
+                            @Override
+                            public void onNenDong() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                themAnh = IntentKey.ANH_NEN_DONG;
+
+                                imgHinhNen.setVisibility(View.GONE);
+                                playerView.setVisibility(View.VISIBLE);
+
+                                new BackgroundDialog(
+
+                                        ThongTinNguoiDungActivity.this,
+
+                                        item -> {
+
+                                            MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getName());
+                                            int resId = item.getResId();
+                                            phatVideoNen(resId);
+                                            capNhapHinhNen("" + resId);
+
+
+                                        }
+
+                                ).show();
+
+                            }
+
+                            @Override
+                            public void onNo() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                            }
+                        }
+                ).show();
+            }
+        });
+
 
         cardDangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,6 +344,28 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
     }
 
+    public static boolean isInteger(String s) {
+
+        if (s == null || s.trim().isEmpty()) {
+
+            return false;
+
+        }
+
+        try {
+
+            Integer.parseInt(s);
+
+            return true;
+
+        } catch (NumberFormatException e) {
+
+            return false;
+
+        }
+
+    }
+
     private void layThongTinNguoiDung() {
         if (!NetworkHelper.isConnected(ThongTinNguoiDungActivity.this)) {
 
@@ -277,18 +413,30 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                             imgAvatar.setImageResource(R.drawable.avatar_default);
                         }
 
-                        try {
+                        if (isInteger(nguoiDung.getHinhNen()) == false) {
 
-                            if (!nguoiDung.getHinhNen().isEmpty()) {
-                                byteArrayHinh = chuyenStringSangByte(nguoiDung.getHinhNen());
-                                imgHinhNen.setImageBitmap(chuyenByteSangBitMap(byteArrayHinh));
-                            } else {
+                            try {
+
+                                if (!nguoiDung.getHinhNen().isEmpty()) {
+                                    byteArrayHinh = chuyenStringSangByte(nguoiDung.getHinhNen());
+                                    imgHinhNen.setImageBitmap(chuyenByteSangBitMap(byteArrayHinh));
+                                } else {
+                                    imgHinhNen.setImageResource(R.drawable.background_profile);
+                                }
+
+                            } catch (Exception exception) {
                                 imgHinhNen.setImageResource(R.drawable.background_profile);
                             }
 
-                        } catch (Exception exception) {
-                            imgHinhNen.setImageResource(R.drawable.background_profile);
+                            imgHinhNen.setVisibility(View.VISIBLE);
+                            playerView.setVisibility(View.GONE);
+                        } else {
+
+                            phatVideoNen(Integer.parseInt(nguoiDung.getHinhNen()));
+                            imgHinhNen.setVisibility(View.GONE);
+                            playerView.setVisibility(View.VISIBLE);
                         }
+
 
                         loading.dismiss();
 
@@ -296,6 +444,60 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private void phatVideoNen(int redID) {
+        exoPlayer = new ExoPlayer.Builder(this).build();
+
+        playerView.setPlayer(exoPlayer);
+
+        Uri uri = Uri.parse(
+                "android.resource://"
+                        + getPackageName()
+                        + "/"
+                        + redID);
+
+        MediaItem mediaItem =
+                MediaItem.fromUri(uri);
+
+        exoPlayer.setMediaItem(mediaItem);
+
+        // lặp vô hạn
+        exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
+
+        // tắt tiếng nếu muốn
+        exoPlayer.setVolume(0f);
+
+        exoPlayer.prepare();
+
+        exoPlayer.play();
+
+        VideoSize size = exoPlayer.getVideoSize();
+
+        int width = size.width;
+        int height = size.height;
+
+        float ratio = (float) height / width;
+
+        ViewGroup.LayoutParams params =
+                playerView.getLayoutParams();
+
+        params.height =
+                (int) (playerView.getWidth() * ratio);
+
+        playerView.setLayoutParams(params);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (exoPlayer != null) {
+
+            exoPlayer.release();
+
+            exoPlayer = null;
+        }
     }
 
     private void setControl() {
@@ -311,6 +513,9 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
         cardDangXuat = findViewById(R.id.cardDangXuat);
         cardDoiMatKhau = findViewById(R.id.cardDoiMatKhau);
+
+        playerView = findViewById(R.id.playerView);
+
     }
 
     @Override

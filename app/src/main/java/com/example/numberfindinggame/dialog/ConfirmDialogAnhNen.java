@@ -3,17 +3,16 @@ package com.example.numberfindinggame.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.numberfindinggame.R;
 import com.google.android.material.card.MaterialCardView;
 
-public class ConfirmDialog {
+public class ConfirmDialogAnhNen {
 
     private final Dialog dialog;
 
-    public ConfirmDialog(
+    public ConfirmDialogAnhNen(
             Context context,
             String title,
             String message,
@@ -23,7 +22,7 @@ public class ConfirmDialog {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(
-                R.layout.layout_dialog_confirm
+                R.layout.layout_dialog_confirm_chonanh
         );
 
         dialog.setCancelable(false);
@@ -34,8 +33,11 @@ public class ConfirmDialog {
         TextView txtMessage =
                 dialog.findViewById(R.id.txtMessage);
 
-        MaterialCardView cardYes =
-                dialog.findViewById(R.id.cardYes);
+        MaterialCardView cardNenTinh =
+                dialog.findViewById(R.id.cardNenTinh);
+
+        MaterialCardView cardNenDong =
+                dialog.findViewById(R.id.cardNenDong);
 
         MaterialCardView cardNo =
                 dialog.findViewById(R.id.cardNo);
@@ -43,12 +45,21 @@ public class ConfirmDialog {
         txtTitle.setText(title);
         txtMessage.setText(message);
 
-        cardYes.setOnClickListener(v -> {
+        cardNenDong.setOnClickListener(v -> {
 
             dialog.dismiss();
 
             if (callback != null) {
-                callback.onYes();
+                callback.onNenDong();
+            }
+        });
+
+        cardNenTinh.setOnClickListener(v -> {
+
+            dialog.dismiss();
+
+            if (callback != null) {
+                callback.onNenTinh();
             }
         });
 
@@ -71,7 +82,9 @@ public class ConfirmDialog {
     }
 
     public interface ConfirmCallback {
-        void onYes();
+        void onNenTinh();
+
+        void onNenDong();
 
         void onNo();
     }
