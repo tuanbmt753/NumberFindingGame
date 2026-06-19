@@ -66,6 +66,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private MaterialCardView cardDangXuat, cardDoiMatKhau;
 
     private ExoPlayer exoPlayer;
+    ;
     private PlayerView playerView;
 
 
@@ -81,6 +82,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        exoPlayer = new ExoPlayer.Builder(this).build();
 
         if (getIntent().hasExtra(IntentKey.TEXT)) {
             String text = getIntent().getStringExtra(IntentKey.TEXT);
@@ -447,8 +449,6 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void phatVideoNen(int redID) {
-        exoPlayer = new ExoPlayer.Builder(this).build();
-
         playerView.setPlayer(exoPlayer);
 
         Uri uri = Uri.parse(
@@ -471,21 +471,6 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         exoPlayer.prepare();
 
         exoPlayer.play();
-
-        VideoSize size = exoPlayer.getVideoSize();
-
-        int width = size.width;
-        int height = size.height;
-
-        float ratio = (float) height / width;
-
-        ViewGroup.LayoutParams params =
-                playerView.getLayoutParams();
-
-        params.height =
-                (int) (playerView.getWidth() * ratio);
-
-        playerView.setLayoutParams(params);
     }
 
     @Override
