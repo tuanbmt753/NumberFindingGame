@@ -16,6 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
@@ -107,18 +109,41 @@ public class DoiMatKhauActivity extends AppCompatActivity {
                                         "Đổi mật khẩu thành công"
                                 );
                                 loading.dismiss();
-                                // Chuyển màn hình
-                                Intent intent = new Intent(
-                                        DoiMatKhauActivity.this,
-                                        DangNhapActivity.class
-                                );
 
-                                intent.putExtra(IntentKey.EMAIL, email);
-                                intent.putExtra(IntentKey.PASSWORD, edtPassword.getText().toString()); // nếu cần
-                                intent.putExtra(IntentKey.TEXT, "Đổi mật khẩu thành công!"); // nếu cần
+                                if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+                                    String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
 
-                                startActivity(intent);
-                                finish();
+                                    if (activityType.toString().trim().equals(ActivityType.DOI_MAT_KHAU)) {
+                                        // Chuyển màn hình
+                                        Intent intent = new Intent(
+                                                DoiMatKhauActivity.this,
+                                                DangNhapActivity.class
+                                        );
+
+                                        intent.putExtra(IntentKey.EMAIL, email);
+                                        intent.putExtra(IntentKey.PASSWORD, edtPassword.getText().toString()); // nếu cần
+                                        intent.putExtra(IntentKey.TEXT, "Đổi mật khẩu thành công!"); // nếu cần
+
+                                        startActivity(intent);
+                                        finish();
+
+                                    }
+
+                                    if (activityType.toString().trim().equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                                        // Chuyển màn hình
+                                        Intent intent = new Intent(
+                                                DoiMatKhauActivity.this,
+                                                ThongTinNguoiDungActivity.class
+                                        );
+
+                                        intent.putExtra(IntentKey.TEXT, "Đổi mật khẩu thành công!"); // nếu cần
+
+                                        startActivity(intent);
+                                        finish();
+
+                                    }
+                                }
+
 
                             } else {
 

@@ -71,7 +71,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
         if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
             String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
 
-            if (activityType.equals(ActivityType.DANG_KY) || activityType.equals((ActivityType.DANG_XUAT_TU_XA)) || activityType.equals((ActivityType.DANG_NHAP))) {
+            if (activityType.equals(ActivityType.DANG_KY) || activityType.equals((ActivityType.DANG_XUAT_TU_XA)) || activityType.equals((ActivityType.DANG_NHAP)) || activityType.equals((ActivityType.THONG_TIN_NGUOI_DUNG))) {
 
                 showChucNangOTP();
                 String email = getIntent().getStringExtra(IntentKey.EMAIL);
@@ -166,7 +166,6 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                 IntentKey.NGUOI_DUNG,
                                 nguoiDung
                         );
-
 
 
                         startActivity(intent);
@@ -483,6 +482,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                                         XacThucEmailActivity.this,
                                                         DoiMatKhauActivity.class
                                                 );
+                                                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.DOI_MAT_KHAU);
                                                 intent.putExtra(IntentKey.EMAIL, emailHienTai);
                                                 startActivity(intent);
 
@@ -545,6 +545,19 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                                 );
 
                                                 startActivity(intent);
+                                                finish();
+                                            }
+
+                                            if (activityType.toString().trim().equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+
+                                                Intent intent = new Intent(
+                                                        XacThucEmailActivity.this,
+                                                        DoiMatKhauActivity.class
+                                                );
+                                                intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.THONG_TIN_NGUOI_DUNG);
+                                                intent.putExtra(IntentKey.EMAIL, emailHienTai);
+                                                startActivity(intent);
+
                                                 finish();
                                             }
 
