@@ -19,19 +19,27 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.auth.DangKyActivity;
+import com.example.numberfindinggame.activity.auth.DangNhapActivity;
+import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.activity.setting.SettingActivity;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.HinhAnhHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
+import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
+import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
 import com.example.numberfindinggame.utils.DateUtils;
 import com.example.numberfindinggame.utils.LoadingDialog;
+import com.google.android.material.card.MaterialCardView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,6 +55,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private String maNguoiDung;
     private String themAnh = IntentKey.ANH_DAI_DIEN;
 
+    private MaterialCardView cardDangXuat, cardDoiMatKhau;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,17 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+
+        if (getIntent().hasExtra(IntentKey.TEXT)) {
+            String text = getIntent().getStringExtra(IntentKey.TEXT);
+
+            MessageHelper.success(
+                    ThongTinNguoiDungActivity.this,
+                    text
+            );
+
+        }
+
         maNguoiDung = SessionManager.getUserId(ThongTinNguoiDungActivity.this);
         ThietBiDangNhapHelper.kiemTraThietBiDangNhap(
                 this,
@@ -111,9 +132,115 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
             }
         });
 
+        cardDangXuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ConfirmDialog(
+                        ThongTinNguoiDungActivity.this,
+                        "Xác nhận",
+                        "⚠️ Bạn có muốn đăng xuất tài khoản này? ",
+                        new ConfirmDialog.ConfirmCallback() {
+
+                            @Override
+                            public void onYes() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                Intent intent = new Intent(
+                                        ThongTinNguoiDungActivity.this,
+                                        DangNhapActivity.class
+                                );
+
+
+                                SessionManager.logout(ThongTinNguoiDungActivity.this);
+
+                                ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
+                                thietBiDangNhapRepository.voHieuHoaThietBi(
+                                        SessionManager.getUserId(ThongTinNguoiDungActivity.this),
+                                        DeviceHelper.getDeviceId(ThongTinNguoiDungActivity.this),
+                                        task -> {
+
+                                            if (task.isSuccessful()) {
+                                            }
+
+
+                                        }
+                                );
+
+                                //intent.putExtra(IntentKey.TEXT, "Đăng xuất tài khoản thành công!"); // nếu cần
+                                intent.putExtra(IntentKey.TRUE, "Đăng xuất tài khoản thành công!");
+                                startActivity(intent);
+                                finish();
+
+                            }
+
+                            @Override
+                            public void onNo() {
+                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                            }
+                        }
+                ).show();
+
+
+            }
+        });
+
+        cardDoiMatKhau.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nguoiDungRepository.layEmailTheoMaNguoiDung(
+                        SessionManager.getUserId(ThongTinNguoiDungActivity.this),
+                        new NguoiDungRepository.OnGetEmailListener() {
+
+                            @Override
+                            public void onSuccess(String email) {
+
+                                if (email != null) {
+                                    new ConfirmDialog(
+                                            ThongTinNguoiDungActivity.this,
+                                            "Xác nhận",
+                                            "Bạn phải xác thực email " + email + " để có thể đổi mật khẩu ? ",
+                                            new ConfirmDialog.ConfirmCallback() {
+
+                                                @Override
+                                                public void onYes() {
+                                                    Intent intent = new Intent(ThongTinNguoiDungActivity.this, XacThucEmailActivity.class);
+                                                    intent.putExtra(IntentKey.ACTIVITY_TYPE, ActivityType.THONG_TIN_NGUOI_DUNG);
+                                                    intent.putExtra(IntentKey.EMAIL, email);
+                                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+
+                                                @Override
+                                                public void onNo() {
+                                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                                }
+                                            }
+                                    ).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailed(String message) {
+                                MessageHelper.error(ThongTinNguoiDungActivity.this, "" + message);
+                            }
+                        }
+                );
+            }
+        });
+
     }
 
     private void layThongTinNguoiDung() {
+        if (!NetworkHelper.isConnected(ThongTinNguoiDungActivity.this)) {
+
+            MessageHelper.error(
+                    ThongTinNguoiDungActivity.this,
+                    "Không có kết nối Internet"
+            );
+
+            return;
+        }
+
         LoadingDialog loading =
                 new LoadingDialog(ThongTinNguoiDungActivity.this);
         loading.setMessage("Đang lấy thông tin người dùng...");
@@ -182,6 +309,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         imgAvatar = findViewById(R.id.imgAvatar);
         imgHinhNen = findViewById(R.id.imgHinhNen);
 
+        cardDangXuat = findViewById(R.id.cardDangXuat);
+        cardDoiMatKhau = findViewById(R.id.cardDoiMatKhau);
     }
 
     @Override

@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.auth.DangKyActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.NhacHieuUngAdapter;
@@ -166,7 +167,7 @@ public class SettingActivity extends AppCompatActivity {
                     new ConfirmDialog(
                             SettingActivity.this,
                             "Xác nhận",
-                            "✅ " + text + " .⚠️ Hành động này chỉ có tác dụng 10 phút ở màn hình Setting, khi hết 10 phút bạn sẽ cần phải xác thực lại để có thể thực hiện các hành động như cài đặt xác thực, đăng xuất từ xa, và xóa thiết bị, ...! ",
+                            "✅ " + text + " .⚠️ Xác thực có tác dụng trong 20 phút, khi hết 20 phút bạn sẽ cần phải xác thực lại để có thể thực hiện các hành động như cài đặt xác thực, đăng xuất từ xa, và xóa thiết bị, ...! ",
                             new ConfirmDialog.ConfirmCallback() {
 
                                 @Override
@@ -424,6 +425,16 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void layThongTinNguoiDung() {
+        if (!NetworkHelper.isConnected(SettingActivity.this)) {
+
+            MessageHelper.error(
+                    SettingActivity.this,
+                    "Không có kết nối Internet"
+            );
+
+            return;
+        }
+
         LoadingDialog loading =
                 new LoadingDialog(SettingActivity.this);
         loading.setMessage("Đang lấy thông tin người dùng...");
