@@ -1,41 +1,37 @@
-package com.example.numberfindinggame.helper;
+package com.example.numberfindinggame.manager;
 
-import android.content.Context;
 import android.net.Uri;
 
-import com.google.rpc.ErrorInfo;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
+import com.example.numberfindinggame.listener.OnUploadVideoListener;
 
 import java.util.Map;
 
 public class CloudinaryManager {
 
     private static final String UPLOAD_PRESET =
-
             "android_video";
 
-
-
+    /**
+     * Upload video lên Cloudinary
+     *
+     * @return requestId để có thể hủy upload
+     */
     public static String uploadVideo(
-
-            Context context,
 
             Uri uri,
 
             OnUploadVideoListener listener
 
-    ){
+    ) {
 
         return MediaManager
-
                 .get()
-
                 .upload(uri)
-
-                .unsigned(
-
-                        UPLOAD_PRESET
-
-                )
+                .unsigned(UPLOAD_PRESET)
+                .option("resource_type", "video")
 
                 .callback(
 
@@ -50,7 +46,6 @@ public class CloudinaryManager {
                             ) {
 
                             }
-
 
 
                             @Override
@@ -73,16 +68,11 @@ public class CloudinaryManager {
 
                                                         bytes
 
-                                                                *
+                                                                * 100
 
-                                                                100
-
-                                                                /
-
-                                                                totalBytes
+                                                                / totalBytes
 
                                                 );
-
 
 
                                 listener.onProgress(
@@ -92,7 +82,6 @@ public class CloudinaryManager {
                                 );
 
                             }
-
 
 
                             @Override
@@ -118,7 +107,6 @@ public class CloudinaryManager {
                                                 .toString();
 
 
-
                                 listener.onSuccess(
 
                                         url
@@ -126,7 +114,6 @@ public class CloudinaryManager {
                                 );
 
                             }
-
 
 
                             @Override
@@ -141,16 +128,18 @@ public class CloudinaryManager {
 
                                 listener.onFailed(
 
-                                        error
-
-                                                .getDescription()
+                                        error.getDescription()
 
                                 );
 
                             }
 
 
-
+                            /**
+                             * Cloudinary tự retry khi mất mạng.
+                             * Hàm này được gọi khi upload bị tạm hoãn
+                             * và sẽ upload lại sau.
+                             */
                             @Override
 
                             public void onReschedule(
@@ -161,6 +150,12 @@ public class CloudinaryManager {
 
                             ) {
 
+                                listener.onFailed(
+
+                                        "Mất kết nối, đang thử lại..."
+
+                                );
+
                             }
 
                         }
@@ -168,6 +163,28 @@ public class CloudinaryManager {
                 )
 
                 .dispatch();
+
+    }
+
+
+    /**
+     * Hủy upload
+     */
+    public static void cancelUpload(
+
+            String requestId
+
+    ) {
+
+        MediaManager
+
+                .get()
+
+                .cancelRequest(
+
+                        requestId
+
+                );
 
     }
 

@@ -4,18 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300sp"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@drawable/bg_loading"
     android:gravity="center"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     android:padding="20dp">
 
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Xác nhận"
         android:fontFamily="@font/sono"
+        android:text="Xác nhận"
         android:textColor="#000"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -25,8 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:gravity="center"
         android:fontFamily="@font/sono"
+        android:gravity="center"
         android:text="Bạn có chắc chắn muốn thực hiện thao tác này?"
         android:textColor="#000"
         android:textSize="16sp" />
@@ -38,91 +38,134 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_weight="1"
-            android:id="@+id/cardNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <TextView
-                android:padding="5sp"
-                android:layout_gravity="center"
-                android:id="@+id/txtNoiDung"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNo"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="❌ Hủy"
-                android:textColor="#000"
-                android:textSize="17sp" />
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="12dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.5dp">
 
-        </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/txtNoiDung"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:padding="5sp"
+                    android:text="❌ Hủy"
+                    android:textColor="#000"
+                    android:textSize="17sp" />
+
+            </com.google.android.material.card.MaterialCardView>
 
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_weight="1"
-            android:id="@+id/cardNenTinh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNenTinh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="12dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:padding="5sp"
+                    android:text="Nền tĩnh"
+                    android:textColor="#000"
+                    android:textSize="17sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_marginStart="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
-
-            <TextView
-                android:padding="5sp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Nền tĩnh"
-                android:textColor="#000"
-                android:textSize="17sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_weight="1"
-            android:id="@+id/cardNenDong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <TextView
-                android:padding="5sp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHeThong"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Nền động"
-                android:textColor="#000"
-                android:textSize="17sp" />
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="12dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.5dp">
 
-        </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:padding="5sp"
+                    android:text="Hệ thống"
+                    android:textColor="#000"
+                    android:textSize="17sp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardNenDong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+
+                android:focusable="true"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="12dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sono"
+                    android:gravity="center"
+                    android:padding="5sp"
+                    android:text="Nền động"
+                    android:textColor="#000"
+                    android:textSize="17sp" />
+
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
     </LinearLayout>
 

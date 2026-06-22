@@ -1,4 +1,11 @@
 package com.example.numberfindinggame.listener;
 
-public class OnUploadVideoListener {
+public interface OnUploadVideoListener {
+
+    void onProgress(int progress);
+
+    void onSuccess(String videoUrl);
+
+    void onFailed(String message);
+
 }

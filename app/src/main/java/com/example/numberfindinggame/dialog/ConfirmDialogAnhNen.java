@@ -42,6 +42,9 @@ public class ConfirmDialogAnhNen {
         MaterialCardView cardNo =
                 dialog.findViewById(R.id.cardNo);
 
+        MaterialCardView cardHeThong =
+                dialog.findViewById(R.id.cardHeThong);
+
         txtTitle.setText(title);
         txtMessage.setText(message);
 
@@ -71,6 +74,15 @@ public class ConfirmDialogAnhNen {
                 callback.onNo();
             }
         });
+
+        cardHeThong.setOnClickListener(v -> {
+
+            dialog.dismiss();
+
+            if (callback != null) {
+                callback.onHeThong();
+            }
+        });
     }
 
     public void show() {
@@ -85,6 +97,7 @@ public class ConfirmDialogAnhNen {
         void onNenTinh();
 
         void onNenDong();
+        void onHeThong();
 
         void onNo();
     }
