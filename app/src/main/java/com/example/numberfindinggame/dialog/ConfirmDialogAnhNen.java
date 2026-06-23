@@ -42,8 +42,10 @@ public class ConfirmDialogAnhNen {
         MaterialCardView cardNo =
                 dialog.findViewById(R.id.cardNo);
 
-        MaterialCardView cardHeThong =
-                dialog.findViewById(R.id.cardHeThong);
+        MaterialCardView cardHeThong = dialog.findViewById(R.id.cardHeThong);
+        MaterialCardView cardXemAnhNen = dialog.findViewById(R.id.cardXemAnhNen);
+        MaterialCardView cardXemAnhDaiDien = dialog.findViewById(R.id.cardXemAnhDaiDien);
+
 
         txtTitle.setText(title);
         txtMessage.setText(message);
@@ -83,6 +85,24 @@ public class ConfirmDialogAnhNen {
                 callback.onHeThong();
             }
         });
+
+        cardXemAnhNen.setOnClickListener(v -> {
+
+            dialog.dismiss();
+
+            if (callback != null) {
+                callback.onXemAnhNen();
+            }
+        });
+
+        cardXemAnhDaiDien.setOnClickListener(v -> {
+
+            dialog.dismiss();
+
+            if (callback != null) {
+                callback.onXemAnhDaiDien();
+            }
+        });
     }
 
     public void show() {
@@ -98,6 +118,10 @@ public class ConfirmDialogAnhNen {
 
         void onNenDong();
         void onHeThong();
+
+        void onXemAnhNen();
+
+        void onXemAnhDaiDien();
 
         void onNo();
     }
