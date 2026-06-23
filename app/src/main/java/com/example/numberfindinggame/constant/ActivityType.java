@@ -7,4 +7,6 @@ public class ActivityType {
     public static final String DANG_NHAP = "DANG_NHAP";
 
     public static final String DANG_XUAT_TU_XA = "DANG_XUAT_TU_XA";
+
+    public static final String THONG_TIN_NGUOI_DUNG = "THONG_TIN_NGUOI_DUNG";
 }

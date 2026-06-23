@@ -14,5 +14,6 @@ public class IntentKey {
 
     public static final String ANH_DAI_DIEN = "ANH_DAI_DIEN";
     public static final String ANH_NEN = "ANH_NEN";
+    public static final String ANH_NEN_DONG = "ANH_NEN_DONG";
 
 }
