@@ -18,13 +18,13 @@ public class HinhAnhHelper {
     }
 
     //chuyen String Sang Byte[]
-    public static  byte[] chuyenStringSangByte(String str) {
+    public static byte[] chuyenStringSangByte(String str) {
         byte[] byteArray = android.util.Base64.decode(str, android.util.Base64.NO_PADDING | android.util.Base64.NO_WRAP | android.util.Base64.URL_SAFE);
         return byteArray;
     }
 
     //Chuyen byte[] sang bitMap
-    public static  Bitmap chuyenByteSangBitMap(byte[] byteArray) {
+    public static Bitmap chuyenByteSangBitMap(byte[] byteArray) {
         Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         return bitmap;
     }
@@ -178,6 +178,34 @@ public class HinhAnhHelper {
         }
 
         return stream.toByteArray();
+
+    }
+
+    public static byte[] getBytesFromUri(
+            Context context,
+            Uri uri)
+            throws IOException {
+
+        InputStream inputStream =
+                context.getContentResolver()
+                        .openInputStream(uri);
+
+        ByteArrayOutputStream buffer =
+                new ByteArrayOutputStream();
+
+        byte[] data = new byte[4096];
+
+        int nRead;
+
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+
+            buffer.write(data, 0, nRead);
+
+        }
+
+        inputStream.close();
+
+        return buffer.toByteArray();
 
     }
 }

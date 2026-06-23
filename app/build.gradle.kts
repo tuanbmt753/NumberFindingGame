@@ -57,7 +57,15 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 
-    //Nhạc nền
+    //Thư viện chạy nhạc nền
     implementation("androidx.lifecycle:lifecycle-process:2.9.1")
+
+    //Thư viện chạy video
+    implementation("androidx.media3:media3-exoplayer:1.8.0")
+    implementation("androidx.media3:media3-ui:1.8.0")
+
+    //Thư viện https://console.cloudinary.com/ video động
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.cloudinary:cloudinary-android:3.0.2")
 
 }
