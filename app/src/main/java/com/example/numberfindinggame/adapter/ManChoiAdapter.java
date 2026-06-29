@@ -1,4 +1,75 @@
 package com.example.numberfindinggame.adapter;
 
-public class ManChoiAdapter {
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.model.ManChoi;
+
+import java.util.List;
+
+public class ManChoiAdapter extends RecyclerView.Adapter<ManChoiAdapter.ViewHolder> {
+
+    private Context context;
+    private List<ManChoi> manChoiList;
+    private int manHienTai;
+
+    public ManChoiAdapter(Context context, List<ManChoi> manChoiList, int manHienTai) {
+        this.context = context;
+        this.manChoiList = manChoiList;
+        this.manHienTai = manHienTai;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_man_choi, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ManChoi manChoi = manChoiList.get(position);
+        holder.tvManChoi.setText(String.valueOf(manChoi.getManChoi()));
+
+        if (manChoi.getManChoi() == manHienTai) {
+            holder.tvManChoi.setBackgroundColor(
+                    context.getResources().getColor(R.color.man_hien_tai)
+            );
+            holder.tvManChoi.setTextColor(context.getResources().getColor(R.color.man_text));
+        } else if (manChoi.getManChoi() < manHienTai) {
+            holder.tvManChoi.setBackgroundColor(
+                    context.getResources().getColor(R.color.man_da_vuot)
+            );
+            holder.tvManChoi.setTextColor(context.getResources().getColor(R.color.man_text));
+        } else {
+            holder.tvManChoi.setBackgroundColor(
+                    context.getResources().getColor(R.color.man_chua_choi)
+            );
+            holder.tvManChoi.setTextColor(context.getResources().getColor(R.color.man_text));
+        }
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return manChoiList.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvManChoi;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvManChoi = itemView.findViewById(R.id.tvManChoi);
+        }
+    }
 }
+

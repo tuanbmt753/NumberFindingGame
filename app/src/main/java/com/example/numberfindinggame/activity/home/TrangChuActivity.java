@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.DangKyActivity;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
+import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.callback.CaiDatCallback;
@@ -42,7 +44,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
-    private MaterialCardView cardCaiDat, cardThoat, cardTaiKhoan;
+    private MaterialCardView cardCaiDat, cardThoat, cardTaiKhoan, cardMap;
     private ValueEventListener dangHoatDongListener;
 
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
@@ -176,6 +178,21 @@ public class TrangChuActivity extends AppCompatActivity {
                 ).show();
             }
         });
+
+        cardMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        TrangChuActivity.this,
+                        ManChoiActivity.class
+                );
+
+                SoundManager.playButton(TrangChuActivity.this);
+
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void layThongTinNguoiDung() {
@@ -225,6 +242,7 @@ public class TrangChuActivity extends AppCompatActivity {
         cardCaiDat = findViewById(R.id.cardCaiDat);
         cardThoat = findViewById(R.id.cardThoat);
         cardTaiKhoan = findViewById(R.id.cardTaiKhoan);
+        cardMap = findViewById(R.id.cardMap);
 
         imgLogo = findViewById(R.id.imgLogo);
 
