@@ -1,6 +1,8 @@
 package com.example.numberfindinggame.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
+import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
+import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.model.ManChoi;
 
 import java.util.List;
@@ -54,6 +60,23 @@ public class ManChoiAdapter extends RecyclerView.Adapter<ManChoiAdapter.ViewHold
                     context.getResources().getColor(R.color.man_chua_choi)
             );
             holder.tvManChoi.setTextColor(context.getResources().getColor(R.color.man_text));
+        }
+        holder.tvManChoi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chonManChoi(holder);
+            }
+        });
+
+    }
+
+    private void chonManChoi(ViewHolder holder) {
+
+        if ("1".equals(holder.tvManChoi.getText().toString())) {
+            Intent intent = new Intent(context, ManMotActivity.class);
+            SoundManager.playButton(context);
+            context.startActivity(intent);
+            ((Activity) context).finish();
         }
     }
 

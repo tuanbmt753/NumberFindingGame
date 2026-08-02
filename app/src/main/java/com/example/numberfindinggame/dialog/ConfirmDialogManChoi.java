@@ -2,27 +2,29 @@ package com.example.numberfindinggame.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.example.numberfindinggame.R;
 import com.google.android.material.card.MaterialCardView;
 
-public class ConfirmDialogAnhNen {
+public class ConfirmDialogManChoi {
 
     private final Dialog dialog;
 
-    public ConfirmDialogAnhNen(
+    public ConfirmDialogManChoi(
             Context context,
             String title,
             String message,
+            Integer hanhDong,
             ConfirmCallback callback
     ) {
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(
-                R.layout.layout_dialog_confirm_chonanh
+                R.layout.layout_dialog_confirm_man_choi
         );
 
         dialog.setCancelable(false);
@@ -33,76 +35,53 @@ public class ConfirmDialogAnhNen {
         TextView txtMessage =
                 dialog.findViewById(R.id.txtMessage);
 
-        MaterialCardView cardNenTinh =
-                dialog.findViewById(R.id.cardNenTinh);
+        MaterialCardView cardMapChoi =
+                dialog.findViewById(R.id.cardMapChoi);
 
-        MaterialCardView cardNenDong =
-                dialog.findViewById(R.id.cardNenDong);
+        MaterialCardView cardTiepTheo =
+                dialog.findViewById(R.id.cardTiepTheo);
 
-        MaterialCardView cardNo =
-                dialog.findViewById(R.id.cardNo);
-
-        MaterialCardView cardHeThong = dialog.findViewById(R.id.cardHeThong);
-        MaterialCardView cardXemAnhNen = dialog.findViewById(R.id.cardXemAnhNen);
-        MaterialCardView cardXemAnhDaiDien = dialog.findViewById(R.id.cardXemAnhDaiDien);
+        MaterialCardView cardChoiLai =
+                dialog.findViewById(R.id.cardChoiLai);
 
 
         txtTitle.setText(title);
         txtMessage.setText(message);
 
-        cardNenDong.setOnClickListener(v -> {
+        if (hanhDong != 0) {
+            if (hanhDong == 2) {
+                cardTiepTheo.setVisibility(View.GONE);
+            }
+        }
+
+        cardMapChoi.setOnClickListener(v -> {
 
             dialog.dismiss();
 
             if (callback != null) {
-                callback.onNenDong();
+                callback.onManChoi();
             }
         });
 
-        cardNenTinh.setOnClickListener(v -> {
+        cardTiepTheo.setOnClickListener(v -> {
 
             dialog.dismiss();
 
             if (callback != null) {
-                callback.onNenTinh();
+                callback.onTiepTheo();
             }
         });
 
-        cardNo.setOnClickListener(v -> {
+        cardChoiLai.setOnClickListener(v -> {
 
             dialog.dismiss();
 
             if (callback != null) {
-                callback.onNo();
+                callback.onChoiLai();
             }
         });
 
-        cardHeThong.setOnClickListener(v -> {
 
-            dialog.dismiss();
-
-            if (callback != null) {
-                callback.onHeThong();
-            }
-        });
-
-        cardXemAnhNen.setOnClickListener(v -> {
-
-            dialog.dismiss();
-
-            if (callback != null) {
-                callback.onXemAnhNen();
-            }
-        });
-
-        cardXemAnhDaiDien.setOnClickListener(v -> {
-
-            dialog.dismiss();
-
-            if (callback != null) {
-                callback.onXemAnhDaiDien();
-            }
-        });
     }
 
     public void show() {
@@ -114,15 +93,12 @@ public class ConfirmDialogAnhNen {
     }
 
     public interface ConfirmCallback {
-        void onNenTinh();
+        void onManChoi();
 
-        void onNenDong();
-        void onHeThong();
+        void onChoiLai();
 
-        void onXemAnhNen();
+        void onTiepTheo();
 
-        void onXemAnhDaiDien();
 
-        void onNo();
     }
 }

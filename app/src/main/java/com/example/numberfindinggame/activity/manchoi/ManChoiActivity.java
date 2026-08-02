@@ -87,7 +87,7 @@ public class ManChoiActivity extends AppCompatActivity {
 
     private List<ManChoi> taoDuLieuMau(int soMan) {
         List<ManChoi> list = new ArrayList<>();
-        String ngay = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        long ngay = System.currentTimeMillis();
         for (int i = 1; i <= soMan; i++) {
             list.add(new ManChoi("User01", i, ngay, ngay));
         }

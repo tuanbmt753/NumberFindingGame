@@ -4,31 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:padding="10sp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10sp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/cardTimSo"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
 
         app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="5dp"
 
-        app:cardElevation="0dp"
+        app:cardElevation="12dp"
         app:rippleColor="#33000000"
         app:strokeColor="#000000"
-        app:strokeWidth="0dp">
+        app:strokeWidth="1dp">
 
         <TextView
-            android:id="@+id/tvManChoi"
-            android:layout_width="60sp"
-            android:layout_height="60sp"
+            android:id="@+id/tvTimSo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/bg_caidat"
             android:fontFamily="@font/sono"
             android:gravity="center"
             android:text="1"
