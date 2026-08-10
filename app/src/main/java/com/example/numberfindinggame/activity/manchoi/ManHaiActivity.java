@@ -72,7 +72,7 @@ public class ManHaiActivity extends AppCompatActivity {
 
         timSoList.clear();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             timSoList.add(new TimSo(dsSo.get(i)));
         }
 
