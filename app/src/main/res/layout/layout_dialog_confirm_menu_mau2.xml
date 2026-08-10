@@ -7,47 +7,97 @@
     android:fillViewport="true">
 
     <LinearLayout
+        android:background="@drawable/bg_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingHorizontal="60dp"
-        android:paddingTop="70dp"
-        android:paddingBottom="70dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:orientation="vertical"
+       >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:background="#000">
 
-            <ImageView
-                android:id="@+id/imgLogo"
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/playerView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/logo"
-                app:layout_constraintBottom_toBottomOf="@id/txtTitle"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtTitle" />
 
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="right|center"
-                android:text="Number&#10;Finding&#10;Game"
-                android:textColor="#000"
-                android:textSize="30sp"
+                app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgLogo"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:resize_mode="fit"
+                app:use_controller="false" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- Ảnh nền -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgHinhNen"
+            android:layout_width="match_parent"
+            android:layout_height="206dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_profile"
+            app:shapeAppearanceOverlay="@style/BottomRoundImage" />
+
+        <!-- Avatar -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-90dp"
+            android:background="@drawable/bg_avatar"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_default"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/txtTenNguoiDung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/sono"
+            android:text="User name"
+            android:textColor="#000000"
+            android:textSize="28sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="32dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTrangChu"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="🏠 Trang chủ"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMap"
@@ -74,30 +124,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardGiaiTri"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Giải trí"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-
-        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardCaiDat"
@@ -143,107 +169,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Tài khoản"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardBangXepHang"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="🏆 Bảng xếp hạng"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardBanBe"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Bạn bè"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardCuaHang"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Cửa hàng"
-                android:textColor="#000000"
-                android:textSize="20sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardLichSuDau"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="12dp"
-            app:rippleColor="#33000000"
-            app:strokeColor="#000000"
-            app:strokeWidth="0.5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/sono"
-                android:gravity="center"
-                android:text="Lịch sử đấu"
+                android:text="👥 Tài khoản"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -268,7 +194,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Thoát"
+                android:text="❌ Thoát"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 

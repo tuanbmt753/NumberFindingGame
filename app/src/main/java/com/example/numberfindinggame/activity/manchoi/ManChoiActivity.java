@@ -3,8 +3,10 @@ package com.example.numberfindinggame.activity.manchoi;
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenByteSangBitMap;
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSangByte;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManChoiAdapter;
+import com.example.numberfindinggame.dialog.ConfirmDialogManChoi;
+import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
@@ -27,6 +31,7 @@ import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.model.ManChoi;
 import com.example.numberfindinggame.model.NguoiDung;
+import com.example.numberfindinggame.repository.ManChoiRepository;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;
 
@@ -44,8 +49,12 @@ public class ManChoiActivity extends AppCompatActivity {
 
     private ImageView imgLogo;
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
+    private ManChoiRepository manChoiRepository = new ManChoiRepository();
 
-    private TextView txtQuayLai;
+    private TextView txtMenu, txtTrangChu, txtThoat;
+
+    private String maNguoiDung;
+    private Integer manChoiHienTai = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +68,36 @@ public class ManChoiActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        khoiTao();
-        layThongTinNguoiDung();
+        maNguoiDung = SessionManager.getUserId(ManChoiActivity.this);
+        layManChoiHienTai(maNguoiDung);
+        layThongTinNguoiDung(maNguoiDung);
 
-        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+        txtMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ManChoiActivity.this, TrangChuActivity.class);
                 SoundManager.playButton(ManChoiActivity.this);
+
+                new ConfirmDialogMenu(ManChoiActivity.this).show();
+            }
+        });
+
+        txtTrangChu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(ManChoiActivity.this);
+
+                Intent intent = new Intent(ManChoiActivity.this, TrangChuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        txtThoat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(ManChoiActivity.this);
+
+                Intent intent = new Intent(ManChoiActivity.this, TrangChuActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -75,15 +106,51 @@ public class ManChoiActivity extends AppCompatActivity {
     }
 
     private void khoiTao() {
-        manChoiList = taoDuLieuMau(30);
-        adapter = new ManChoiAdapter(this, manChoiList, 25);
-
+        manChoiList = taoDuLieuMau(3);
+        adapter = new ManChoiAdapter(this, manChoiList, manChoiHienTai);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(adapter);
-
         // Scroll đến màn 10 (index = 9)
-        recyclerView.scrollToPosition(25);
+        recyclerView.scrollToPosition(manChoiHienTai);
     }
+
+    private void layManChoiHienTai(String maNguoiDung) {
+        if (!NetworkHelper.isConnected(ManChoiActivity.this)) {
+
+            MessageHelper.error(
+                    ManChoiActivity.this,
+                    "Không có kết nối Internet"
+            );
+        }
+
+        ManChoiRepository.layTheoMaNguoiDung(maNguoiDung, new ManChoiRepository.OnGetListener() {
+            @Override
+            public void onSuccess(ManChoi manChoi) {
+
+                if (manChoi != null) {
+                    // Có dữ liệu
+                    //MessageHelper.success(ManChoiActivity.this, "Có dữ liệu " + manChoi.getManChoi());
+                    Log.d("ManChoi", "Màn hiện tại: " + manChoi.getManChoi());
+                    manChoiHienTai = manChoi.getManChoi();
+                    khoiTao();
+
+                } else {
+                    // Không tìm thấy dữ liệu
+                    //MessageHelper.success(ManChoiActivity.this, "Không tìm thấy dữ liệu");
+                    Log.d("ManChoi", "Chưa có dữ liệu người chơi");
+                    manChoiHienTai = 1;
+                    khoiTao();
+
+                }
+            }
+
+            @Override
+            public void onFailed(String error) {
+                MessageHelper.error(ManChoiActivity.this, error);
+            }
+        });
+    }
+
 
     private List<ManChoi> taoDuLieuMau(int soMan) {
         List<ManChoi> list = new ArrayList<>();
@@ -97,11 +164,13 @@ public class ManChoiActivity extends AppCompatActivity {
     private void setControl() {
         recyclerView = findViewById(R.id.recyclerView);
         imgLogo = findViewById(R.id.imgLogo);
-        txtQuayLai = findViewById(R.id.txtQuayLai);
+        txtMenu = findViewById(R.id.txtMenu);
+        txtTrangChu = findViewById(R.id.txtTrangChu);
+        txtThoat = findViewById(R.id.txtThoat);
 
     }
 
-    private void layThongTinNguoiDung() {
+    private void layThongTinNguoiDung(String maNguoiDung) {
         if (!NetworkHelper.isConnected(ManChoiActivity.this)) {
 
             MessageHelper.error(
@@ -118,7 +187,7 @@ public class ManChoiActivity extends AppCompatActivity {
         loading.show();
 
         nguoiDungRepository.layNguoiDungTheoMa(
-                SessionManager.getUserId(ManChoiActivity.this),
+                maNguoiDung,
                 task -> {
 
                     if (task.isSuccessful() && task.getResult().exists()) {

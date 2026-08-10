@@ -3,6 +3,7 @@ package com.example.numberfindinggame.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManHaiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
-import com.example.numberfindinggame.constant.ActivityType;
-import com.example.numberfindinggame.constant.IntentKey;
-import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogManChoi;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
@@ -30,7 +27,7 @@ import com.example.numberfindinggame.repository.ManChoiRepository;
 
 import java.util.List;
 
-public class ManMotAdapter extends RecyclerView.Adapter<ManMotAdapter.ViewHolder> {
+public class ManHaiAdapter extends RecyclerView.Adapter<ManHaiAdapter.ViewHolder> {
 
     private Context context;
     private List<TimSo> timSoList;
@@ -44,23 +41,37 @@ public class ManMotAdapter extends RecyclerView.Adapter<ManMotAdapter.ViewHolder
 
     private String maNguoiDung;
 
-    public ManMotAdapter(Context context, List<TimSo> timSoList) {
+    private Integer soDaTim = 0;
+
+    public ManHaiAdapter(Context context, List<TimSo> timSoList) {
         this.context = context;
         this.timSoList = timSoList;
         mangChoi = 5;
         maNguoiDung = SessionManager.getUserId(context);
 
+        timSoBeNhat();
+    }
+
+    private void timSoBeNhat() {
         if (timSoList != null && !timSoList.isEmpty()) {
-            minSo = timSoList.get(0).getSo();
 
             for (TimSo item : timSoList) {
-                if (item.getSo() < minSo) {
+                if (item.getSo() != -1) {
                     minSo = item.getSo();
+                    break;
+                }
+            }
+
+            for (TimSo item : timSoList) {
+                if (item.getSo() != -1) {
+                    if (item.getSo() < minSo) {
+                        minSo = item.getSo();
+                    }
                 }
             }
         }
-
     }
+
 
     @NonNull
     @Override
@@ -74,6 +85,12 @@ public class ManMotAdapter extends RecyclerView.Adapter<ManMotAdapter.ViewHolder
         TimSo timSo = timSoList.get(position);
         holder.tvTimSo.setText(String.valueOf(timSo.getSo()));
 
+        if (timSo.getSo() == -1) {
+            holder.tvTimSo.setTextColor(Color.WHITE);
+        } else {
+            holder.tvTimSo.setTextColor(Color.BLACK);
+        }
+
         holder.tvTimSo.setOnClickListener(v -> {
             SoundManager.playButton(context);
             if (mangChoi == 0) {
@@ -81,23 +98,30 @@ public class ManMotAdapter extends RecyclerView.Adapter<ManMotAdapter.ViewHolder
             } else {
                 int so = timSo.getSo();
                 if (so == minSo) {
-                    //MessageHelper.success((Activity) context, "Số bé nhất là: " + so);
+                    MessageHelper.success((Activity) context, "Số bé nhất là: " + so);
 
-                    long ngay = System.currentTimeMillis();
-                    ManChoi manChoi = new ManChoi(maNguoiDung, 1, ngay, ngay);
+                    soDaTim = soDaTim + 1;
+                    timSo.setSo(-1);
+                    notifyDataSetChanged();
+                    timSoBeNhat();
+                    if (soDaTim == 2) {
+                        long ngay = System.currentTimeMillis();
+                        ManChoi manChoi = new ManChoi(maNguoiDung, 2, ngay, ngay);
+                        //MessageHelper.success((Activity) context, "Hoàn thành màn chơi: " + so);
+                        ManChoiRepository.themHoacCapNhat(manChoi, new ManChoiRepository.OnCompleteListener() {
+                            @Override
+                            public void onSuccess() {
+                                //MessageHelper.success((Activity) context, "Lưu màn chơi thành công");
+                                menuKetThuc(context, "✔\uFE0F Thành công", "\uD83C\uDF89 Bạn đã hoàn thành màn chơi hiện tại?", 3);
+                            }
 
-                    ManChoiRepository.themHoacCapNhat(manChoi, new ManChoiRepository.OnCompleteListener() {
-                        @Override
-                        public void onSuccess() {
-                            //MessageHelper.success((Activity) context, "Lưu màn chơi thành công");
-                            menuKetThuc(context, "✔\uFE0F Thành công", "\uD83C\uDF89 Bạn đã hoàn thành màn chơi hiện tại?", 3);
-                        }
+                            @Override
+                            public void onFailed(String error) {
+                                MessageHelper.error((Activity) context, error);
+                            }
+                        });
+                    }
 
-                        @Override
-                        public void onFailed(String error) {
-                            MessageHelper.error((Activity) context, error);
-                        }
-                    });
 
                 } else {
                     mangChoi = mangChoi - 1;
@@ -132,17 +156,14 @@ public class ManMotAdapter extends RecyclerView.Adapter<ManMotAdapter.ViewHolder
             @Override
             public void onChoiLai() {
                 SoundManager.playButton(context);
-                Intent intent = new Intent(context, ManMotActivity.class);
+                Intent intent = new Intent(context, ManHaiActivity.class);
                 context.startActivity(intent);
                 ((Activity) context).finish();
             }
 
             @Override
             public void onTiepTheo() {
-                SoundManager.playButton(context);
-                Intent intent = new Intent(context, ManHaiActivity.class);
-                context.startActivity(intent);
-                ((Activity) context).finish();
+
             }
         }).show();
 

@@ -72,7 +72,6 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private MaterialCardView cardDangXuat, cardDoiMatKhau;
 
     private ExoPlayer exoPlayer;
-    ;
     private PlayerView playerView;
 
     private String requestId;

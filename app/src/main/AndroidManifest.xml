@@ -21,6 +21,9 @@
             android:name=".activity.manchoi.ManMotActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.manchoi.ManHaiActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.manchoi.ManChoiActivity"
             android:exported="false" />
         <activity
