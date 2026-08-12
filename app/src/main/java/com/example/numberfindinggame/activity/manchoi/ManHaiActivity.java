@@ -1,8 +1,11 @@
 package com.example.numberfindinggame.activity.manchoi;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,9 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManHaiAdapter;
 import com.example.numberfindinggame.adapter.ManMotAdapter;
 import com.example.numberfindinggame.adapter.MangSongAdapter;
+import com.example.numberfindinggame.dialog.ConfirmDialog;
+import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.model.MangSong;
 import com.example.numberfindinggame.model.TimSo;
@@ -28,11 +34,13 @@ public class ManHaiActivity extends AppCompatActivity {
     private RecyclerView recyclerViewTimSo;
     private ManHaiAdapter manHaiAdapter;
     private List<TimSo> timSoList = new ArrayList<>();
-    private TextView txtQuayLai;
-
     private RecyclerView rvMang;
     private List<MangSong> mangSongList = new ArrayList<>();
     private MangSongAdapter mangSongAdapter;
+    private TextView txtMenu, txtTrangChu, txtThoat, txtChoiLai;
+
+    private Context context;
+    private LinearLayout linearLayoutChoiLai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +54,70 @@ public class ManHaiActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        context = ManHaiActivity.this;
         khoiTao();
 
-        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+        txtThoat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ManHaiActivity.this, ManChoiActivity.class);
-                SoundManager.playButton(ManHaiActivity.this);
-                startActivity(intent);
-                finish();
+                SoundManager.playButton(context);
+                chuyenManHinh(ManChoiActivity.class);
+            }
+        });
+
+        txtMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(context);
+
+                new ConfirmDialogMenu(context, 1).show();
+            }
+        });
+
+        txtTrangChu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(context);
+                chuyenManHinh(TrangChuActivity.class);
+            }
+        });
+
+        linearLayoutChoiLai.setVisibility(View.VISIBLE);
+        txtChoiLai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(context);
+                chuyenManHinh(ManHaiActivity.class);
             }
         });
 
 
+    }
+
+    private void chuyenManHinh(Class<?> dichDen) {
+        new ConfirmDialog(
+                context,
+                "⚠️Xác nhận",
+                "Bạn đang trong trận, bạn có muốn thực hiện hành động này không? " +
+                        "Thực hiện hành động sau sẽ mất tiến độ chơi hiện tại!",
+                new ConfirmDialog.ConfirmCallback() {
+
+                    @Override
+                    public void onYes() {
+                        SoundManager.playButton(context);
+
+                        Intent intent = new Intent(context, dichDen);
+                        SoundManager.playButton(context);
+                        context.startActivity(intent);
+                        ((Activity) context).finish();
+                    }
+
+                    @Override
+                    public void onNo() {
+
+                    }
+                }
+        ).show();
     }
 
     private void khoiTao() {
@@ -102,6 +161,12 @@ public class ManHaiActivity extends AppCompatActivity {
     private void setControl() {
         recyclerViewTimSo = findViewById(R.id.recyclerViewTimSo);
         rvMang = findViewById(R.id.rvMang);
-        txtQuayLai = findViewById(R.id.txtQuayLai);
+
+        txtThoat = findViewById(R.id.txtThoat);
+        txtMenu = findViewById(R.id.txtMenu);
+        txtTrangChu = findViewById(R.id.txtTrangChu);
+        txtChoiLai = findViewById(R.id.txtChoiLai);
+
+        linearLayoutChoiLai = findViewById(R.id.linearLayoutChoiLai);
     }
 }

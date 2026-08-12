@@ -22,7 +22,6 @@ import androidx.media3.ui.PlayerView;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
-import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -31,7 +30,6 @@ import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.helper.SoundManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
-import com.example.numberfindinggame.utils.DateUtils;
 import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 
@@ -50,6 +48,7 @@ public class ConfirmDialogMenu {
     private String maNguoiDung;
 
     private TextView txtTenNguoiDung;
+    private Integer dangChoi = 0;
 
     public ConfirmDialogMenu(
             Context context
@@ -69,6 +68,25 @@ public class ConfirmDialogMenu {
 
     }
 
+    public ConfirmDialogMenu(
+            Context context, Integer dangChoi
+    ) {
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(
+                R.layout.layout_dialog_confirm_menu
+        );
+
+        dialog.setCancelable(false);
+        this.context = context;
+        this.dangChoi = dangChoi;
+
+        setControl();
+        setEvent();
+
+    }
+
     private void setEvent() {
         exoPlayer = new ExoPlayer.Builder(context).build();
         playerView.setPlayer(exoPlayer);
@@ -76,47 +94,20 @@ public class ConfirmDialogMenu {
         layThongTinNguoiDung();
 
         cardTrangChu.setOnClickListener(v -> {
-
-            dismiss();
-            SoundManager.playButton(context);
-
-            Intent intent = new Intent(context, TrangChuActivity.class);
-            context.startActivity(intent);
-            ((Activity) context).finish();
-
+            chuyenManHinh(TrangChuActivity.class);
         });
 
         cardMap.setOnClickListener(v -> {
-
-            dismiss();
-            SoundManager.playButton(context);
-
-            Intent intent = new Intent(context, ManChoiActivity.class);
-            context.startActivity(intent);
-            ((Activity) context).finish();
-
+            chuyenManHinh(ManChoiActivity.class);
         });
 
         cardCaiDat.setOnClickListener(v -> {
-
-            dismiss();
-            SoundManager.playButton(context);
-
-            Intent intent = new Intent(context, SettingActivity.class);
-            context.startActivity(intent);
-            ((Activity) context).finish();
+            chuyenManHinh(SettingActivity.class);
 
         });
 
         cardTaiKhoan.setOnClickListener(v -> {
-
-            dismiss();
-            SoundManager.playButton(context);
-
-            Intent intent = new Intent(context, ThongTinNguoiDungActivity.class);
-            context.startActivity(intent);
-            ((Activity) context).finish();
-
+            chuyenManHinh(ThongTinNguoiDungActivity.class);
         });
 
         cardThoat.setOnClickListener(v -> {
@@ -125,6 +116,44 @@ public class ConfirmDialogMenu {
             SoundManager.playButton(context);
 
         });
+    }
+
+    private void chuyenManHinh(Class<?> dichDen) {
+        if (dangChoi == 1) {
+            new ConfirmDialog(
+                    context,
+                    "⚠️Xác nhận",
+                    "Bạn đang trong trận, bạn có muốn thực hiện hành động này không? " +
+                            "Thực hiện hành động sau sẽ mất tiến độ chơi hiện tại!",
+                    new ConfirmDialog.ConfirmCallback() {
+
+                        @Override
+                        public void onYes() {
+                            dismiss();
+                            SoundManager.playButton(context);
+
+                            Intent intent = new Intent(context, dichDen);
+                            SoundManager.playButton(context);
+                            context.startActivity(intent);
+                            ((Activity) context).finish();
+                        }
+
+                        @Override
+                        public void onNo() {
+
+                        }
+                    }
+            ).show();
+        } else {
+            dismiss();
+            SoundManager.playButton(context);
+
+            Intent intent = new Intent(context, dichDen);
+            SoundManager.playButton(context);
+            context.startActivity(intent);
+            ((Activity) context).finish();
+        }
+
     }
 
     private void layThongTinNguoiDung() {
