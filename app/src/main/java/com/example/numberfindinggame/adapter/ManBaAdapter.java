@@ -16,7 +16,6 @@ import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.manchoi.ManBaActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManHaiActivity;
-import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
 import com.example.numberfindinggame.dialog.ConfirmDialogManChoi;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.SessionManager;
@@ -28,7 +27,7 @@ import com.example.numberfindinggame.repository.ManChoiRepository;
 
 import java.util.List;
 
-public class ManHaiAdapter extends RecyclerView.Adapter<ManHaiAdapter.ViewHolder> {
+public class ManBaAdapter extends RecyclerView.Adapter<ManBaAdapter.ViewHolder> {
 
     private Context context;
     private List<TimSo> timSoList;
@@ -44,7 +43,7 @@ public class ManHaiAdapter extends RecyclerView.Adapter<ManHaiAdapter.ViewHolder
 
     private Integer soDaTim = 0;
 
-    public ManHaiAdapter(Context context, List<TimSo> timSoList) {
+    public ManBaAdapter(Context context, List<TimSo> timSoList) {
         this.context = context;
         this.timSoList = timSoList;
         mangChoi = 5;
@@ -105,9 +104,9 @@ public class ManHaiAdapter extends RecyclerView.Adapter<ManHaiAdapter.ViewHolder
                     timSo.setSo(-1);
                     notifyDataSetChanged();
                     timSoBeNhat();
-                    if (soDaTim == 2) {
+                    if (soDaTim == 3) {
                         long ngay = System.currentTimeMillis();
-                        ManChoi manChoi = new ManChoi(maNguoiDung, 2, ngay, ngay);
+                        ManChoi manChoi = new ManChoi(maNguoiDung, 3, ngay, ngay);
                         //MessageHelper.success((Activity) context, "Hoàn thành màn chơi: " + so);
                         ManChoiRepository.themHoacCapNhat(manChoi, new ManChoiRepository.OnCompleteListener() {
                             @Override
@@ -157,17 +156,14 @@ public class ManHaiAdapter extends RecyclerView.Adapter<ManHaiAdapter.ViewHolder
             @Override
             public void onChoiLai() {
                 SoundManager.playButton(context);
-                Intent intent = new Intent(context, ManHaiActivity.class);
+                Intent intent = new Intent(context, ManBaActivity.class);
                 context.startActivity(intent);
                 ((Activity) context).finish();
             }
 
             @Override
             public void onTiepTheo() {
-                SoundManager.playButton(context);
-                Intent intent = new Intent(context, ManBaActivity.class);
-                context.startActivity(intent);
-                ((Activity) context).finish();
+
             }
         }).show();
 

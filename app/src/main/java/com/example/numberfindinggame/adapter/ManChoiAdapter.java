@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.activity.manchoi.ManBaActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManHaiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
@@ -82,6 +83,13 @@ public class ManChoiAdapter extends RecyclerView.Adapter<ManChoiAdapter.ViewHold
 
         if ("2".equals(holder.tvManChoi.getText().toString())) {
             Intent intent = new Intent(context, ManHaiActivity.class);
+            SoundManager.playButton(context);
+            context.startActivity(intent);
+            ((Activity) context).finish();
+        }
+
+        if ("3".equals(holder.tvManChoi.getText().toString())) {
+            Intent intent = new Intent(context, ManBaActivity.class);
             SoundManager.playButton(context);
             context.startActivity(intent);
             ((Activity) context).finish();
