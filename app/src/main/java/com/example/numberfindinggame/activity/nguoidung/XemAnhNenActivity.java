@@ -9,13 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
@@ -24,10 +20,9 @@ import androidx.media3.ui.PlayerView;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
-import com.example.numberfindinggame.utils.DateUtils;
 import com.example.numberfindinggame.utils.LoadingDialog;
 
 public class XemAnhNenActivity extends AppCompatActivity {

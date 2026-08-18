@@ -1,8 +1,10 @@
-package com.example.numberfindinggame.helper;
+package com.example.numberfindinggame.manager;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.text.TextUtils;
+
+import com.example.numberfindinggame.session.SessionManagerMusic;
 
 public class MusicManager {
 

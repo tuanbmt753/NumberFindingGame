@@ -14,13 +14,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
-import com.example.numberfindinggame.helper.SessionManagerSetting;
+import com.example.numberfindinggame.session.SessionManagerSetting;
 import com.example.numberfindinggame.model.Emailjs;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.model.XacThucEmail;
@@ -167,6 +167,17 @@ public class XacThucEmailActivity extends AppCompatActivity {
                                 nguoiDung
                         );
 
+
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    if (activityType.toString().trim().equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+
+                        Intent intent = new Intent(
+                                XacThucEmailActivity.this,
+                                ThongTinNguoiDungActivity.class
+                        );
 
                         startActivity(intent);
                         finish();

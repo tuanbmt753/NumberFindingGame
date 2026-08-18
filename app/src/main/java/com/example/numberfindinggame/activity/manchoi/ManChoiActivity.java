@@ -3,7 +3,6 @@ package com.example.numberfindinggame.activity.manchoi;
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenByteSangBitMap;
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSangByte;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,33 +12,25 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManChoiAdapter;
-import com.example.numberfindinggame.dialog.ConfirmDialogManChoi;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
-import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.session.SessionManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.ManChoi;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.ManChoiRepository;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ManChoiActivity extends AppCompatActivity {
 
@@ -106,7 +97,7 @@ public class ManChoiActivity extends AppCompatActivity {
     }
 
     private void khoiTao() {
-        manChoiList = taoDuLieuMau(3);
+        manChoiList = taoDuLieuMau(4);
         adapter = new ManChoiAdapter(this, manChoiList, manChoiHienTai);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(adapter);

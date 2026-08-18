@@ -3,6 +3,7 @@ package com.example.numberfindinggame.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -86,6 +87,15 @@ public class ConfirmDialogManChoi {
 
     public void show() {
         dialog.show();
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+        }
     }
 
     public void dismiss() {

@@ -26,8 +26,8 @@ import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivit
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.session.SessionManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;

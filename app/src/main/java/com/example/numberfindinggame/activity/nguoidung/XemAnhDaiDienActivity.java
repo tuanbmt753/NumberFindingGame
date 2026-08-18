@@ -11,17 +11,13 @@ import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
-import com.example.numberfindinggame.utils.DateUtils;
 import com.example.numberfindinggame.utils.LoadingDialog;
 
 public class XemAnhDaiDienActivity extends AppCompatActivity {

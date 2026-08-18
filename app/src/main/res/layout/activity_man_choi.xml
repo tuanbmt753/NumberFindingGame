@@ -9,7 +9,7 @@
         layout="@layout/layout_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="25dp"
         android:elevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,39 +25,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="30dp"
+            android:paddingHorizontal="15dp"
             android:paddingTop="100dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+
+            <include
+                android:id="@+id/logoTitle"
+                layout="@layout/layout_logo_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/imgLogo"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/logo"
-                    app:layout_constraintBottom_toBottomOf="@id/txtTitle"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/txtTitle" />
-
-                <TextView
-                    android:id="@+id/txtTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/sono"
-                    android:gravity="right|center"
-                    android:text="Number&#10;Finding&#10;Game"
-                    android:textColor="#000"
-                    android:textSize="30sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/imgLogo"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
@@ -66,9 +42,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5sp"
-            android:layout_marginTop="35dp"
-            android:layout_marginRight="5sp" />
+            android:layout_marginTop="35dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@ package com.example.numberfindinggame.activity.music;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.example.numberfindinggame.helper.MusicManager;
+import com.example.numberfindinggame.manager.MusicManager;
 
 
 public class AppLifecycleObserver

@@ -1,10 +1,11 @@
-package com.example.numberfindinggame.helper;
+package com.example.numberfindinggame.manager;
 
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.session.SessionManagerSound;
 
 public class SoundManager {
 

@@ -3,7 +3,6 @@ package com.example.numberfindinggame.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.manchoi.ManBaActivity;
-import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManHaiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.ManChoi;
 
 import java.util.List;

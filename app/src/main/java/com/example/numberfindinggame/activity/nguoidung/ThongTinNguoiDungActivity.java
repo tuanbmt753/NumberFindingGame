@@ -6,13 +6,11 @@ import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSan
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -24,27 +22,26 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
-import androidx.media3.common.VideoSize;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.auth.DangKyActivity;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
-import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.BackgroundDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogAnhNen;
+import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.HinhAnhHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.session.MenuSession;
+import com.example.numberfindinggame.session.SessionManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.listener.OnUploadVideoListener;
 import com.example.numberfindinggame.manager.CloudinaryManager;
@@ -55,13 +52,10 @@ import com.example.numberfindinggame.utils.DateUtils;
 import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
-    private TextView txtQuayLai, txtTenNguoiDung, txtMaNguoiDung, txtEmail, txtUsername, txtNgayTao;
+    private TextView txtTenNguoiDung, txtMaNguoiDung, txtEmail, txtUsername, txtNgayTao;
+    private TextView txtMenu, txtTrangChu, txtThoat, txtMoRongMenu;
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
 
     private ImageView imgAvatar, imgHinhNen;
@@ -85,6 +79,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private TextView txtHuy;
 
     private String oldVideoUrl;
+    private MenuSession menuSession;
+    private LinearLayout layoutMenu;
 
 
     @Override
@@ -99,6 +95,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        menuSession = new MenuSession(this);
         linearLayoutTienDoTaiLen.setVisibility(View.GONE);
         exoPlayer = new ExoPlayer.Builder(this).build();
         playerView.setPlayer(exoPlayer);
@@ -165,17 +162,58 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         );
         layThongTinNguoiDung();
 
-        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+        if (menuSession.isMenuMo()) {
+            layoutMenu.setVisibility(View.VISIBLE);
+            txtMoRongMenu.setText("➖");
+        } else {
+            layoutMenu.setVisibility(View.GONE);
+            txtMoRongMenu.setText("➕");
+        }
+
+        txtMoRongMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(
-                        ThongTinNguoiDungActivity.this,
-                        TrangChuActivity.class
-                );
+                if (!menuSession.isMenuMo()) {
+                    layoutMenu.setVisibility(View.VISIBLE);
+                    menuSession.setMenuMo(true);
+                    txtMoRongMenu.setText("➖");
+                } else {
+                    layoutMenu.setVisibility(View.GONE);
+                    menuSession.setMenuMo(false);
+                    txtMoRongMenu.setText("➕");
+                }
+            }
+        });
+
+
+        txtMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                new ConfirmDialogMenu(ThongTinNguoiDungActivity.this).show();
+            }
+        });
+
+        txtTrangChu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                Intent intent = new Intent(ThongTinNguoiDungActivity.this, TrangChuActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
 
+        txtThoat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                Intent intent = new Intent(ThongTinNguoiDungActivity.this, TrangChuActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -314,7 +352,6 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                             @Override
                             public void onNenTinh() {
                                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
-
 
 
                                 themAnh = IntentKey.ANH_NEN;
@@ -811,7 +848,11 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void setControl() {
-        txtQuayLai = findViewById(R.id.txtQuayLai);
+        txtMenu = findViewById(R.id.txtMenu);
+        txtTrangChu = findViewById(R.id.txtTrangChu);
+        txtThoat = findViewById(R.id.txtThoat);
+        txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
+
         txtTenNguoiDung = findViewById(R.id.txtTenNguoiDung);
         txtMaNguoiDung = findViewById(R.id.txtMaNguoiDung);
         txtEmail = findViewById(R.id.txtEmail);
@@ -829,6 +870,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         linearLayoutTienDoTaiLen = findViewById(R.id.linearLayoutTienDoTaiLen);
         txtHuy = findViewById(R.id.txtHuy);
         seekBarBTaiLen = findViewById(R.id.seekBarBTaiLen);
+
+        layoutMenu = findViewById(R.id.layoutMenu);
 
 
     }

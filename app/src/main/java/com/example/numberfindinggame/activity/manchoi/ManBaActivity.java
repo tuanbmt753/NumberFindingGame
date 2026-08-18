@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,12 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManBaAdapter;
-import com.example.numberfindinggame.adapter.ManHaiAdapter;
 import com.example.numberfindinggame.adapter.MangSongAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.HieuUngHelper;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.MangSong;
 import com.example.numberfindinggame.model.TimSo;
 

@@ -18,12 +18,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
-import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;

@@ -17,11 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManHaiAdapter;
-import com.example.numberfindinggame.adapter.ManMotAdapter;
 import com.example.numberfindinggame.adapter.MangSongAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.MangSong;
 import com.example.numberfindinggame.model.TimSo;
 

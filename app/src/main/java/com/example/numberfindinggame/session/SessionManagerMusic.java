@@ -1,4 +1,4 @@
-package com.example.numberfindinggame.helper;
+package com.example.numberfindinggame.session;
 
 import android.content.Context;
 import android.content.SharedPreferences;

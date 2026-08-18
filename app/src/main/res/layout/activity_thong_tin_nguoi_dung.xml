@@ -4,26 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <include
+        android:id="@+id/menu"
+        layout="@layout/layout_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/bg_back"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
         android:elevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:padding="10sp"
-            android:id="@+id/txtQuayLai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/baseline_arrow_white_ios_24"
-            android:text="Back"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -40,8 +30,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:background="#000"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#000">
 
                 <androidx.media3.ui.PlayerView
                     android:id="@+id/playerView"
@@ -196,8 +186,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            app:cardBackgroundColor="#fff"
             android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="#fff"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
             app:rippleColor="#33000000"
@@ -206,11 +196,11 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutTienDoTaiLen"
-                android:background="@drawable/bg_caidat"
-                android:padding="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@drawable/bg_caidat"
+                android:orientation="vertical"
+                android:padding="10sp">
 
                 <TextView
                     android:layout_width="wrap_content"
