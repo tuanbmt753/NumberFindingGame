@@ -59,4 +59,64 @@ public class HieuUngHelper {
             }
         });
     }
+
+    public static void glitchXuatHien(View view, long delay) {
+
+        view.setAlpha(0f);
+        view.setScaleX(1.1f);
+        view.setScaleY(1.1f);
+
+        view.postDelayed(() -> {
+
+            view.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(500)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+
+        }, delay);
+    }
+
+    public static void hieuUngGlitch(View view) {
+
+        view.setAlpha(0f);
+
+        view.postDelayed(() -> {
+
+            view.setTranslationX(-20);
+
+            view.animate()
+                    .alpha(1f)
+                    .translationX(20)
+                    .setDuration(80)
+                    .withEndAction(() -> {
+
+                        view.animate()
+                                .translationX(-10)
+                                .setDuration(60)
+                                .withEndAction(() -> {
+
+                                    view.animate()
+                                            .translationX(5)
+                                            .setDuration(50)
+                                            .withEndAction(() -> {
+
+                                                view.animate()
+                                                        .translationX(0)
+                                                        .setDuration(150)
+                                                        .start();
+
+                                            })
+                                            .start();
+
+                                })
+                                .start();
+
+                    })
+                    .start();
+
+        }, 300);
+    }
 }

@@ -23,6 +23,7 @@ import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.MangSong;
 import com.example.numberfindinggame.model.TimSo;
+import com.example.numberfindinggame.session.MenuSession;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,12 +34,15 @@ public class ManMotActivity extends AppCompatActivity {
     private RecyclerView recyclerViewTimSo;
     private ManMotAdapter manMotAdapter;
     private List<TimSo> timSoList = new ArrayList<>();
-    private TextView txtMenu, txtTrangChu, txtThoat, txtChoiLai;
+    private TextView txtMenu, txtTrangChu, txtThoat, txtChoiLai, txtMoRongMenu;
     private LinearLayout linearLayoutChoiLai;
 
     private RecyclerView rvMang;
     private List<MangSong> mangSongList = new ArrayList<>();
     private MangSongAdapter mangSongAdapter;
+
+    private MenuSession menuSession;
+    private LinearLayout layoutMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class ManMotActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        menuSession = new MenuSession(this);
         khoiTao();
         linearLayoutChoiLai.setVisibility(View.VISIBLE);
 
@@ -84,6 +89,29 @@ public class ManMotActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SoundManager.playButton(ManMotActivity.this);
                 chuyenManHinh(ManMotActivity.class);
+            }
+        });
+
+        if (menuSession.isMenuMo()) {
+            layoutMenu.setVisibility(View.VISIBLE);
+            txtMoRongMenu.setText("➖");
+        } else {
+            layoutMenu.setVisibility(View.GONE);
+            txtMoRongMenu.setText("➕");
+        }
+
+        txtMoRongMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!menuSession.isMenuMo()) {
+                    layoutMenu.setVisibility(View.VISIBLE);
+                    menuSession.setMenuMo(true);
+                    txtMoRongMenu.setText("➖");
+                } else {
+                    layoutMenu.setVisibility(View.GONE);
+                    menuSession.setMenuMo(false);
+                    txtMoRongMenu.setText("➕");
+                }
             }
         });
 
@@ -163,6 +191,9 @@ public class ManMotActivity extends AppCompatActivity {
         txtMenu = findViewById(R.id.txtMenu);
         txtTrangChu = findViewById(R.id.txtTrangChu);
         txtChoiLai = findViewById(R.id.txtChoiLai);
+        txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
+
+        layoutMenu = findViewById(R.id.layoutMenu);
 
         linearLayoutChoiLai = findViewById(R.id.linearLayoutChoiLai);
     }

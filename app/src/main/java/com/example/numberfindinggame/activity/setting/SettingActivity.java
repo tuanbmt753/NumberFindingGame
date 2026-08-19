@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicFileHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.session.MenuSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.session.SessionManagerSetting;
 import com.example.numberfindinggame.manager.SoundManager;
@@ -95,7 +97,7 @@ public class SettingActivity extends AppCompatActivity {
     private ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
 
     private TextView txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
-    private TextView txtMenu, txtTrangChu, txtThoat;
+    private TextView txtMenu, txtTrangChu, txtThoat, txtMoRongMenu;
 
     private SeekBar seekBarBackground, seekBarEffect;
 
@@ -111,6 +113,9 @@ public class SettingActivity extends AppCompatActivity {
 
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
 
+    private MenuSession menuSession;
+    private LinearLayout layoutMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +127,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-
+        menuSession = new MenuSession(this);
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
         khoiTao();
@@ -187,6 +192,28 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
 
+        if (menuSession.isMenuMo()) {
+            layoutMenu.setVisibility(View.VISIBLE);
+            txtMoRongMenu.setText("➖");
+        } else {
+            layoutMenu.setVisibility(View.GONE);
+            txtMoRongMenu.setText("➕");
+        }
+
+        txtMoRongMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!menuSession.isMenuMo()) {
+                    layoutMenu.setVisibility(View.VISIBLE);
+                    menuSession.setMenuMo(true);
+                    txtMoRongMenu.setText("➖");
+                } else {
+                    layoutMenu.setVisibility(View.GONE);
+                    menuSession.setMenuMo(false);
+                    txtMoRongMenu.setText("➕");
+                }
+            }
+        });
 
         txtThoat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1181,6 +1208,7 @@ public class SettingActivity extends AppCompatActivity {
         txtThoat = findViewById(R.id.txtThoat);
         txtMenu = findViewById(R.id.txtMenu);
         txtTrangChu = findViewById(R.id.txtTrangChu);
+        txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
 
         seekBarEffect = findViewById(R.id.seekBarEffect);
         seekBarBackground = findViewById(R.id.seekBarBackground);
@@ -1192,6 +1220,8 @@ public class SettingActivity extends AppCompatActivity {
 
         imgQR = findViewById(R.id.imgQR);
         imgLogo = findViewById(R.id.imgLogo);
+
+        layoutMenu = findViewById(R.id.layoutMenu);
     }
 
     private void luuThietBi(String maNguoiDung) {

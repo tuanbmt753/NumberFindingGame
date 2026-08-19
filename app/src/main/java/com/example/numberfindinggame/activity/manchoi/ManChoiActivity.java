@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,7 @@ import com.example.numberfindinggame.adapter.ManChoiAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.session.MenuSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.ManChoi;
@@ -42,10 +44,13 @@ public class ManChoiActivity extends AppCompatActivity {
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
     private ManChoiRepository manChoiRepository = new ManChoiRepository();
 
-    private TextView txtMenu, txtTrangChu, txtThoat;
+    private TextView txtMenu, txtTrangChu, txtThoat, txtMoRongMenu;
 
     private String maNguoiDung;
     private Integer manChoiHienTai = 1;
+
+    private MenuSession menuSession;
+    private LinearLayout layoutMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,7 @@ public class ManChoiActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        menuSession = new MenuSession(this);
         maNguoiDung = SessionManager.getUserId(ManChoiActivity.this);
         layManChoiHienTai(maNguoiDung);
         layThongTinNguoiDung(maNguoiDung);
@@ -93,6 +99,30 @@ public class ManChoiActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        if (menuSession.isMenuMo()) {
+            layoutMenu.setVisibility(View.VISIBLE);
+            txtMoRongMenu.setText("➖");
+        } else {
+            layoutMenu.setVisibility(View.GONE);
+            txtMoRongMenu.setText("➕");
+        }
+
+        txtMoRongMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!menuSession.isMenuMo()) {
+                    layoutMenu.setVisibility(View.VISIBLE);
+                    menuSession.setMenuMo(true);
+                    txtMoRongMenu.setText("➖");
+                } else {
+                    layoutMenu.setVisibility(View.GONE);
+                    menuSession.setMenuMo(false);
+                    txtMoRongMenu.setText("➕");
+                }
+            }
+        });
+
 
     }
 
@@ -158,7 +188,9 @@ public class ManChoiActivity extends AppCompatActivity {
         txtMenu = findViewById(R.id.txtMenu);
         txtTrangChu = findViewById(R.id.txtTrangChu);
         txtThoat = findViewById(R.id.txtThoat);
+        txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
 
+        layoutMenu = findViewById(R.id.layoutMenu);
     }
 
     private void layThongTinNguoiDung(String maNguoiDung) {

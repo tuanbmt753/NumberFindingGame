@@ -17,7 +17,7 @@
 
         <include
             android:id="@+id/logoTitle"
-            layout="@layout/layout_logo_title"
+            layout="@layout/layout_logo_title2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

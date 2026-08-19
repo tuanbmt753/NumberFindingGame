@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
@@ -20,6 +21,7 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
@@ -41,6 +43,9 @@ public class TrangChuActivity extends AppCompatActivity {
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
     private ImageView imgLogo;
 
+    private ConstraintLayout layoutLogo;
+    private View viewNhieu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +60,29 @@ public class TrangChuActivity extends AppCompatActivity {
 
                 );
 
-        getControl();
-        getView();
+        setControl();
+        setEvent();
 
     }
 
-    private void getView() {
+    private void setEvent() {
         MusicManager.play(this);
         //Khởi tạo nhạc hiệu ứng 1 lần
         SoundManager.init(this);
         layCaiDat();
         layThongTinNguoiDung();
+
+        layoutLogo.setAlpha(0f);
+        HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+        viewNhieu.animate()
+                .alpha(0f)
+                .setDuration(600)
+                .setStartDelay(300)
+                .withEndAction(() -> {
+                    viewNhieu.setVisibility(View.GONE);
+                })
+                .start();
         //Bật tắt nhạc trong Setting
         /*
        switchMusic.setOnCheckedChangeListener(
@@ -228,7 +245,7 @@ public class TrangChuActivity extends AppCompatActivity {
         );
     }
 
-    private void getControl() {
+    private void setControl() {
 
         cardCaiDat = findViewById(R.id.cardCaiDat);
         cardThoat = findViewById(R.id.cardThoat);
@@ -236,6 +253,8 @@ public class TrangChuActivity extends AppCompatActivity {
         cardMap = findViewById(R.id.cardMap);
 
         imgLogo = findViewById(R.id.imgLogo);
+        layoutLogo = findViewById(R.id.layoutLogo);
+        viewNhieu = findViewById(R.id.viewNhieu);
 
     }
 

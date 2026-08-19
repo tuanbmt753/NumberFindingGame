@@ -11,11 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
@@ -23,6 +25,7 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -54,20 +57,35 @@ public class DangNhapActivity extends AppCompatActivity {
 
     private ThietBiDangNhapRepository repository = new ThietBiDangNhapRepository();
 
+    private ConstraintLayout layoutLogo;
+    private View viewNhieu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dang_nhap);
 
-        getControl();
-        getView();
+        setControl();
+        setEvent();
 
     }
 
-    private void getView() {
+    private void setEvent() {
         txtLoiEmail.setText("");
         txtLoiMatKhau.setText("");
+
+        layoutLogo.setAlpha(0f);
+        HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+        viewNhieu.animate()
+                .alpha(0f)
+                .setDuration(600)
+                .setStartDelay(300)
+                .withEndAction(() -> {
+                    viewNhieu.setVisibility(View.GONE);
+                })
+                .start();
 
         if (getIntent().hasExtra(IntentKey.EMAIL)) {
 
@@ -475,7 +493,7 @@ public class DangNhapActivity extends AppCompatActivity {
         );
     }
 
-    private void getControl() {
+    private void setControl() {
         cardDangNhap = findViewById(R.id.cardDangNhap);
         cardDangKy = findViewById(R.id.cardDangKy);
 
@@ -487,6 +505,9 @@ public class DangNhapActivity extends AppCompatActivity {
         txtQuenMatKhau = findViewById(R.id.txtQuenMatKhau);
 
         imgShowPassword = findViewById(R.id.imgShowPassword);
+
+        layoutLogo = findViewById(R.id.layoutLogo);
+        viewNhieu = findViewById(R.id.viewNhieu);
     }
 
     private boolean validateInput() {
