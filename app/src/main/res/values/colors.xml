@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="man_hien_tai">#FFD54F</color> <!-- Vàng cam dịu -->
+    <color name="man_da_vuot">#81C784</color> <!-- Xanh lá pastel -->
+    <color name="man_chua_choi">#E0E0E0</color> <!-- Xám nhạt -->
+    <color name="man_text">#212121</color> <!-- Màu chữ đậm -->
 </resources>

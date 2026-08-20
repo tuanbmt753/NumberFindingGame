@@ -11,11 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.setting.SettingActivity;
-import com.example.numberfindinggame.helper.MusicManager;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.NhacHieuUng;
-import com.example.numberfindinggame.model.NhacNen;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;

@@ -8,15 +8,11 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
-import com.example.numberfindinggame.helper.SessionManager;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;

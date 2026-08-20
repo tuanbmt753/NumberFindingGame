@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_menu2"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000">
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/playerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:resize_mode="fit"
+                app:use_controller="false" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- Ảnh nền -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgHinhNen"
+            android:layout_width="match_parent"
+            android:layout_height="206dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_profile"
+            app:shapeAppearanceOverlay="@style/BottomRoundImage" />
+
+        <!-- Avatar -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-60dp"
+            android:background="@drawable/bg_avatar"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_default"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/txtTenNguoiDung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/sono"
+            android:text="User name"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center|top"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTrangChu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:text="🏠"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2sp"
+                            android:fontFamily="@font/sono"
+                            android:gravity="left"
+                            android:text="Trang chủ"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardCaiDat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:text="⚙️"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2sp"
+                            android:fontFamily="@font/sono"
+                            android:gravity="left"
+                            android:text="Cài đặt"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardThoat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:text="❌"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2sp"
+                            android:fontFamily="@font/sono"
+                            android:gravity="left"
+                            android:text="Thoát"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:text="🧩"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2sp"
+                            android:fontFamily="@font/sono"
+                            android:gravity="left"
+                            android:text="Màn chơi"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTaiKhoan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:text="👥"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2sp"
+                            android:fontFamily="@font/sono"
+                            android:gravity="left"
+                            android:text="Tài khoản"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

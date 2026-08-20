@@ -16,14 +16,15 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
-import com.example.numberfindinggame.helper.SessionManager;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;
@@ -53,6 +54,8 @@ public class DangKyActivity extends AppCompatActivity {
     private NguoiDung nguoiDung = new NguoiDung();
 
     private String emailNguoiDung = "";
+    private HieuUngGlitchLayout layoutGlitch;
+    private ConstraintLayout layoutLogo;
 
 
     @Override
@@ -61,12 +64,23 @@ public class DangKyActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dang_ky);
 
-        getControl();
-        getView();
+        setControl();
+        setEvent();
 
     }
 
-    private void getView() {
+    private void setEvent() {
+        //        layoutLogo.setAlpha(0f);
+        //
+        //        // Hiệu ứng logo xuất hiện glitch
+        //        HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             txtLogin.setText(
                     Html.fromHtml(
@@ -319,7 +333,7 @@ public class DangKyActivity extends AppCompatActivity {
         });
     }
 
-    private void getControl() {
+    private void setControl() {
 
         txtLogin = findViewById(R.id.txtLogin);
 
@@ -336,6 +350,8 @@ public class DangKyActivity extends AppCompatActivity {
         imgShowPassword = findViewById(R.id.imgShowPassword);
 
         cardDangKy = findViewById(R.id.cardDangKy);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
+        layoutLogo = findViewById(R.id.layoutLogo);
 
     }
 

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:background="@drawable/bg_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="60dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:orientation="vertical"
+       >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000">
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/playerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:resize_mode="fit"
+                app:use_controller="false" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- Ảnh nền -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgHinhNen"
+            android:layout_width="match_parent"
+            android:layout_height="206dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_profile"
+            app:shapeAppearanceOverlay="@style/BottomRoundImage" />
+
+        <!-- Avatar -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-90dp"
+            android:background="@drawable/bg_avatar"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_default"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/txtTenNguoiDung"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/sono"
+            android:text="User name"
+            android:textColor="#000000"
+            android:textSize="28sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTrangChu"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="🏠 Trang chủ"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMap"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="🧩 Màn chơi"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardCaiDat"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="⚙️ Cài đặt"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTaiKhoan"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="👥 Tài khoản"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardThoat"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="12dp"
+            app:rippleColor="#33000000"
+            app:strokeColor="#000000"
+            app:strokeWidth="0.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sono"
+                android:gravity="center"
+                android:text="❌ Thoát"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</ScrollView>

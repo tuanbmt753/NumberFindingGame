@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,7 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.auth.DangKyActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.NhacHieuUngAdapter;
@@ -36,14 +36,17 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
+import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicFileHelper;
-import com.example.numberfindinggame.helper.MusicManager;
+import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
-import com.example.numberfindinggame.helper.SessionManagerSetting;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.session.MenuSession;
+import com.example.numberfindinggame.session.SessionManager;
+import com.example.numberfindinggame.session.SessionManagerSetting;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.MaKhoiPhuc;
@@ -94,7 +97,9 @@ public class SettingActivity extends AppCompatActivity {
 
     private ThietBiDangNhapRepository thietBiDangNhapRepository = new ThietBiDangNhapRepository();
 
-    private TextView txtQuayLai, txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
+    private TextView txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
+    private TextView txtMenu, txtTrangChu, txtThoat, txtMoRongMenu;
+
     private SeekBar seekBarBackground, seekBarEffect;
 
     private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo, cardThemNhacNen;
@@ -109,6 +114,10 @@ public class SettingActivity extends AppCompatActivity {
 
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
 
+    private MenuSession menuSession;
+    private LinearLayout layoutMenu;
+    private HieuUngGlitchLayout layoutGlitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +129,13 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        layoutGlitch.postDelayed(() -> {
 
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
+
+        menuSession = new MenuSession(this);
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
         khoiTao();
@@ -185,18 +200,56 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
 
+        if (menuSession.isMenuMo()) {
+            layoutMenu.setVisibility(View.VISIBLE);
+            txtMoRongMenu.setText("➖");
+        } else {
+            layoutMenu.setVisibility(View.GONE);
+            txtMoRongMenu.setText("➕");
+        }
 
-        txtQuayLai.setOnClickListener(new View.OnClickListener() {
+        txtMoRongMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(
-                        SettingActivity.this,
-                        TrangChuActivity.class
-                );
+                if (!menuSession.isMenuMo()) {
+                    layoutMenu.setVisibility(View.VISIBLE);
+                    menuSession.setMenuMo(true);
+                    txtMoRongMenu.setText("➖");
+                } else {
+                    layoutMenu.setVisibility(View.GONE);
+                    menuSession.setMenuMo(false);
+                    txtMoRongMenu.setText("➕");
+                }
+            }
+        });
+
+        txtThoat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingActivity.this, TrangChuActivity.class);
                 SoundManager.playButton(SettingActivity.this);
                 startActivity(intent);
                 finish();
+            }
+        });
 
+        txtMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(SettingActivity.this);
+
+                new ConfirmDialogMenu(SettingActivity.this).show();
+            }
+        });
+
+        txtTrangChu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(SettingActivity.this);
+
+                Intent intent = new Intent(SettingActivity.this, TrangChuActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -1157,9 +1210,13 @@ public class SettingActivity extends AppCompatActivity {
         lvNhacNen = findViewById(R.id.lvNhacNen);
         lvNhacHieuUng = findViewById(R.id.lvNhacHieuUng);
 
-        txtQuayLai = findViewById(R.id.txtQuayLai);
         txtXacThucEmailDongMo = findViewById(R.id.txtXacThucEmailDongMo);
         txtMaKhoiPhucDongMo = findViewById(R.id.txtMaKhoiPhucDongMo);
+
+        txtThoat = findViewById(R.id.txtThoat);
+        txtMenu = findViewById(R.id.txtMenu);
+        txtTrangChu = findViewById(R.id.txtTrangChu);
+        txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
 
         seekBarEffect = findViewById(R.id.seekBarEffect);
         seekBarBackground = findViewById(R.id.seekBarBackground);
@@ -1171,6 +1228,9 @@ public class SettingActivity extends AppCompatActivity {
 
         imgQR = findViewById(R.id.imgQR);
         imgLogo = findViewById(R.id.imgLogo);
+
+        layoutMenu = findViewById(R.id.layoutMenu);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
     }
 
     private void luuThietBi(String maNguoiDung) {

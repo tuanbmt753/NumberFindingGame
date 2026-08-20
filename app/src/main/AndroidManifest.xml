@@ -18,6 +18,18 @@
         android:theme="@style/Theme.NumberFindingGame"
         tools:targetApi="31">
         <activity
+            android:name=".activity.manchoi.ManMotActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.manchoi.ManBaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.manchoi.ManHaiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.manchoi.ManChoiActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.nguoidung.XemAnhDaiDienActivity"
             android:exported="false" />
         <activity
