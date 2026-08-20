@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManChoiAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.MenuSession;
@@ -40,7 +42,7 @@ public class ManChoiActivity extends AppCompatActivity {
     private ManChoiAdapter adapter;
     private List<ManChoi> manChoiList;
 
-    private ImageView imgLogo;
+
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
     private ManChoiRepository manChoiRepository = new ManChoiRepository();
 
@@ -51,6 +53,10 @@ public class ManChoiActivity extends AppCompatActivity {
 
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
+
+    private ImageView imgLogo;
+    private HieuUngGlitchLayout layoutGlitch;
+    private ConstraintLayout layoutLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,12 @@ public class ManChoiActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
+
         menuSession = new MenuSession(this);
         maNguoiDung = SessionManager.getUserId(ManChoiActivity.this);
         layManChoiHienTai(maNguoiDung);
@@ -184,7 +196,11 @@ public class ManChoiActivity extends AppCompatActivity {
 
     private void setControl() {
         recyclerView = findViewById(R.id.recyclerView);
+
         imgLogo = findViewById(R.id.imgLogo);
+        layoutLogo = findViewById(R.id.layoutLogo);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
+
         txtMenu = findViewById(R.id.txtMenu);
         txtTrangChu = findViewById(R.id.txtTrangChu);
         txtThoat = findViewById(R.id.txtThoat);

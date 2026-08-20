@@ -21,6 +21,8 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.GlitchView;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
@@ -42,9 +44,8 @@ public class TrangChuActivity extends AppCompatActivity {
 
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
     private ImageView imgLogo;
-
+    private HieuUngGlitchLayout layoutGlitch;
     private ConstraintLayout layoutLogo;
-    private View viewNhieu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +73,12 @@ public class TrangChuActivity extends AppCompatActivity {
         layCaiDat();
         layThongTinNguoiDung();
 
-        layoutLogo.setAlpha(0f);
-        HieuUngHelper.hieuUngGlitch(layoutLogo);
+        layoutGlitch.postDelayed(() -> {
 
-        viewNhieu.animate()
-                .alpha(0f)
-                .setDuration(600)
-                .setStartDelay(300)
-                .withEndAction(() -> {
-                    viewNhieu.setVisibility(View.GONE);
-                })
-                .start();
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
+
         //Bật tắt nhạc trong Setting
         /*
        switchMusic.setOnCheckedChangeListener(
@@ -254,7 +250,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
         imgLogo = findViewById(R.id.imgLogo);
         layoutLogo = findViewById(R.id.layoutLogo);
-        viewNhieu = findViewById(R.id.viewNhieu);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
 
     }
 

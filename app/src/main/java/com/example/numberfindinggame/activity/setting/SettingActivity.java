@@ -37,6 +37,7 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicFileHelper;
@@ -115,6 +116,7 @@ public class SettingActivity extends AppCompatActivity {
 
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
+    private HieuUngGlitchLayout layoutGlitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,12 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
+
         menuSession = new MenuSession(this);
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
         lvThietBiDangNhap.setAdapter(thietBiDangNhapAdapter);
@@ -1222,6 +1230,7 @@ public class SettingActivity extends AppCompatActivity {
         imgLogo = findViewById(R.id.imgLogo);
 
         layoutMenu = findViewById(R.id.layoutMenu);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
     }
 
     private void luuThietBi(String maNguoiDung) {

@@ -25,6 +25,7 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.model.CaiDat;
@@ -58,7 +59,7 @@ public class DangNhapActivity extends AppCompatActivity {
     private ThietBiDangNhapRepository repository = new ThietBiDangNhapRepository();
 
     private ConstraintLayout layoutLogo;
-    private View viewNhieu;
+    private GlitchView viewNhieu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +77,12 @@ public class DangNhapActivity extends AppCompatActivity {
         txtLoiMatKhau.setText("");
 
         layoutLogo.setAlpha(0f);
+
+        // Hiệu ứng logo xuất hiện glitch
         HieuUngHelper.hieuUngGlitch(layoutLogo);
 
-        viewNhieu.animate()
-                .alpha(0f)
-                .setDuration(600)
-                .setStartDelay(300)
-                .withEndAction(() -> {
-                    viewNhieu.setVisibility(View.GONE);
-                })
-                .start();
+        // Hiệu ứng nhiễu màn hình
+        viewNhieu.startGlitch(900);
 
         if (getIntent().hasExtra(IntentKey.EMAIL)) {
 

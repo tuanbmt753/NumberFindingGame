@@ -85,38 +85,39 @@ public class HieuUngHelper {
 
         view.postDelayed(() -> {
 
-            view.setTranslationX(-20);
+            view.setAlpha(1f);
 
-            view.animate()
-                    .alpha(1f)
-                    .translationX(20)
-                    .setDuration(80)
-                    .withEndAction(() -> {
-
-                        view.animate()
-                                .translationX(-10)
-                                .setDuration(60)
-                                .withEndAction(() -> {
-
-                                    view.animate()
-                                            .translationX(5)
-                                            .setDuration(50)
-                                            .withEndAction(() -> {
-
-                                                view.animate()
-                                                        .translationX(0)
-                                                        .setDuration(150)
-                                                        .start();
-
-                                            })
-                                            .start();
-
-                                })
-                                .start();
-
-                    })
-                    .start();
+            glitchStep(view, 0);
 
         }, 300);
+    }
+
+    private static void glitchStep(View view, int step) {
+
+        if (step >= 8) {
+
+            view.animate()
+                    .translationX(0)
+                    .translationY(0)
+                    .setDuration(100)
+                    .start();
+
+            return;
+        }
+
+        int randomX = (int) (Math.random() * 50) - 25;
+
+        int randomY = (int) (Math.random() * 20) - 10;
+
+        view.animate()
+                .translationX(randomX)
+                .translationY(randomY)
+                .setDuration(40)
+                .withEndAction(() -> {
+
+                    glitchStep(view, step + 1);
+
+                })
+                .start();
     }
 }
