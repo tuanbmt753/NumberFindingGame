@@ -10,39 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="60dp"
+        android:paddingHorizontal="15dp"
         android:paddingTop="70dp"
         android:paddingBottom="70dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
+            android:id="@+id/layoutGlitch"
+            layout="@layout/layout_logo_title4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:src="@drawable/logo"
-                app:layout_constraintBottom_toBottomOf="@id/txtTitle"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtTitle" />
-
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="right|center"
-                android:text="Number&#10;Finding&#10;Game"
-                android:textColor="#000"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgLogo"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="match_parent"
@@ -99,10 +75,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:layout_marginTop="2dp"
             android:id="@+id/txtLoiUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/sono"
             android:gravity="left"
             android:text="aa"
@@ -153,10 +129,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:layout_marginTop="2dp"
             android:id="@+id/txtLoiEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/sono"
             android:gravity="left"
             android:text="aa"
@@ -205,11 +181,12 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
         <TextView
-            android:layout_marginTop="2dp"
             android:id="@+id/txtLoiSoDienThoai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/sono"
             android:gravity="left"
             android:text="aa"
@@ -270,10 +247,10 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:layout_marginTop="2dp"
             android:id="@+id/txtLoiMatKhau"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/sono"
             android:gravity="left"
             android:text="aa"

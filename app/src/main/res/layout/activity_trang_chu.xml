@@ -10,44 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="60dp"
+        android:paddingHorizontal="10sp"
         android:paddingTop="70dp"
         android:paddingBottom="70dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <include
+            android:id="@+id/layoutGlitch"
+            layout="@layout/layout_logo_title4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/logo"
-                app:layout_constraintBottom_toBottomOf="@id/txtTitle"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/txtTitle" />
-
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:gravity="right|center"
-                android:text="Number&#10;Finding&#10;Game"
-                android:textColor="#000"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgLogo"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardMap"
@@ -68,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Chế độ map"
+                android:text="🧩 Màn chơi"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -118,7 +91,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Cài đặt"
+                android:text="⚙️ Cài đặt"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -168,7 +141,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Bảng xếp hạng"
+                android:text="🏆 Bảng xếp hạng"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 

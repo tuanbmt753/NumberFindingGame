@@ -3,9 +3,7 @@ package com.example.numberfindinggame.activity.home;
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenByteSangBitMap;
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSangByte;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,40 +11,41 @@ import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.numberfindinggame.R;
-import com.example.numberfindinggame.activity.auth.DangKyActivity;
-import com.example.numberfindinggame.activity.auth.DangNhapActivity;
-import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
+import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.callback.CaiDatCallback;
-import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.GlitchView;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
-import com.example.numberfindinggame.helper.MusicManager;
+import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
-import com.example.numberfindinggame.helper.SessionManager;
-import com.example.numberfindinggame.helper.SoundManager;
+import com.example.numberfindinggame.session.SessionManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
-import com.example.numberfindinggame.repository.ThietBiDangNhapRepository;
-import com.example.numberfindinggame.utils.DateUtils;
 import com.example.numberfindinggame.utils.LoadingDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
-    private MaterialCardView cardCaiDat, cardThoat, cardTaiKhoan;
+    private MaterialCardView cardCaiDat, cardThoat, cardTaiKhoan, cardMap;
     private ValueEventListener dangHoatDongListener;
 
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
     private ImageView imgLogo;
+    private HieuUngGlitchLayout layoutGlitch;
+    private ConstraintLayout layoutLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +61,24 @@ public class TrangChuActivity extends AppCompatActivity {
 
                 );
 
-        getControl();
-        getView();
+        setControl();
+        setEvent();
 
     }
 
-    private void getView() {
+    private void setEvent() {
         MusicManager.play(this);
         //Khởi tạo nhạc hiệu ứng 1 lần
         SoundManager.init(this);
         layCaiDat();
         layThongTinNguoiDung();
+
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
+
         //Bật tắt nhạc trong Setting
         /*
        switchMusic.setOnCheckedChangeListener(
@@ -176,6 +182,21 @@ public class TrangChuActivity extends AppCompatActivity {
                 ).show();
             }
         });
+
+        cardMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        TrangChuActivity.this,
+                        ManChoiActivity.class
+                );
+
+                SoundManager.playButton(TrangChuActivity.this);
+
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void layThongTinNguoiDung() {
@@ -220,13 +241,16 @@ public class TrangChuActivity extends AppCompatActivity {
         );
     }
 
-    private void getControl() {
+    private void setControl() {
 
         cardCaiDat = findViewById(R.id.cardCaiDat);
         cardThoat = findViewById(R.id.cardThoat);
         cardTaiKhoan = findViewById(R.id.cardTaiKhoan);
+        cardMap = findViewById(R.id.cardMap);
 
         imgLogo = findViewById(R.id.imgLogo);
+        layoutLogo = findViewById(R.id.layoutLogo);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
 
     }
 

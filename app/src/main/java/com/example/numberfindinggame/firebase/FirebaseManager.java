@@ -32,4 +32,8 @@ public class FirebaseManager {
     public static DatabaseReference MaKhoiPhuc() {
         return database.getReference("MaKhoiPhuc");
     }
+
+    public static DatabaseReference ManChoi() {
+        return database.getReference("ManChoi");
+    }
 }
