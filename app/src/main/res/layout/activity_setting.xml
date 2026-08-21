@@ -34,7 +34,7 @@
 
             <include
                 android:id="@+id/layoutGlitch"
-                layout="@layout/layout_logo_title4"
+                layout="@layout/layout_logo_title3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

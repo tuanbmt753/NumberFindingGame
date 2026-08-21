@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.model.MaKhoiPhuc;
@@ -36,6 +37,7 @@ public class MaKhoiPhucActivity extends AppCompatActivity {
     private MaterialCardView cardXacNhan;
 
     private NguoiDung nguoiDung = new NguoiDung();
+    private HieuUngGlitchLayout layoutGlitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,11 @@ public class MaKhoiPhucActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
 
         if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
             String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
@@ -245,6 +252,7 @@ public class MaKhoiPhucActivity extends AppCompatActivity {
         edtMaKhoiPhuc = findViewById(R.id.edtMaKhoiPhuc);
 
         cardXacNhan = findViewById(R.id.cardXacNhan);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
     }
 
     private boolean validateInput() {

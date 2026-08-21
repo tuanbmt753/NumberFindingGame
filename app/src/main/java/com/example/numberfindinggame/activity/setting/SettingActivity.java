@@ -25,6 +25,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
@@ -37,7 +38,9 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
+import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.MusicFileHelper;
@@ -116,7 +119,8 @@ public class SettingActivity extends AppCompatActivity {
 
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
-    private HieuUngGlitchLayout layoutGlitch;
+    private GlitchView viewNhieu;
+    private ConstraintLayout layoutLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,11 +133,13 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        layoutGlitch.postDelayed(() -> {
+        layoutLogo.setAlpha(0f);
 
-            layoutGlitch.batDauGlitch(900);
+        // Hiệu ứng logo xuất hiện glitch
+        HieuUngHelper.hieuUngGlitch(layoutLogo);
 
-        }, 300);
+        // Hiệu ứng nhiễu màn hình
+        viewNhieu.startGlitch(900);
 
         menuSession = new MenuSession(this);
         thietBiDangNhapAdapter = new ThietBiDangNhapAdapter(this, dsThietBiDangNhap);
@@ -1230,7 +1236,9 @@ public class SettingActivity extends AppCompatActivity {
         imgLogo = findViewById(R.id.imgLogo);
 
         layoutMenu = findViewById(R.id.layoutMenu);
-        layoutGlitch = findViewById(R.id.layoutGlitch);
+
+        layoutLogo = findViewById(R.id.layoutLogo);
+        viewNhieu = findViewById(R.id.viewNhieu);
     }
 
     private void luuThietBi(String maNguoiDung) {
