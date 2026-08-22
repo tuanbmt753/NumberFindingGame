@@ -39,7 +39,6 @@ import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.GlitchView;
-import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
@@ -1233,12 +1232,12 @@ public class SettingActivity extends AppCompatActivity {
         cardThemNhacNen = findViewById(R.id.cardThemNhacNen);
 
         imgQR = findViewById(R.id.imgQR);
-        imgLogo = findViewById(R.id.imgLogo);
+        imgLogo = findViewById(R.id.imgLogo3);
 
         layoutMenu = findViewById(R.id.layoutMenu);
 
-        layoutLogo = findViewById(R.id.layoutLogo);
-        viewNhieu = findViewById(R.id.viewNhieu);
+        layoutLogo = findViewById(R.id.layoutLogo3);
+        viewNhieu = findViewById(R.id.viewNhieu3);
     }
 
     private void luuThietBi(String maNguoiDung) {

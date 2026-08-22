@@ -5,6 +5,8 @@ import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSan
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,9 +23,7 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
-import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
-import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
@@ -46,6 +46,8 @@ public class TrangChuActivity extends AppCompatActivity {
     private ImageView imgLogo;
     private HieuUngGlitchLayout layoutGlitch;
     private ConstraintLayout layoutLogo;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
         layoutGlitch.postDelayed(() -> {
 
-            layoutGlitch.batDauGlitch(900);
+            glitchRunnable.run();
 
         }, 300);
 
@@ -248,8 +250,8 @@ public class TrangChuActivity extends AppCompatActivity {
         cardTaiKhoan = findViewById(R.id.cardTaiKhoan);
         cardMap = findViewById(R.id.cardMap);
 
-        imgLogo = findViewById(R.id.imgLogo);
-        layoutLogo = findViewById(R.id.layoutLogo);
+        imgLogo = findViewById(R.id.imgLogo3);
+        layoutLogo = findViewById(R.id.layoutLogo3);
         layoutGlitch = findViewById(R.id.layoutGlitch);
 
     }
@@ -293,7 +295,23 @@ public class TrangChuActivity extends AppCompatActivity {
                 DeviceHelper.getDeviceId(TrangChuActivity.this),
                 dangHoatDongListener
         );
+        handler.removeCallbacks(glitchRunnable);
     }
+
+    private Runnable glitchRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            // Chạy hiệu ứng glitch
+            layoutGlitch.batDauGlitch(900);
+
+            // Phát nhạc electric.mp3
+            SoundManager.playElectric(TrangChuActivity.this);
+
+            // 7 giây sau chạy lại
+            handler.postDelayed(this, 7000);
+        }
+    };
 
 
 }

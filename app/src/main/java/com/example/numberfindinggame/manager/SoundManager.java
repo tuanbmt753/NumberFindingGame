@@ -26,6 +26,8 @@ public class SoundManager {
 
     private static int coin;
 
+    private static int electric;
+
     // âm thanh nút đang dùng
 
     private static int currentButtonSound;
@@ -91,6 +93,12 @@ public class SoundManager {
                 soundPool.load(
                         context,
                         R.raw.coin,
+                        1);
+
+        electric =
+                soundPool.load(
+                        context,
+                        R.raw.electric,
                         1);
 
 
@@ -187,6 +195,15 @@ public class SoundManager {
         play(
                 context,
                 coin);
+
+    }
+
+    public static void playElectric(
+            Context context) {
+
+        play(
+                context,
+                electric);
 
     }
 

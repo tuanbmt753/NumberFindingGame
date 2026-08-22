@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -503,8 +502,8 @@ public class DangNhapActivity extends AppCompatActivity {
 
         imgShowPassword = findViewById(R.id.imgShowPassword);
 
-        layoutLogo = findViewById(R.id.layoutLogo);
-        viewNhieu = findViewById(R.id.viewNhieu);
+        layoutLogo = findViewById(R.id.layoutLogo3);
+        viewNhieu = findViewById(R.id.viewNhieu3);
     }
 
     private boolean validateInput() {

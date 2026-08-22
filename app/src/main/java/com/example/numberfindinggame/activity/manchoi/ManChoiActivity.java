@@ -197,8 +197,8 @@ public class ManChoiActivity extends AppCompatActivity {
     private void setControl() {
         recyclerView = findViewById(R.id.recyclerView);
 
-        imgLogo = findViewById(R.id.imgLogo);
-        layoutLogo = findViewById(R.id.layoutLogo);
+        imgLogo = findViewById(R.id.imgLogo3);
+        layoutLogo = findViewById(R.id.layoutLogo3);
         layoutGlitch = findViewById(R.id.layoutGlitch);
 
         txtMenu = findViewById(R.id.txtMenu);

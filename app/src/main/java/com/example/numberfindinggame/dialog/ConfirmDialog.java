@@ -3,7 +3,6 @@ package com.example.numberfindinggame.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.numberfindinggame.R;
@@ -29,7 +28,7 @@ public class ConfirmDialog {
         dialog.setCancelable(false);
 
         TextView txtTitle =
-                dialog.findViewById(R.id.txtTitle);
+                dialog.findViewById(R.id.txtTitle3);
 
         TextView txtMessage =
                 dialog.findViewById(R.id.txtMessage);

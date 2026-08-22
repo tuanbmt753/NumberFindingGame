@@ -31,7 +31,7 @@ public class ConfirmDialogManChoi {
         dialog.setCancelable(false);
 
         TextView txtTitle =
-                dialog.findViewById(R.id.txtTitle);
+                dialog.findViewById(R.id.txtTitle3);
 
         TextView txtMessage =
                 dialog.findViewById(R.id.txtMessage);

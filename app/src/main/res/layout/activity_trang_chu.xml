@@ -14,6 +14,12 @@
         android:paddingTop="70dp"
         android:paddingBottom="70dp">
 
+        <include
+            android:id="@+id/layoutLogo3"
+            layout="@layout/layout_logo_title3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <include
             android:id="@+id/layoutGlitch"
