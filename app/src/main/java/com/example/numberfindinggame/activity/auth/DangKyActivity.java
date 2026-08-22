@@ -350,7 +350,7 @@ public class DangKyActivity extends AppCompatActivity {
 
         cardDangKy = findViewById(R.id.cardDangKy);
         layoutGlitch = findViewById(R.id.layoutGlitch);
-        layoutLogo = findViewById(R.id.layoutLogo3);
+        layoutLogo = findViewById(R.id.layoutLogo);
 
     }
 

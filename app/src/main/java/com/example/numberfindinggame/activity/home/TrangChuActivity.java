@@ -23,7 +23,9 @@ import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.helper.DeviceHelper;
+import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
@@ -46,8 +48,10 @@ public class TrangChuActivity extends AppCompatActivity {
     private ImageView imgLogo;
     private HieuUngGlitchLayout layoutGlitch;
     private ConstraintLayout layoutLogo;
+    private GlitchView viewNhieu;
 
     private Handler handler = new Handler(Looper.getMainLooper());
+    private Integer hieuUng = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +79,15 @@ public class TrangChuActivity extends AppCompatActivity {
         layCaiDat();
         layThongTinNguoiDung();
 
-        layoutGlitch.postDelayed(() -> {
+        if (hieuUng == 3 || hieuUng == 4) {
+            SoundManager.playElectric(TrangChuActivity.this);
+            layoutGlitch.postDelayed(() -> {
 
-            glitchRunnable.run();
+                handler.post(glitchRunnable);
 
-        }, 300);
+            }, 300);
+        }
+
 
         //Bật tắt nhạc trong Setting
         /*
@@ -250,9 +258,10 @@ public class TrangChuActivity extends AppCompatActivity {
         cardTaiKhoan = findViewById(R.id.cardTaiKhoan);
         cardMap = findViewById(R.id.cardMap);
 
-        imgLogo = findViewById(R.id.imgLogo3);
-        layoutLogo = findViewById(R.id.layoutLogo3);
+        imgLogo = findViewById(R.id.imgLogo);
+        layoutLogo = findViewById(R.id.layoutLogo);
         layoutGlitch = findViewById(R.id.layoutGlitch);
+        viewNhieu = findViewById(R.id.viewNhieu);
 
     }
 
@@ -302,16 +311,39 @@ public class TrangChuActivity extends AppCompatActivity {
         @Override
         public void run() {
 
-            // Chạy hiệu ứng glitch
-            layoutGlitch.batDauGlitch(900);
+            if (hieuUng == 3) {
+
+                // =========================
+                // HIỆU ỨNG 3
+                // =========================
+
+                viewNhieu.setVisibility(View.VISIBLE);
+                layoutLogo.setAlpha(0f);
+
+                // Hiệu ứng logo xuất hiện glitch
+                HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+                // Hiệu ứng nhiễu màn hình
+                viewNhieu.startGlitch(900);
+
+            } else if (hieuUng == 4) {
+
+                // =========================
+                // HIỆU ỨNG 4
+                // =========================
+
+                layoutGlitch.batDauGlitch(900);
+            }
 
             // Phát nhạc electric.mp3
             SoundManager.playElectric(TrangChuActivity.this);
 
-            // 7 giây sau chạy lại
-            handler.postDelayed(this, 7000);
+            // Nếu đang là hiệu ứng 3 hoặc 4
+            // thì 7 giây sau chạy lại
+            if (hieuUng == 3 || hieuUng == 4) {
+                handler.postDelayed(this, 7000);
+            }
         }
     };
-
 
 }

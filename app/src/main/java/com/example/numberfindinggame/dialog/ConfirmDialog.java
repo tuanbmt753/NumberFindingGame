@@ -28,7 +28,7 @@ public class ConfirmDialog {
         dialog.setCancelable(false);
 
         TextView txtTitle =
-                dialog.findViewById(R.id.txtTitle3);
+                dialog.findViewById(R.id.txtTitle);
 
         TextView txtMessage =
                 dialog.findViewById(R.id.txtMessage);

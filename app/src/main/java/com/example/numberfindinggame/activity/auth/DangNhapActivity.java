@@ -502,8 +502,8 @@ public class DangNhapActivity extends AppCompatActivity {
 
         imgShowPassword = findViewById(R.id.imgShowPassword);
 
-        layoutLogo = findViewById(R.id.layoutLogo3);
-        viewNhieu = findViewById(R.id.viewNhieu3);
+        layoutLogo = findViewById(R.id.layoutLogo);
+        viewNhieu = findViewById(R.id.viewNhieu);
     }
 
     private boolean validateInput() {
