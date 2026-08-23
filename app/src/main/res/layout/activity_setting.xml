@@ -34,7 +34,7 @@
 
             <include
                 android:id="@+id/layoutGlitch"
-                layout="@layout/layout_logo_title3"
+                layout="@layout/layout_logo_title4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -156,6 +156,43 @@
                         android:textColor="#000"
                         android:textSize="20sp" />
 
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="#fff"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_caidat"
+                    android:orientation="vertical"
+                    android:padding="10sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sono"
+                        android:text="Đổi hiệu ứng"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                    <ListView
+                        android:id="@+id/lvHieuUng"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="10dp"
+                        android:nestedScrollingEnabled="true" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

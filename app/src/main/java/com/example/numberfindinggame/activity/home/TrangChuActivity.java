@@ -29,6 +29,7 @@ import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
@@ -51,7 +52,10 @@ public class TrangChuActivity extends AppCompatActivity {
     private GlitchView viewNhieu;
 
     private Handler handler = new Handler(Looper.getMainLooper());
+
     private Integer hieuUng = 4;
+    private HieuUngSession hieuUngSession;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +77,19 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        hieuUngSession = new HieuUngSession(this);
+        // Nếu lần đầu tiên chưa có dữ liệu
+
+        if (!hieuUngSession.isHieuUngExists()) {
+            hieuUng = 4;
+            // Lưu mặc định hiệu ứng 4
+            hieuUngSession.setHieuUng(hieuUng);
+
+        }
+        hieuUng = hieuUngSession.getHieuUng();
+
         MusicManager.play(this);
+
         //Khởi tạo nhạc hiệu ứng 1 lần
         SoundManager.init(this);
         layCaiDat();
@@ -327,7 +343,7 @@ public class TrangChuActivity extends AppCompatActivity {
                 viewNhieu.startGlitch(900);
 
             } else if (hieuUng == 4) {
-
+                viewNhieu.setVisibility(View.GONE);
                 // =========================
                 // HIỆU ỨNG 4
                 // =========================
