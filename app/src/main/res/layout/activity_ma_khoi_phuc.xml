@@ -34,11 +34,11 @@
 
 
         <include
-            android:layout_marginTop="10sp"
-            android:id="@+id/logoTitle"
-            layout="@layout/layout_logo_title"
+            android:id="@+id/layoutGlitch"
+            layout="@layout/layout_logo_title4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp" />
 
         <TextView
             android:id="@+id/txtNoiDung"

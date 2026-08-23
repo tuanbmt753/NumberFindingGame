@@ -14,7 +14,6 @@
         android:paddingTop="70dp"
         android:paddingBottom="70dp">
 
-
         <include
             android:id="@+id/layoutGlitch"
             layout="@layout/layout_logo_title4"

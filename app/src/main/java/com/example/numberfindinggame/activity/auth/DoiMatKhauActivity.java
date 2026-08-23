@@ -11,14 +11,12 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
@@ -39,6 +37,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
 
     private boolean isPasswordVisible = false;
     private boolean isPasswordVisible2 = false;
+    private HieuUngGlitchLayout layoutGlitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +45,17 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_doi_mat_khau);
 
-        getControl();
-        getView();
+        setControl();
+        setEvent();
 
     }
 
-    private void getView() {
+    private void setEvent() {
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
 
         txtLoiMatKhau.setText("");
         txtLoiNhapLai.setText("");
@@ -224,7 +228,7 @@ public class DoiMatKhauActivity extends AppCompatActivity {
         });
     }
 
-    private void getControl() {
+    private void setControl() {
         txtLoiMatKhau = findViewById(R.id.txtLoiMatKhau);
         txtLoiNhapLai = findViewById(R.id.txtLoiNhapLai);
         txtDangNhap = findViewById(R.id.txtDangNhap);
@@ -236,6 +240,8 @@ public class DoiMatKhauActivity extends AppCompatActivity {
 
         imgShowPassword = findViewById(R.id.imgShowPassword);
         imgNhapLai = findViewById(R.id.imgNhapLai);
+
+        layoutGlitch = findViewById(R.id.layoutGlitch);
 
     }
 

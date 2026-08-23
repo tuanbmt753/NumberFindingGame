@@ -24,7 +24,6 @@ import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.constant.LoginType;
 import com.example.numberfindinggame.firebase.FirebaseManager;
 import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
-import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;
 import com.example.numberfindinggame.utils.LoadingDialog;

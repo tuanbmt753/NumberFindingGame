@@ -3,7 +3,6 @@ package com.example.numberfindinggame.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.numberfindinggame.R;

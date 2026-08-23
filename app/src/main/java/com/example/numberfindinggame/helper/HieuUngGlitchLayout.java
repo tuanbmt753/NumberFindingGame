@@ -9,6 +9,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.example.numberfindinggame.activity.home.TrangChuActivity;
+import com.example.numberfindinggame.manager.SoundManager;
+
 import java.util.Random;
 
 public class HieuUngGlitchLayout extends FrameLayout {
