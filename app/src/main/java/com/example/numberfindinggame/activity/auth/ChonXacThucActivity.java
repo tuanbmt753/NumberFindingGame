@@ -13,6 +13,7 @@ import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.CaiDatRepository;
@@ -26,6 +27,7 @@ public class ChonXacThucActivity extends AppCompatActivity {
     private Boolean maKhoiPhuc = false;
 
     private TextView txtQuayLai;
+    private HieuUngGlitchLayout layoutGlitch;
 
 
     @Override
@@ -40,6 +42,12 @@ public class ChonXacThucActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
 
         if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
             String activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
@@ -172,5 +180,6 @@ public class ChonXacThucActivity extends AppCompatActivity {
         cardTiepTuc = findViewById(R.id.cardTiepTuc);
 
         txtQuayLai = findViewById(R.id.txtQuayLai);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
     }
 }

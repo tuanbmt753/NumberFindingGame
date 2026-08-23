@@ -5,6 +5,8 @@ import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSan
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
@@ -46,6 +49,13 @@ public class TrangChuActivity extends AppCompatActivity {
     private ImageView imgLogo;
     private HieuUngGlitchLayout layoutGlitch;
     private ConstraintLayout layoutLogo;
+    private GlitchView viewNhieu;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+
+    private Integer hieuUng = 4;
+    private HieuUngSession hieuUngSession;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +77,33 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        hieuUngSession = new HieuUngSession(this);
+        // Nếu lần đầu tiên chưa có dữ liệu
+
+        if (!hieuUngSession.isHieuUngExists()) {
+            hieuUng = 4;
+            // Lưu mặc định hiệu ứng 4
+            hieuUngSession.setHieuUng(hieuUng);
+
+        }
+        hieuUng = hieuUngSession.getHieuUng();
+
         MusicManager.play(this);
+
         //Khởi tạo nhạc hiệu ứng 1 lần
         SoundManager.init(this);
         layCaiDat();
         layThongTinNguoiDung();
 
-        layoutGlitch.postDelayed(() -> {
+        if (hieuUng == 3 || hieuUng == 4) {
+            SoundManager.playElectric(TrangChuActivity.this);
+            layoutGlitch.postDelayed(() -> {
 
-            layoutGlitch.batDauGlitch(900);
+                handler.post(glitchRunnable);
 
-        }, 300);
+            }, 300);
+        }
+
 
         //Bật tắt nhạc trong Setting
         /*
@@ -251,6 +277,7 @@ public class TrangChuActivity extends AppCompatActivity {
         imgLogo = findViewById(R.id.imgLogo);
         layoutLogo = findViewById(R.id.layoutLogo);
         layoutGlitch = findViewById(R.id.layoutGlitch);
+        viewNhieu = findViewById(R.id.viewNhieu);
 
     }
 
@@ -293,7 +320,46 @@ public class TrangChuActivity extends AppCompatActivity {
                 DeviceHelper.getDeviceId(TrangChuActivity.this),
                 dangHoatDongListener
         );
+        handler.removeCallbacks(glitchRunnable);
     }
 
+    private Runnable glitchRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            if (hieuUng == 3) {
+
+                // =========================
+                // HIỆU ỨNG 3
+                // =========================
+
+                viewNhieu.setVisibility(View.VISIBLE);
+                layoutLogo.setAlpha(0f);
+
+                // Hiệu ứng logo xuất hiện glitch
+                HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+                // Hiệu ứng nhiễu màn hình
+                viewNhieu.startGlitch(900);
+
+            } else if (hieuUng == 4) {
+                viewNhieu.setVisibility(View.GONE);
+                // =========================
+                // HIỆU ỨNG 4
+                // =========================
+
+                layoutGlitch.batDauGlitch(900);
+            }
+
+            // Phát nhạc electric.mp3
+            SoundManager.playElectric(TrangChuActivity.this);
+
+            // Nếu đang là hiệu ứng 3 hoặc 4
+            // thì 7 giây sau chạy lại
+            if (hieuUng == 3 || hieuUng == 4) {
+                handler.postDelayed(this, 7000);
+            }
+        }
+    };
 
 }

@@ -18,6 +18,7 @@ import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivit
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.SessionManagerSetting;
@@ -47,7 +48,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
 
     private CountDownTimer countDownTimer;
     private boolean hetHanOTP = false;
-
+    private HieuUngGlitchLayout layoutGlitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +56,16 @@ public class XacThucEmailActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_xac_thuc_email);
 
-        getControl();
-        getView();
+        setControl();
+        setEvent();
     }
 
-    private void getView() {
+    private void setEvent() {
+        layoutGlitch.postDelayed(() -> {
+
+            layoutGlitch.batDauGlitch(900);
+
+        }, 300);
         //themEmailjs();
 
         txtNoiDung.setText("Xác thực email");
@@ -328,7 +334,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
         });
     }
 
-    private void getControl() {
+    private void setControl() {
         txtQuayLai = findViewById(R.id.txtQuayLai);
         txtNoiDung = findViewById(R.id.txtNoiDung);
         txtLoiEmail = findViewById(R.id.txtLoiEmail);
@@ -342,6 +348,8 @@ public class XacThucEmailActivity extends AppCompatActivity {
         cardEdtOTP = findViewById(R.id.cardEdtOTP);
         cardEmail = findViewById(R.id.cardEmail);
         cardOTP = findViewById(R.id.cardOTP);
+
+        layoutGlitch = findViewById(R.id.layoutGlitch);
 
 
     }
