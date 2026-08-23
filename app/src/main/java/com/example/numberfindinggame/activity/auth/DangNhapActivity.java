@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +26,7 @@ import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngHelper;
+import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.model.CaiDat;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -61,6 +61,9 @@ public class DangNhapActivity extends AppCompatActivity {
     private ConstraintLayout layoutLogo;
     private GlitchView viewNhieu;
 
+    private HieuUngSession hieuUngSession ;
+    private Integer hieuUng = 4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,17 @@ public class DangNhapActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        hieuUngSession = new HieuUngSession(this);
+        // Nếu lần đầu tiên chưa có dữ liệu
+        if (!hieuUngSession.isHieuUngExists()) {
+
+            hieuUng = 4;
+
+            // Lưu mặc định hiệu ứng 4
+            hieuUngSession.setHieuUng(hieuUng);
+
+        }
+
         txtLoiEmail.setText("");
         txtLoiMatKhau.setText("");
 
