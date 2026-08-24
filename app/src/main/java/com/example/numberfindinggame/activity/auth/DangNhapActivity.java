@@ -3,6 +3,8 @@ package com.example.numberfindinggame.activity.auth;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -25,7 +27,11 @@ import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.DeviceHelper;
 import com.example.numberfindinggame.helper.GlitchView;
+import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.HieuUngHelper;
+import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
+import com.example.numberfindinggame.manager.MusicManager;
+import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.model.CaiDat;
@@ -60,9 +66,11 @@ public class DangNhapActivity extends AppCompatActivity {
 
     private ConstraintLayout layoutLogo;
     private GlitchView viewNhieu;
+    private HieuUngGlitchLayout layoutGlitch;
 
-    private HieuUngSession hieuUngSession ;
+    private HieuUngSession hieuUngSession;
     private Integer hieuUng = 4;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,11 @@ public class DangNhapActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        MusicManager.play(this);
+
+        //Khởi tạo nhạc hiệu ứng 1 lần
+        SoundManager.init(this);
+
         hieuUngSession = new HieuUngSession(this);
         // Nếu lần đầu tiên chưa có dữ liệu
         if (!hieuUngSession.isHieuUngExists()) {
@@ -86,6 +99,16 @@ public class DangNhapActivity extends AppCompatActivity {
             hieuUngSession.setHieuUng(hieuUng);
 
         }
+        hieuUng = hieuUngSession.getHieuUng();
+        if (hieuUng == 3 || hieuUng == 4) {
+            SoundManager.playElectric(DangNhapActivity.this);
+            layoutGlitch.postDelayed(() -> {
+
+                handler.post(glitchRunnable);
+
+            }, 300);
+        }
+
 
         txtLoiEmail.setText("");
         txtLoiMatKhau.setText("");
@@ -519,6 +542,7 @@ public class DangNhapActivity extends AppCompatActivity {
 
         layoutLogo = findViewById(R.id.layoutLogo);
         viewNhieu = findViewById(R.id.viewNhieu);
+        layoutGlitch = findViewById(R.id.layoutGlitch);
     }
 
     private boolean validateInput() {
@@ -548,5 +572,50 @@ public class DangNhapActivity extends AppCompatActivity {
 
         return isValid;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(glitchRunnable);
+    }
+
+    private Runnable glitchRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            if (hieuUng == 3) {
+
+                // =========================
+                // HIỆU ỨNG 3
+                // =========================
+
+                viewNhieu.setVisibility(View.VISIBLE);
+                layoutLogo.setAlpha(0f);
+
+                // Hiệu ứng logo xuất hiện glitch
+                HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+                // Hiệu ứng nhiễu màn hình
+                viewNhieu.startGlitch(900);
+
+            } else if (hieuUng == 4) {
+                viewNhieu.setVisibility(View.GONE);
+                // =========================
+                // HIỆU ỨNG 4
+                // =========================
+
+                layoutGlitch.batDauGlitch(900);
+            }
+
+            // Phát nhạc electric.mp3
+            SoundManager.playElectric(DangNhapActivity.this);
+
+            // Nếu đang là hiệu ứng 3 hoặc 4
+            // thì 7 giây sau chạy lại
+            if (hieuUng == 3 || hieuUng == 4) {
+                handler.postDelayed(this, 7000);
+            }
+        }
+    };
 
 }

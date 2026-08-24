@@ -5,6 +5,8 @@ import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSan
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,12 +20,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.auth.DangKyActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.adapter.ManChoiAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
+import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.manager.MusicManager;
+import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.MenuSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
@@ -57,6 +64,11 @@ public class ManChoiActivity extends AppCompatActivity {
     private ImageView imgLogo;
     private HieuUngGlitchLayout layoutGlitch;
     private ConstraintLayout layoutLogo;
+    private GlitchView viewNhieu;
+
+    private HieuUngSession hieuUngSession;
+    private Integer hieuUng = 4;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +82,31 @@ public class ManChoiActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        layoutGlitch.postDelayed(() -> {
+        MusicManager.play(this);
 
-            layoutGlitch.batDauGlitch(900);
+        //Khởi tạo nhạc hiệu ứng 1 lần
+        SoundManager.init(this);
 
-        }, 300);
+        hieuUngSession = new HieuUngSession(this);
+        // Nếu lần đầu tiên chưa có dữ liệu
+        if (!hieuUngSession.isHieuUngExists()) {
+
+            hieuUng = 4;
+
+            // Lưu mặc định hiệu ứng 4
+            hieuUngSession.setHieuUng(hieuUng);
+
+        }
+        hieuUng = hieuUngSession.getHieuUng();
+        if (hieuUng == 3 || hieuUng == 4) {
+            SoundManager.playElectric(ManChoiActivity.this);
+            layoutGlitch.postDelayed(() -> {
+
+                handler.post(glitchRunnable);
+
+            }, 300);
+        }
+
 
         menuSession = new MenuSession(this);
         maNguoiDung = SessionManager.getUserId(ManChoiActivity.this);
@@ -198,15 +230,17 @@ public class ManChoiActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         imgLogo = findViewById(R.id.imgLogo);
+
         layoutLogo = findViewById(R.id.layoutLogo);
         layoutGlitch = findViewById(R.id.layoutGlitch);
+        layoutMenu = findViewById(R.id.layoutMenu);
 
         txtMenu = findViewById(R.id.txtMenu);
         txtTrangChu = findViewById(R.id.txtTrangChu);
         txtThoat = findViewById(R.id.txtThoat);
         txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
 
-        layoutMenu = findViewById(R.id.layoutMenu);
+        viewNhieu = findViewById(R.id.viewNhieu);
     }
 
     private void layThongTinNguoiDung(String maNguoiDung) {
@@ -250,4 +284,49 @@ public class ManChoiActivity extends AppCompatActivity {
                 }
         );
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(glitchRunnable);
+    }
+
+    private Runnable glitchRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            if (hieuUng == 3) {
+
+                // =========================
+                // HIỆU ỨNG 3
+                // =========================
+
+                viewNhieu.setVisibility(View.VISIBLE);
+                layoutLogo.setAlpha(0f);
+
+                // Hiệu ứng logo xuất hiện glitch
+                HieuUngHelper.hieuUngGlitch(layoutLogo);
+
+                // Hiệu ứng nhiễu màn hình
+                viewNhieu.startGlitch(900);
+
+            } else if (hieuUng == 4) {
+                viewNhieu.setVisibility(View.GONE);
+                // =========================
+                // HIỆU ỨNG 4
+                // =========================
+
+                layoutGlitch.batDauGlitch(900);
+            }
+
+            // Phát nhạc electric.mp3
+            SoundManager.playElectric(ManChoiActivity.this);
+
+            // Nếu đang là hiệu ứng 3 hoặc 4
+            // thì 7 giây sau chạy lại
+            if (hieuUng == 3 || hieuUng == 4) {
+                handler.postDelayed(this, 7000);
+            }
+        }
+    };
 }
