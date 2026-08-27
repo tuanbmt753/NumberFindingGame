@@ -30,6 +30,7 @@ import com.example.numberfindinggame.model.MaKhoiPhuc;
 import com.example.numberfindinggame.model.NguoiDung;
 import com.example.numberfindinggame.repository.MaKhoiPhucRepository;
 import com.example.numberfindinggame.session.HieuUngSession;
+import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.example.numberfindinggame.utils.Validator;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
@@ -52,6 +53,7 @@ public class MaKhoiPhucActivity extends AppCompatActivity {
     private HieuUngSession hieuUngSession;
     private Integer hieuUng = 4;
     private Handler handler = new Handler(Looper.getMainLooper());
+    private NhacHieuUngNenSession nhacHieuUngNenSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class MaKhoiPhucActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacHieuUngNenSession =
+                new NhacHieuUngNenSession(this);
         MusicManager.play(this);
 
         //Khởi tạo nhạc hiệu ứng 1 lần
@@ -339,7 +343,10 @@ public class MaKhoiPhucActivity extends AppCompatActivity {
             }
 
             // Phát nhạc electric.mp3
-            SoundManager.playElectric(MaKhoiPhucActivity.this);
+            // Chỉ phát âm thanh hiệu ứng khi đang bật
+            if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                SoundManager.playElectric(MaKhoiPhucActivity.this);
+            }
 
             // Nếu đang là hiệu ứng 3 hoặc 4
             // thì 7 giây sau chạy lại

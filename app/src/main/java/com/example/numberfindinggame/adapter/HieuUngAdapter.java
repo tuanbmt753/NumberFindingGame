@@ -17,6 +17,7 @@ import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.HieuUng;
 import com.example.numberfindinggame.model.NhacNen;
 import com.example.numberfindinggame.session.HieuUngSession;
+import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class HieuUngAdapter
     private final Context context;
     private final List<HieuUng> dsHieuUng;
     private HieuUngSession hieuUngSession;
+    private NhacHieuUngNenSession nhacHieuUngNenSession;
 
     public HieuUngAdapter(
             Context context,
@@ -41,6 +43,7 @@ public class HieuUngAdapter
         this.context = context;
         this.dsHieuUng = dsHieuUng;
         hieuUngSession = new HieuUngSession(context);
+        nhacHieuUngNenSession = new NhacHieuUngNenSession(context);
     }
 
 
@@ -63,8 +66,10 @@ public class HieuUngAdapter
 
         TextView txtTenHieuUng = convertView.findViewById(R.id.txtTenHieuUng);
         TextView txtGhiChu = convertView.findViewById(R.id.txtGhiChu);
+        TextView txtAmThanhHieuUng = convertView.findViewById(R.id.txtAmThanhHieuUng);
 
         MaterialCardView cardHieuUng = convertView.findViewById(R.id.cardHieuUng);
+        MaterialCardView cardAmThanhHieuUng = convertView.findViewById(R.id.cardAmThanhHieuUng);
 
         HieuUng hieuUng = dsHieuUng.get(position);
         txtTenHieuUng.setText(hieuUng.getTenHieuUng());
@@ -81,10 +86,28 @@ public class HieuUngAdapter
                 cardHieuUng.setStrokeWidth(
                         dpToPx(1));
 
+                if (hieuUng.getMaHieuUng() == 1) {
+                    cardAmThanhHieuUng.setVisibility(View.GONE);
+                } else {
+                    cardAmThanhHieuUng.setVisibility(View.VISIBLE);
+                }
+
+                boolean dangBat =
+                        nhacHieuUngNenSession.isNhacHieuUng();
+                if (dangBat) {
+                    //BẬT
+                    txtAmThanhHieuUng.setText("\uD83C\uDFB5");
+
+                } else {
+                    //TẮT
+                    txtAmThanhHieuUng.setText("\uD83D\uDD07");
+                }
+
             } else {
 
                 cardHieuUng.setStrokeWidth(
                         dpToPx(0));
+                cardAmThanhHieuUng.setVisibility(View.GONE);
 
             }
 
@@ -97,6 +120,26 @@ public class HieuUngAdapter
                 SoundManager.playButton(context);
                 hieuUngSession.setHieuUng(hieuUng.getMaHieuUng());
                 notifyDataSetChanged();
+            }
+        });
+
+        cardAmThanhHieuUng.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean dangBat =
+                        nhacHieuUngNenSession.isNhacHieuUng();
+
+                // Đảo trạng thái
+                nhacHieuUngNenSession.setNhacHieuUng(!dangBat);
+
+                if (!dangBat) {
+                    // Sau khi nhấn -> BẬT
+                    txtAmThanhHieuUng.setText("\uD83C\uDFB5");
+
+                } else {
+                    // Sau khi nhấn -> TẮT
+                    txtAmThanhHieuUng.setText("\uD83D\uDD07");
+                }
             }
         });
 

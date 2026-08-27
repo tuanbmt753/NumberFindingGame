@@ -29,6 +29,7 @@ import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.session.HieuUngSession;
+import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.example.numberfindinggame.session.SessionManagerSetting;
 import com.example.numberfindinggame.model.Emailjs;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -63,7 +64,7 @@ public class XacThucEmailActivity extends AppCompatActivity {
     private HieuUngSession hieuUngSession;
     private Integer hieuUng = 4;
     private Handler handler = new Handler(Looper.getMainLooper());
-
+    private NhacHieuUngNenSession nhacHieuUngNenSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,8 @@ public class XacThucEmailActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacHieuUngNenSession =
+                new NhacHieuUngNenSession(this);
         MusicManager.play(this);
 
         //Khởi tạo nhạc hiệu ứng 1 lần
@@ -849,7 +852,10 @@ public class XacThucEmailActivity extends AppCompatActivity {
             }
 
             // Phát nhạc electric.mp3
-            SoundManager.playElectric(XacThucEmailActivity.this);
+            // Chỉ phát âm thanh hiệu ứng khi đang bật
+            if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                SoundManager.playElectric(XacThucEmailActivity.this);
+            }
 
             // Nếu đang là hiệu ứng 3 hoặc 4
             // thì 7 giây sau chạy lại

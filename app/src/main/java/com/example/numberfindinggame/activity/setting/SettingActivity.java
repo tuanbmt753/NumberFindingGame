@@ -53,6 +53,7 @@ import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.model.HieuUng;
 import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.MenuSession;
+import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.session.SessionManagerSetting;
 import com.example.numberfindinggame.manager.SoundManager;
@@ -139,6 +140,7 @@ public class SettingActivity extends AppCompatActivity {
     private Integer hieuUng = 4;
 
     private MusicType musicType;
+    private NhacHieuUngNenSession nhacHieuUngNenSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +153,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacHieuUngNenSession = new NhacHieuUngNenSession(this);
         musicType = new MusicType();
         hieuUngSession = new HieuUngSession(this);
 
@@ -1334,7 +1337,9 @@ public class SettingActivity extends AppCompatActivity {
 
                 // Hiệu ứng nhiễu màn hình
                 viewNhieu.startGlitch(900);
-                SoundManager.playElectric(SettingActivity.this);
+                if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                    SoundManager.playElectric(SettingActivity.this);
+                }
 
             } else if (hieuUng == 4) {
                 viewNhieu.setVisibility(View.GONE);
@@ -1343,14 +1348,16 @@ public class SettingActivity extends AppCompatActivity {
                 // =========================
 
                 layoutGlitch.batDauGlitch(900);
-                SoundManager.playElectric(SettingActivity.this);
+                if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                    SoundManager.playElectric(SettingActivity.this);
+                }
             }
 
             // Phát nhạc electric.mp3
 
 
             // Nếu đang là hiệu ứng 3 hoặc 4 hoặc 1
-            // thì 7 giây sau chạy lại
+            // thì 3 giây sau chạy lại
             if (hieuUng == 3 || hieuUng == 4 || hieuUng == 1) {
                 handler.postDelayed(this, 3000);
             }
