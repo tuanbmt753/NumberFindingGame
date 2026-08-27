@@ -59,7 +59,7 @@ public class NhacHieuUngAdapter
 
         TextView txtTenNhacHieuUng = convertView.findViewById(R.id.txtTenNhacHieuUng);
         TextView txtGhiChu = convertView.findViewById(R.id.txtGhiChu);
-
+        txtGhiChu.setVisibility(View.GONE);
         MaterialCardView cardNhacHieuUng = convertView.findViewById(R.id.cardNhacHieuUng);
 
         txtTenNhacHieuUng.setText(nhacHieuUng.getTenHieuUng());

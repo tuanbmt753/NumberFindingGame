@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.dialog.ConfirmDialogAnhNen;
+import com.example.numberfindinggame.dialog.ConfirmDialogThongTinNhac;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.NhacNen;
@@ -61,6 +63,7 @@ public class NhacNenAdapter
         TextView txtGhiChu = convertView.findViewById(R.id.txtGhiChu);
 
         MaterialCardView cardNhacNen = convertView.findViewById(R.id.cardNhacNen);
+        MaterialCardView cardThongTin = convertView.findViewById(R.id.cardThongTin);
 
         NhacNen nhacNen = dsNhacNen.get(position);
         txtTenNhacNen.setText(nhacNen.getTxtTenNhacNen());
@@ -73,7 +76,6 @@ public class NhacNenAdapter
                 || currentMusicPath.isEmpty()) {
 
             // Nhạc trong R.raw
-
             if (MusicManager.getCurrentMusic(context)
                     == nhacNen.getMaNhacNen()) {
 
@@ -87,10 +89,10 @@ public class NhacNenAdapter
 
             }
 
+
         } else {
 
             // Nhạc ngoài
-
             if (currentMusicPath.equals(
                     nhacNen.getTxtGhiChu())) {
 
@@ -104,8 +106,33 @@ public class NhacNenAdapter
 
             }
 
+
         }
         txtGhiChu.setVisibility(View.GONE);
+
+        // Nhạc trong R.raw
+        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen) {
+
+        }
+
+        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen2) {
+
+        }
+
+        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen3) {
+
+        }
+
+        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen4) {
+
+        }
+
+        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen5) {
+        }
+
+        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen6) {
+
+        }
 
         cardNhacNen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,12 +153,40 @@ public class NhacNenAdapter
             }
         });
 
+        cardThongTin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (nhacNen.getMaNhacNen() != -1) {
+                    confirmDialogThongTin(nhacNen.getTxtTenNhacNen(), nhacNen.getLinhDrive(), nhacNen.getLinhYoutube(), nhacNen.getTxtGhiChu(), 1);
+                } else {
+                    confirmDialogThongTin(nhacNen.getTxtTenNhacNen(), nhacNen.getLinhDrive(), nhacNen.getLinhYoutube(), nhacNen.getTxtGhiChu(), 2);
+                }
+
+            }
+        });
+
 
         return convertView;
     }
 
     private int dpToPx(int dp) {
         return (int) (dp * context.getResources().getDisplayMetrics().density);
+    }
+
+    private void confirmDialogThongTin(String title,
+                                       String linkDrive,
+                                       String linkYoutube,
+                                       String linkAndroid,
+                                       Integer luuTru) {
+        new ConfirmDialogThongTinNhac(context,
+                title,
+                linkDrive,
+                linkYoutube,
+                linkAndroid,
+                luuTru
+        ).show();
+
     }
 
 

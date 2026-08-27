@@ -18,16 +18,16 @@ import com.example.numberfindinggame.activity.manchoi.ManBonActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.dialog.ConfirmDialogManChoi;
 import com.example.numberfindinggame.helper.MessageHelper;
-import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.ManChoi;
 import com.example.numberfindinggame.model.MangSong;
 import com.example.numberfindinggame.model.TimSo;
 import com.example.numberfindinggame.repository.ManChoiRepository;
+import com.example.numberfindinggame.session.SessionManager;
 
 import java.util.List;
 
-public class ManBaAdapter extends RecyclerView.Adapter<ManBaAdapter.ViewHolder> {
+public class ManBonAdapter extends RecyclerView.Adapter<ManBonAdapter.ViewHolder> {
 
     private Context context;
     private List<TimSo> timSoList;
@@ -43,7 +43,7 @@ public class ManBaAdapter extends RecyclerView.Adapter<ManBaAdapter.ViewHolder> 
 
     private Integer soDaTim = 0;
 
-    public ManBaAdapter(Context context, List<TimSo> timSoList) {
+    public ManBonAdapter(Context context, List<TimSo> timSoList) {
         this.context = context;
         this.timSoList = timSoList;
         mangChoi = 5;
@@ -104,9 +104,9 @@ public class ManBaAdapter extends RecyclerView.Adapter<ManBaAdapter.ViewHolder> 
                     timSo.setSo(-1);
                     notifyDataSetChanged();
                     timSoBeNhat();
-                    if (soDaTim == 3) {
+                    if (soDaTim == 4) {
                         long ngay = System.currentTimeMillis();
-                        ManChoi manChoi = new ManChoi(maNguoiDung, 3, ngay, ngay);
+                        ManChoi manChoi = new ManChoi(maNguoiDung, 4, ngay, ngay);
                         //MessageHelper.success((Activity) context, "Hoàn thành màn chơi: " + so);
                         ManChoiRepository.themHoacCapNhat(manChoi, new ManChoiRepository.OnCompleteListener() {
                             @Override
@@ -156,17 +156,14 @@ public class ManBaAdapter extends RecyclerView.Adapter<ManBaAdapter.ViewHolder> 
             @Override
             public void onChoiLai() {
                 SoundManager.playButton(context);
-                Intent intent = new Intent(context, ManBaActivity.class);
+                Intent intent = new Intent(context, ManBonActivity.class);
                 context.startActivity(intent);
                 ((Activity) context).finish();
             }
 
             @Override
             public void onTiepTheo() {
-                SoundManager.playButton(context);
-                Intent intent = new Intent(context, ManBonActivity.class);
-                context.startActivity(intent);
-                ((Activity) context).finish();
+
             }
         }).show();
 

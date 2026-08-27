@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.manchoi.ManBaActivity;
+import com.example.numberfindinggame.activity.manchoi.ManBonActivity;
 import com.example.numberfindinggame.activity.manchoi.ManHaiActivity;
 import com.example.numberfindinggame.activity.manchoi.ManMotActivity;
 import com.example.numberfindinggame.manager.SoundManager;
@@ -67,6 +68,15 @@ public class ManChoiAdapter extends RecyclerView.Adapter<ManChoiAdapter.ViewHold
             }
         });
 
+        if (manChoi.getManChoi() <= manHienTai + 1) {
+            holder.tvManChoi.setEnabled(true);
+            holder.tvManChoi.setTextColor(context.getResources().getColor(R.color.black));
+        } else {
+            holder.tvManChoi.setEnabled(false);
+            holder.tvManChoi.setTextColor(context.getResources().getColor(android.R.color.transparent));
+            holder.tvManChoi.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+        }
+
     }
 
     private void chonManChoi(ViewHolder holder) {
@@ -87,6 +97,13 @@ public class ManChoiAdapter extends RecyclerView.Adapter<ManChoiAdapter.ViewHold
 
         if ("3".equals(holder.tvManChoi.getText().toString())) {
             Intent intent = new Intent(context, ManBaActivity.class);
+            SoundManager.playButton(context);
+            context.startActivity(intent);
+            ((Activity) context).finish();
+        }
+
+        if ("4".equals(holder.tvManChoi.getText().toString())) {
+            Intent intent = new Intent(context, ManBonActivity.class);
             SoundManager.playButton(context);
             context.startActivity(intent);
             ((Activity) context).finish();

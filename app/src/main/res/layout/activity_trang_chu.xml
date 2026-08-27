@@ -115,7 +115,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Tài khoản"
+                android:text="👥 Tài khoản"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -172,6 +172,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:visibility="gone"
             android:id="@+id/cardCuaHang"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -240,7 +241,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Thoát"
+                android:text="❌ Thoát"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
