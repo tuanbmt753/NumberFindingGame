@@ -39,6 +39,7 @@ import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.constant.MusicType;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.GlitchView;
@@ -52,6 +53,7 @@ import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.model.HieuUng;
 import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.MenuSession;
+import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.session.SessionManagerSetting;
 import com.example.numberfindinggame.manager.SoundManager;
@@ -137,6 +139,8 @@ public class SettingActivity extends AppCompatActivity {
     private HieuUngSession hieuUngSession;
     private Integer hieuUng = 4;
 
+    private MusicType musicType;
+    private NhacHieuUngNenSession nhacHieuUngNenSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +153,8 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacHieuUngNenSession = new NhacHieuUngNenSession(this);
+        musicType = new MusicType();
         hieuUngSession = new HieuUngSession(this);
 
         // Nếu lần đầu tiên chưa có dữ liệu
@@ -848,27 +854,6 @@ public class SettingActivity extends AppCompatActivity {
 
             String tenFile = field.getName();
 
-            if (tenFile.startsWith("nhac_nen")) {
-
-                try {
-
-                    int resId = field.getInt(null);
-
-                    dsNhacNen.add(
-                            new NhacNen(
-                                    resId,
-                                    "Nhạc nền " + sttNhacNen,
-                                    "Tên file: " + tenFile + ".mp3"
-                            )
-                    );
-
-                    sttNhacNen++;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
             if (tenFile.startsWith("click")) {
 
                 try {
@@ -893,8 +878,11 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+        dsNhacNen.addAll(musicType.getDsNhacNen());
+
         List<File> list =
                 MusicFileHelper.getAllMusic(this);
+
 
         for (File file : list) {
 
@@ -902,7 +890,7 @@ public class SettingActivity extends AppCompatActivity {
                     "MUSIC",
                     file.getName()
             );
-            dsNhacNen.add(new NhacNen(-1, file.getName(), file.getPath()));
+            dsNhacNen.add(new NhacNen(-1, file.getName(), file.getPath(), "", ""));
 
         }
 
@@ -944,45 +932,7 @@ public class SettingActivity extends AppCompatActivity {
 
         int stt = 1;
 
-        for (Field field : fields) {
-
-            String tenFile =
-                    field.getName();
-
-            if (tenFile.startsWith("nhac_nen")) {
-
-                try {
-
-                    int resId =
-                            field.getInt(null);
-
-                    dsNhacNen.add(
-
-                            new NhacNen(
-
-                                    resId,
-
-                                    tenFile
-                                            + ".mp3",
-
-                                    tenFile
-                                            + ".mp3"
-
-                            )
-
-                    );
-
-                    stt++;
-
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-
-                }
-
-            }
-
-        }
+        dsNhacNen.addAll(musicType.getDsNhacNen());
 
 
         List<File> files =
@@ -1008,13 +958,11 @@ public class SettingActivity extends AppCompatActivity {
             dsNhacNen.add(
 
                     new NhacNen(
-
                             -1,
-
                             file.getName(),
-
-                            file.getAbsolutePath()
-
+                            file.getAbsolutePath(),
+                            "",
+                            ""
                     )
 
             );
@@ -1389,7 +1337,9 @@ public class SettingActivity extends AppCompatActivity {
 
                 // Hiệu ứng nhiễu màn hình
                 viewNhieu.startGlitch(900);
-                SoundManager.playElectric(SettingActivity.this);
+                if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                    SoundManager.playElectric(SettingActivity.this);
+                }
 
             } else if (hieuUng == 4) {
                 viewNhieu.setVisibility(View.GONE);
@@ -1398,14 +1348,16 @@ public class SettingActivity extends AppCompatActivity {
                 // =========================
 
                 layoutGlitch.batDauGlitch(900);
-                SoundManager.playElectric(SettingActivity.this);
+                if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                    SoundManager.playElectric(SettingActivity.this);
+                }
             }
 
             // Phát nhạc electric.mp3
 
 
             // Nếu đang là hiệu ứng 3 hoặc 4 hoặc 1
-            // thì 7 giây sau chạy lại
+            // thì 3 giây sau chạy lại
             if (hieuUng == 3 || hieuUng == 4 || hieuUng == 1) {
                 handler.postDelayed(this, 3000);
             }

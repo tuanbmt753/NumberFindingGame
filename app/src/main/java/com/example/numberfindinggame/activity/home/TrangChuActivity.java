@@ -30,6 +30,7 @@ import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.HieuUngSession;
+import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
@@ -55,7 +56,7 @@ public class TrangChuActivity extends AppCompatActivity {
 
     private Integer hieuUng = 4;
     private HieuUngSession hieuUngSession;
-
+    private NhacHieuUngNenSession nhacHieuUngNenSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class TrangChuActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacHieuUngNenSession = new NhacHieuUngNenSession(this);
         hieuUngSession = new HieuUngSession(this);
         // Nếu lần đầu tiên chưa có dữ liệu
 
@@ -352,7 +354,10 @@ public class TrangChuActivity extends AppCompatActivity {
             }
 
             // Phát nhạc electric.mp3
-            SoundManager.playElectric(TrangChuActivity.this);
+            // Chỉ phát âm thanh hiệu ứng khi đang bật
+            if (nhacHieuUngNenSession.isNhacHieuUng()) {
+                SoundManager.playElectric(TrangChuActivity.this);
+            }
 
             // Nếu đang là hiệu ứng 3 hoặc 4
             // thì 7 giây sau chạy lại

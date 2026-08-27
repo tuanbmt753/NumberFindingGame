@@ -33,7 +33,7 @@
                 android:fontFamily="@font/sono"
                 android:text="Âm thanh hiệu ứng 1"
                 android:textColor="#000"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txtGhiChu"

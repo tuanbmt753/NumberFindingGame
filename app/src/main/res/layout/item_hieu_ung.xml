@@ -26,14 +26,50 @@
             android:orientation="vertical"
             android:padding="10sp">
 
-            <TextView
-                android:id="@+id/txtTenHieuUng"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:text="Hiệu ứng 1"
-                android:textColor="#000"
-                android:textSize="20sp" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTenHieuUng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sono"
+                    android:text="Hiệu ứng 1"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardAmThanhHieuUng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5sp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <TextView
+                        android:id="@+id/txtAmThanhHieuUng"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sono"
+                        android:gravity="center"
+                        android:padding="5sp"
+                        android:text="🎵"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtGhiChu"

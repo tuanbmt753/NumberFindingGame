@@ -20,20 +20,56 @@
         app:strokeWidth="0dp">
 
         <LinearLayout
-            android:background="@drawable/bg_caidat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_caidat"
             android:orientation="vertical"
             android:padding="10sp">
 
-            <TextView
-                android:id="@+id/txtTenNhacNen"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/sono"
-                android:text="Nhạc nền 1"
-                android:textColor="#000"
-                android:textSize="20sp" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTenNhacNen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sono"
+                    android:text="Nhạc nền 1"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardThongTin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sono"
+                        android:gravity="center"
+                        android:padding="5sp"
+                        android:text="ℹ️"
+                        android:textColor="#000"
+                        android:textSize="15sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/txtGhiChu"
