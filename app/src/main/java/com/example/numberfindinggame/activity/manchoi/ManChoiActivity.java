@@ -56,7 +56,7 @@ public class ManChoiActivity extends AppCompatActivity {
     private TextView txtMenu, txtTrangChu, txtThoat, txtMoRongMenu;
 
     private String maNguoiDung;
-    private Integer manChoiHienTai = 1;
+    private Integer manChoiHienTai = 0;
 
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
@@ -203,7 +203,7 @@ public class ManChoiActivity extends AppCompatActivity {
                     // Không tìm thấy dữ liệu
                     //MessageHelper.success(ManChoiActivity.this, "Không tìm thấy dữ liệu");
                     Log.d("ManChoi", "Chưa có dữ liệu người chơi");
-                    manChoiHienTai = 1;
+                    manChoiHienTai = 0;
                     khoiTao();
 
                 }

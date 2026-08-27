@@ -20,6 +20,7 @@ import com.example.numberfindinggame.adapter.MangSongAdapter;
 import com.example.numberfindinggame.adapter.ManMotAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
+import com.example.numberfindinggame.helper.HieuUngHelper;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.MangSong;
 import com.example.numberfindinggame.model.TimSo;
@@ -58,6 +59,12 @@ public class ManMotActivity extends AppCompatActivity {
     private void setEvent() {
         menuSession = new MenuSession(this);
         khoiTao();
+        HieuUngHelper.xuatHienLanLuot(
+                recyclerViewTimSo,
+                400,
+                100
+        );
+
         linearLayoutChoiLai.setVisibility(View.VISIBLE);
 
         txtThoat.setOnClickListener(new View.OnClickListener() {

@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
-import com.example.numberfindinggame.adapter.ManHaiAdapter;
+import com.example.numberfindinggame.adapter.ManBaAdapter;
+import com.example.numberfindinggame.adapter.ManBonAdapter;
 import com.example.numberfindinggame.adapter.MangSongAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
@@ -30,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ManHaiActivity extends AppCompatActivity {
+public class ManBonActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewTimSo;
-    private ManHaiAdapter manHaiAdapter;
+    private ManBonAdapter manBonAdapter;
     private List<TimSo> timSoList = new ArrayList<>();
     private RecyclerView rvMang;
     private List<MangSong> mangSongList = new ArrayList<>();
@@ -46,12 +47,13 @@ public class ManHaiActivity extends AppCompatActivity {
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
 
+    private TextView txtManChoi, txtCauHoi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_man_hai);
+        setContentView(R.layout.activity_man_ba);
 
         setControl();
         setEvent();
@@ -59,8 +61,10 @@ public class ManHaiActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        txtManChoi.setText("Màn 4");
+        txtCauHoi.setText("Tìm bốn số nhỏ nhất trong các số sau ?");
         menuSession = new MenuSession(this);
-        context = ManHaiActivity.this;
+        context = ManBonActivity.this;
         khoiTao();
         HieuUngHelper.xuatHienLanLuot(
                 recyclerViewTimSo,
@@ -98,7 +102,7 @@ public class ManHaiActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SoundManager.playButton(context);
-                chuyenManHinh(ManHaiActivity.class);
+                chuyenManHinh(ManBonActivity.class);
             }
         });
 
@@ -157,7 +161,7 @@ public class ManHaiActivity extends AppCompatActivity {
     private void khoiTao() {
         List<Integer> dsSo = new ArrayList<>();
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 20; i++) {
             dsSo.add(i);
         }
 
@@ -165,13 +169,13 @@ public class ManHaiActivity extends AppCompatActivity {
 
         timSoList.clear();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 16; i++) {
             timSoList.add(new TimSo(dsSo.get(i)));
         }
 
-        manHaiAdapter = new ManHaiAdapter(this, timSoList);
+        manBonAdapter = new ManBonAdapter(this, timSoList);
         recyclerViewTimSo.setLayoutManager(new GridLayoutManager(this, 4));
-        recyclerViewTimSo.setAdapter(manHaiAdapter);
+        recyclerViewTimSo.setAdapter(manBonAdapter);
 
         rvMang.setLayoutManager(
                 new LinearLayoutManager(this,
@@ -179,7 +183,7 @@ public class ManHaiActivity extends AppCompatActivity {
                         false));
 
 
-        int soMangCon = manHaiAdapter.getMangChoi();
+        int soMangCon = manBonAdapter.getMangChoi();
 
         for (int i = 0; i < 5; i++) {
             mangSongList.add(new MangSong(i < soMangCon));
@@ -188,8 +192,8 @@ public class ManHaiActivity extends AppCompatActivity {
         mangSongAdapter = new MangSongAdapter(mangSongList);
         rvMang.setAdapter(mangSongAdapter);
 
-        manHaiAdapter.setMangSongList(mangSongList);
-        manHaiAdapter.setMangSongAdapter(mangSongAdapter);
+        manBonAdapter.setMangSongList(mangSongList);
+        manBonAdapter.setMangSongAdapter(mangSongAdapter);
     }
 
     private void setControl() {
@@ -205,5 +209,10 @@ public class ManHaiActivity extends AppCompatActivity {
         layoutMenu = findViewById(R.id.layoutMenu);
 
         linearLayoutChoiLai = findViewById(R.id.linearLayoutChoiLai);
+
+        txtManChoi = findViewById(R.id.txtManChoi);
+        txtCauHoi = findViewById(R.id.txtCauHoi);
     }
+
+
 }

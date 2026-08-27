@@ -39,6 +39,7 @@ import com.example.numberfindinggame.adapter.ThietBiDangNhapAdapter;
 import com.example.numberfindinggame.callback.CaiDatCallback;
 import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.constant.IntentKey;
+import com.example.numberfindinggame.constant.MusicType;
 import com.example.numberfindinggame.dialog.ConfirmDialog;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.GlitchView;
@@ -137,6 +138,7 @@ public class SettingActivity extends AppCompatActivity {
     private HieuUngSession hieuUngSession;
     private Integer hieuUng = 4;
 
+    private MusicType musicType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +151,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        musicType = new MusicType();
         hieuUngSession = new HieuUngSession(this);
 
         // Nếu lần đầu tiên chưa có dữ liệu
@@ -848,27 +851,6 @@ public class SettingActivity extends AppCompatActivity {
 
             String tenFile = field.getName();
 
-            if (tenFile.startsWith("nhac_nen")) {
-
-                try {
-
-                    int resId = field.getInt(null);
-
-                    dsNhacNen.add(
-                            new NhacNen(
-                                    resId,
-                                    "Nhạc nền " + sttNhacNen,
-                                    "Tên file: " + tenFile + ".mp3"
-                            )
-                    );
-
-                    sttNhacNen++;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
             if (tenFile.startsWith("click")) {
 
                 try {
@@ -893,8 +875,11 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+        dsNhacNen.addAll(musicType.getDsNhacNen());
+
         List<File> list =
                 MusicFileHelper.getAllMusic(this);
+
 
         for (File file : list) {
 
@@ -902,7 +887,7 @@ public class SettingActivity extends AppCompatActivity {
                     "MUSIC",
                     file.getName()
             );
-            dsNhacNen.add(new NhacNen(-1, file.getName(), file.getPath()));
+            dsNhacNen.add(new NhacNen(-1, file.getName(), file.getPath(), "", ""));
 
         }
 
@@ -944,45 +929,7 @@ public class SettingActivity extends AppCompatActivity {
 
         int stt = 1;
 
-        for (Field field : fields) {
-
-            String tenFile =
-                    field.getName();
-
-            if (tenFile.startsWith("nhac_nen")) {
-
-                try {
-
-                    int resId =
-                            field.getInt(null);
-
-                    dsNhacNen.add(
-
-                            new NhacNen(
-
-                                    resId,
-
-                                    tenFile
-                                            + ".mp3",
-
-                                    tenFile
-                                            + ".mp3"
-
-                            )
-
-                    );
-
-                    stt++;
-
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-
-                }
-
-            }
-
-        }
+        dsNhacNen.addAll(musicType.getDsNhacNen());
 
 
         List<File> files =
@@ -1008,13 +955,11 @@ public class SettingActivity extends AppCompatActivity {
             dsNhacNen.add(
 
                     new NhacNen(
-
                             -1,
-
                             file.getName(),
-
-                            file.getAbsolutePath()
-
+                            file.getAbsolutePath(),
+                            "",
+                            ""
                     )
 
             );
