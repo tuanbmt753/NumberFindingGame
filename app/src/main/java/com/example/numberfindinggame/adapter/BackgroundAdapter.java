@@ -9,25 +9,22 @@ import android.widget.TextView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.model.BackgroundItem;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
-public class BackgroundAdapter
-        extends BaseAdapter {
+public class BackgroundAdapter extends BaseAdapter {
 
     private final Context context;
 
     private final List<BackgroundItem> list;
+    private BackgroundItem item = null;
 
     public BackgroundAdapter(
-
             Context context,
-
-            List<BackgroundItem> list
-    ) {
+            List<BackgroundItem> list) {
 
         this.context = context;
-
         this.list = list;
 
     }
@@ -38,6 +35,10 @@ public class BackgroundAdapter
 
         return list.size();
 
+    }
+
+    public void onSelectItem(BackgroundItem item) {
+        this.item = item;
     }
 
     @Override
@@ -64,48 +65,34 @@ public class BackgroundAdapter
 
             View convertView,
 
-            ViewGroup parent
-    ) {
+            ViewGroup parent) {
 
         if (convertView == null) {
-
-            convertView =
-
-                    LayoutInflater
-
-                            .from(context)
-
-                            .inflate(
-
-                                    R.layout.item_background,
-
-                                    parent,
-
-                                    false
-                            );
-
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_background, parent, false);
         }
 
-        TextView txtName =
+        TextView txtName = convertView.findViewById(R.id.txtName);
+        MaterialCardView cardNenDong = convertView.findViewById(R.id.cardNenDong);
 
-                convertView.findViewById(
+        BackgroundItem item = list.get(position);
+        txtName.setText("▶ " + item.getName());
 
-                        R.id.txtName
-                );
-
-        BackgroundItem item =
-
-                list.get(position);
-
-        txtName.setText(
-
-                "▶ " +
-
-                        item.getName()
-        );
+        if (this.item != null) {
+            if (this.item.getResId() == item.getResId()) {
+                cardNenDong.setStrokeWidth(dpToPx(1));
+            } else {
+                cardNenDong.setStrokeWidth(dpToPx(0));
+            }
+        } else {
+            cardNenDong.setStrokeWidth(dpToPx(0));
+        }
 
         return convertView;
 
+    }
+
+    private int dpToPx(int dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density);
     }
 
 }

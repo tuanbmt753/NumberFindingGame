@@ -308,7 +308,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/sono"
                             android:gravity="center"
-                            android:text="👥"
+                            android:text="👤"
                             android:textColor="#000"
                             android:textSize="13sp" />
 
@@ -320,6 +320,53 @@
                             android:fontFamily="@font/sono"
                             android:gravity="left"
                             android:text="Tài khoản"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBanBe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="12dp"
+                    app:rippleColor="#33000000"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="0.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10sp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:text="👥"
+                            android:textColor="#000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:fontFamily="@font/sono"
+                            android:gravity="left"
+                            android:text="Bạn bè"
                             android:textColor="#000"
                             android:textSize="13sp" />
                     </LinearLayout>

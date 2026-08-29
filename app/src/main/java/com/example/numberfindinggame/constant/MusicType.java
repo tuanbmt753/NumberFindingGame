@@ -59,6 +59,14 @@ public class MusicType {
                 "https://drive.google.com/file/d/1JK_Pe0loOySuM6kzRXbD68nTluAVzgCu/view?usp=sharing",
                 "https://www.youtube.com/watch?v=PCAptQGb6K4"
         ));
+
+        dsNhacNen.add(new NhacNen(
+                R.raw.nhac_nen7,
+                "「Nightcore」 VOID - Jim Yosef ♡ (Lyrics)",
+                "「Nightcore」 VOID - Jim Yosef ♡ (Lyrics)",
+                "https://drive.google.com/file/d/1YS5QZMaE2vVlI71ybaurw7CWdHartbKZ/view?usp=drive_link",
+                "https://www.youtube.com/watch?v=VNTi1sfQXvM"
+        ));
     }
 
     public ArrayList<NhacNen> getDsNhacNen() {

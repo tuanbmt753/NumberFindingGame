@@ -20,6 +20,7 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.BanBe.BanBeActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
@@ -36,7 +37,7 @@ import com.google.android.material.card.MaterialCardView;
 public class ConfirmDialogMenu {
 
     private final Dialog dialog;
-    private MaterialCardView cardTrangChu, cardMap, cardCaiDat, cardTaiKhoan, cardThoat;
+    private MaterialCardView cardTrangChu, cardMap, cardCaiDat, cardTaiKhoan, cardThoat, cardBanBe;
 
     private Context context;
 
@@ -108,6 +109,10 @@ public class ConfirmDialogMenu {
 
         cardTaiKhoan.setOnClickListener(v -> {
             chuyenManHinh(ThongTinNguoiDungActivity.class);
+        });
+
+        cardBanBe.setOnClickListener(v -> {
+            chuyenManHinh(BanBeActivity.class);
         });
 
         cardThoat.setOnClickListener(v -> {
@@ -300,6 +305,7 @@ public class ConfirmDialogMenu {
         cardCaiDat = dialog.findViewById(R.id.cardCaiDat);
         cardTaiKhoan = dialog.findViewById(R.id.cardTaiKhoan);
         cardThoat = dialog.findViewById(R.id.cardThoat);
+        cardBanBe = dialog.findViewById(R.id.cardBanBe);
 
         imgAvatar = dialog.findViewById(R.id.imgAvatar);
         imgHinhNen = dialog.findViewById(R.id.imgHinhNen);

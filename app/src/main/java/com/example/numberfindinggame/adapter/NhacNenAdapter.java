@@ -110,30 +110,6 @@ public class NhacNenAdapter
         }
         txtGhiChu.setVisibility(View.GONE);
 
-        // Nhạc trong R.raw
-        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen) {
-
-        }
-
-        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen2) {
-
-        }
-
-        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen3) {
-
-        }
-
-        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen4) {
-
-        }
-
-        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen5) {
-        }
-
-        if (nhacNen.getMaNhacNen() == R.raw.nhac_nen6) {
-
-        }
-
         cardNhacNen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
