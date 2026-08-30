@@ -27,7 +27,7 @@
             android:orientation="vertical"
             android:paddingHorizontal="15dp"
             android:paddingTop="80dp"
-            android:paddingBottom="70dp">
+            android:paddingBottom="90dp">
 
             <!-- Logo -->
             <include
@@ -35,6 +35,58 @@
                 layout="@layout/layout_logo_title4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="12dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0.5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:layout_marginRight="30dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="21dp"
+                        android:src="@drawable/ic_tim_kiem" />
+
+                    <EditText
+                        android:id="@+id/edtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/sono"
+                        android:gravity="center"
+                        android:hint="Tên/Email/ID"
+                        android:inputType="textEmailAddress"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <ListView
+                android:id="@+id/lvBanBe"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+            </ListView>
 
 
         </LinearLayout>

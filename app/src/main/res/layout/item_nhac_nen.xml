@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/sono"
-                    android:text="Nhạc nền 1"
+                    android:text="Nhạc nền 1 "
                     android:textColor="#000"
                     android:textSize="15sp" />
 

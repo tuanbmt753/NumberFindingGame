@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.media3.common.MediaItem;
@@ -16,6 +17,9 @@ import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.adapter.BackgroundAdapter;
+import com.example.numberfindinggame.constant.DanhSachHinhNenDong;
+import com.example.numberfindinggame.constant.LinkType;
+import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.model.BackgroundItem;
 import com.google.android.material.card.MaterialCardView;
 
@@ -29,7 +33,7 @@ public class BackgroundDialog {
     private PlayerView playerView;
     private ExoPlayer exoPlayer;
 
-    private GridView gridBackground;
+    private ListView lvBackground;
     private List<BackgroundItem> list = new ArrayList<>();
     private BackgroundAdapter adapter;
 
@@ -39,6 +43,8 @@ public class BackgroundDialog {
 
     private MaterialCardView cardChonHinhNen;
     private TextView txtChonHinhNen;
+
+    private DanhSachHinhNenDong danhSachHinhNenDong;
 
     public BackgroundDialog(
             Context context,
@@ -58,6 +64,7 @@ public class BackgroundDialog {
     }
 
     private void setEvent() {
+        danhSachHinhNenDong = new DanhSachHinhNenDong();
         if (item != null) {
             txtChonHinhNen.setText("✔️");
         } else {
@@ -69,10 +76,8 @@ public class BackgroundDialog {
 
         khoiTao();
 
-        adapter = new BackgroundAdapter(context, list);
-        gridBackground.setAdapter(adapter);
 
-        gridBackground.setOnItemClickListener(
+        lvBackground.setOnItemClickListener(
                 (parent,
                  view,
                  position,
@@ -115,26 +120,19 @@ public class BackgroundDialog {
     }
 
     private void khoiTao() {
-        Field[] fields = R.raw.class.getFields();
-        for (Field field : fields) {
-            String tenFile = field.getName();
+        list.addAll(danhSachHinhNenDong.getDsBackgroundItem());
 
-            if (tenFile.startsWith("bg")) {
-                try {
+        adapter = new BackgroundAdapter(context, list);
+        lvBackground.setAdapter(adapter);
 
-                    int resId = field.getInt(null);
-                    list.add(new BackgroundItem(resId, tenFile));
-
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-                }
-            }
-        }
+        ListViewHelper
+                .setListViewHeightBasedOnChildren(
+                        lvBackground
+                );
     }
 
     private void setControl() {
-        gridBackground = dialog.findViewById(R.id.gridBackground);
+        lvBackground = dialog.findViewById(R.id.lvBackground);
 
         playerView = dialog.findViewById(R.id.playerView);
         cardChonHinhNen = dialog.findViewById(R.id.cardChonHinhNen);

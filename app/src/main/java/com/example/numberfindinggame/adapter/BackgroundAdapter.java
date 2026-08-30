@@ -4,8 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.model.BackgroundItem;
@@ -13,7 +16,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
-public class BackgroundAdapter extends BaseAdapter {
+public class BackgroundAdapter extends ArrayAdapter<BackgroundItem> {
 
     private final Context context;
 
@@ -23,7 +26,11 @@ public class BackgroundAdapter extends BaseAdapter {
     public BackgroundAdapter(
             Context context,
             List<BackgroundItem> list) {
-
+        super(
+                context,
+                R.layout.item_background,
+                list
+        );
         this.context = context;
         this.list = list;
 
@@ -43,7 +50,7 @@ public class BackgroundAdapter extends BaseAdapter {
 
     @Override
 
-    public Object getItem(int position) {
+    public BackgroundItem getItem(int position) {
 
         return list.get(position);
 
@@ -57,15 +64,16 @@ public class BackgroundAdapter extends BaseAdapter {
 
     }
 
-    @Override
 
+    @NonNull
+    @Override
     public View getView(
 
             int position,
 
             View convertView,
 
-            ViewGroup parent) {
+            @NonNull ViewGroup parent) {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_background, parent, false);
