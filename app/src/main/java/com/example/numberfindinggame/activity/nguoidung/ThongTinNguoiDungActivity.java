@@ -40,6 +40,7 @@ import com.example.numberfindinggame.helper.HinhAnhHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.MenuSession;
+import com.example.numberfindinggame.session.NhacNenDongSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
@@ -82,6 +83,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
 
+    private NhacNenDongSession nhacNenDongSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacNenDongSession = new NhacNenDongSession(this);
         menuSession = new MenuSession(this);
         linearLayoutTienDoTaiLen.setVisibility(View.GONE);
         exoPlayer = new ExoPlayer.Builder(this).build();
@@ -263,38 +266,40 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
                                 themAnh = IntentKey.ANH_NEN_DONG;
 
-                                imgHinhNen.setVisibility(View.GONE);
-                                playerView.setVisibility(View.VISIBLE);
-
                                 new BackgroundDialog(
 
                                         ThongTinNguoiDungActivity.this,
 
                                         item -> {
 
-                                            MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getName());
-                                            int resId = item.getResId();
-                                            phatVideoNen(resId);
-                                            capNhapHinhNen("" + resId);
+                                            if (item != null) {
+                                                imgHinhNen.setVisibility(View.GONE);
+                                                playerView.setVisibility(View.VISIBLE);
 
-                                            if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
-                                                CloudinaryManager.deleteVideo(
-                                                        oldVideoUrl
-                                                        , new CloudinaryManager.OnDeleteListener() {
-                                                            @Override
-                                                            public void onSuccess() {
+                                                //MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getResId());
+                                                int resId = item.getResId();
+                                                phatVideoNen(resId);
+                                                capNhapHinhNen("" + resId);
 
-                                                                oldVideoUrl = null;
-                                                            }
+                                                if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
+                                                    CloudinaryManager.deleteVideo(
+                                                            oldVideoUrl
+                                                            , new CloudinaryManager.OnDeleteListener() {
+                                                                @Override
+                                                                public void onSuccess() {
 
-                                                            @Override
-                                                            public void onFailed(String error) {
+                                                                    oldVideoUrl = null;
+                                                                }
 
-                                                                oldVideoUrl = null;
-                                                            }
-                                                        });
-                                            } else {
-                                                oldVideoUrl = null;
+                                                                @Override
+                                                                public void onFailed(String error) {
+
+                                                                    oldVideoUrl = null;
+                                                                }
+                                                            });
+                                                } else {
+                                                    oldVideoUrl = null;
+                                                }
                                             }
 
 
@@ -319,7 +324,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                             public void onXemAnhNen() {
                                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
                                 Intent intent = new Intent(ThongTinNguoiDungActivity.this
-                                        , XemAnhNenActivity.class);
+                                        , XemAnhNenTinhActivity.class);
                                 startActivity(intent);
                                 finish();
 
@@ -327,6 +332,10 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
                             public void onXemAnhDaiDien() {
                                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                                        , XemAnhDaiDienActivity.class);
+                                startActivity(intent);
+                                finish();
 
                             }
 
@@ -720,9 +729,13 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                             } else {
                                 imgAvatar.setImageResource(R.drawable.avatar_default);
                             }
+                            imgHinhNen.setVisibility(View.VISIBLE);
+                            playerView.setVisibility(View.GONE);
 
                         } catch (Exception exception) {
                             imgAvatar.setImageResource(R.drawable.avatar_default);
+                            imgHinhNen.setVisibility(View.VISIBLE);
+                            playerView.setVisibility(View.GONE);
                         }
 
                         if (isInteger(nguoiDung.getHinhNen()) == false) {
@@ -827,8 +840,12 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         // lặp vô hạn
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
 
-//        // tắt tiếng nếu muốn
-//        exoPlayer.setVolume(0f);
+
+        // tắt tiếng nếu muốn
+        // Lấy âm lượng đã lưu
+        int amLuong = nhacNenDongSession.getAmLuong();
+        float volume = amLuong / 100f;
+        exoPlayer.setVolume(volume);
 
         exoPlayer.prepare();
 
@@ -852,6 +869,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         txtTrangChu = findViewById(R.id.txtTrangChu);
         txtThoat = findViewById(R.id.txtThoat);
         txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
+
 
         txtTenNguoiDung = findViewById(R.id.txtTenNguoiDung);
         txtMaNguoiDung = findViewById(R.id.txtMaNguoiDung);
@@ -985,6 +1003,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                                     public void onSuccess() {
 
                                         MessageHelper.success(ThongTinNguoiDungActivity.this, "Cập nhật thành công");
+
+
                                         if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
                                             CloudinaryManager.deleteVideo(
                                                     oldVideoUrl

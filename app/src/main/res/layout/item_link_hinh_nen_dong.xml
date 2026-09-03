@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:fontFamily="@font/sono"
-            android:gravity="left"
+            android:gravity="center"
             android:text="Tải xuống tại Google Drive"
             android:textColor="#2196F3"
             android:textSize="15dp" />

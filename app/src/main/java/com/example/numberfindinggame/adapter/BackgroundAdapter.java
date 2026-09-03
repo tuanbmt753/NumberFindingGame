@@ -1,6 +1,8 @@
 package com.example.numberfindinggame.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.dialog.ConfirmDialogThongTinHinhNenDong;
+import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.model.BackgroundItem;
 import com.google.android.material.card.MaterialCardView;
 
@@ -81,6 +85,7 @@ public class BackgroundAdapter extends ArrayAdapter<BackgroundItem> {
 
         TextView txtName = convertView.findViewById(R.id.txtName);
         MaterialCardView cardNenDong = convertView.findViewById(R.id.cardNenDong);
+        MaterialCardView cardThongTin = convertView.findViewById(R.id.cardThongTin);
 
         BackgroundItem item = list.get(position);
         txtName.setText("▶ " + item.getName());
@@ -94,6 +99,13 @@ public class BackgroundAdapter extends ArrayAdapter<BackgroundItem> {
         } else {
             cardNenDong.setStrokeWidth(dpToPx(0));
         }
+
+        cardThongTin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ConfirmDialogThongTinHinhNenDong(context, item.getName(), item.getDsLinkHinhNenDong()).show();
+            }
+        });
 
         return convertView;
 

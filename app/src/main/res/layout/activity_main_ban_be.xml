@@ -64,7 +64,7 @@
                         android:src="@drawable/ic_tim_kiem" />
 
                     <EditText
-                        android:id="@+id/edtEmail"
+                        android:id="@+id/edtTimKiemBanBe"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
@@ -72,7 +72,7 @@
                         android:fontFamily="@font/sono"
                         android:gravity="center"
                         android:hint="Tên/Email/ID"
-                        android:inputType="textEmailAddress"
+                        android:inputType="text"
                         android:textColor="#000000"
                         android:textSize="20sp" />
                 </LinearLayout>

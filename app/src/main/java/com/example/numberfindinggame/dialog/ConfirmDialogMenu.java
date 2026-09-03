@@ -27,6 +27,7 @@ import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivit
 import com.example.numberfindinggame.activity.setting.SettingActivity;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.session.NhacNenDongSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -50,7 +51,7 @@ public class ConfirmDialogMenu {
 
     private TextView txtTenNguoiDung;
     private Integer dangChoi = 0;
-
+    private NhacNenDongSession nhacNenDongSession;
     public ConfirmDialogMenu(
             Context context
     ) {
@@ -89,6 +90,7 @@ public class ConfirmDialogMenu {
     }
 
     private void setEvent() {
+        nhacNenDongSession = new NhacNenDongSession(context);
         exoPlayer = new ExoPlayer.Builder(context).build();
         playerView.setPlayer(exoPlayer);
         maNguoiDung = SessionManager.getUserId(context);
@@ -235,8 +237,11 @@ public class ConfirmDialogMenu {
         // lặp vô hạn
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
 
-//        // tắt tiếng nếu muốn
-//        exoPlayer.setVolume(0f);
+        // tắt tiếng nếu muốn
+        // Lấy âm lượng đã lưu
+        int amLuong = nhacNenDongSession.getAmLuong();
+        float volume = amLuong / 100f;
+        exoPlayer.setVolume(volume);
 
         exoPlayer.prepare();
 

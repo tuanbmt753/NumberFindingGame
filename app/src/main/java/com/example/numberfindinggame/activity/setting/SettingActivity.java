@@ -14,8 +14,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,6 +57,7 @@ import com.example.numberfindinggame.model.HieuUng;
 import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.MenuSession;
 import com.example.numberfindinggame.session.NhacHieuUngNenSession;
+import com.example.numberfindinggame.session.NhacNenDongSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.session.SessionManagerSetting;
 import com.example.numberfindinggame.manager.SoundManager;
@@ -113,7 +117,7 @@ public class SettingActivity extends AppCompatActivity {
     private TextView txtXacThucEmailDongMo, txtMaKhoiPhucDongMo;
     private TextView txtMenu, txtTrangChu, txtThoat, txtMoRongMenu;
 
-    private SeekBar seekBarBackground, seekBarEffect;
+    private SeekBar seekBarBackground, seekBarEffect, seekBarLiveWallpaper;
 
     private MaterialCardView cardXacThucEmailDongMo, cardMaKhoiPhucDongMo, cardThemNhacNen;
 
@@ -142,6 +146,11 @@ public class SettingActivity extends AppCompatActivity {
     private MusicType musicType;
     private NhacHieuUngNenSession nhacHieuUngNenSession;
 
+    private EditText edtTimKiemNhacNen;
+    private List<NhacNen> dsNhacNenGoc = new ArrayList<>();
+
+    private NhacNenDongSession nhacNenDongSession;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,8 +162,14 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        nhacNenDongSession = new NhacNenDongSession(this);
         nhacHieuUngNenSession = new NhacHieuUngNenSession(this);
         musicType = new MusicType();
+
+        // Lấy âm lượng đã lưu
+        int amLuong = nhacNenDongSession.getAmLuong();
+        seekBarLiveWallpaper.setProgress(nhacNenDongSession.getAmLuong());
+
         hieuUngSession = new HieuUngSession(this);
 
         // Nếu lần đầu tiên chưa có dữ liệu
@@ -410,6 +425,39 @@ public class SettingActivity extends AppCompatActivity {
                 }
         );
 
+        seekBarLiveWallpaper.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+
+                    @Override
+                    public void onProgressChanged(
+                            SeekBar seekBar,
+                            int progress,
+                            boolean fromUser
+                    ) {
+//                        if (fromUser) {
+//                            nhacNenDongSession.setAmLuong(progress);
+//                        }
+
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(
+                            SeekBar seekBar
+                    ) {
+
+                        // Bắt đầu kéo
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(
+                            SeekBar seekBar
+                    ) {
+
+                        nhacNenDongSession.setAmLuong(seekBarLiveWallpaper.getProgress());
+                    }
+                }
+        );
+
         cardXacThucEmailDongMo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -516,6 +564,79 @@ public class SettingActivity extends AppCompatActivity {
 
 
         });
+
+        edtTimKiemNhacNen.addTextChangedListener(
+                new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s,
+                            int start,
+                            int count,
+                            int after
+                    ) {
+                    }
+
+                    @Override
+                    public void onTextChanged(
+                            CharSequence s,
+                            int start,
+                            int before,
+                            int count
+                    ) {
+
+                        String tuKhoa = s.toString()
+                                .trim()
+                                .toLowerCase();
+
+                        dsNhacNen.clear();
+
+                        // Nếu ô tìm kiếm trống
+                        if (tuKhoa.isEmpty()) {
+
+                            dsNhacNen.addAll(dsNhacNenGoc);
+
+                        } else {
+
+                            for (NhacNen nhacNen : dsNhacNenGoc) {
+
+                                String tenNhac = nhacNen.getTxtTenNhacNen();
+                                String ghiChu = nhacNen.getTxtGhiChu();
+
+                                if (tenNhac == null) {
+                                    tenNhac = "";
+                                }
+
+                                if (ghiChu == null) {
+                                    ghiChu = "";
+                                }
+
+                                tenNhac = tenNhac.toLowerCase();
+                                ghiChu = ghiChu.toLowerCase();
+
+                                // Tìm tương đối
+                                if (tenNhac.contains(tuKhoa)
+                                        || ghiChu.contains(tuKhoa)) {
+
+                                    dsNhacNen.add(nhacNen);
+                                }
+                            }
+                        }
+
+                        nhacNenAdapter.notifyDataSetChanged();
+
+                        ListViewHelper.setListViewHeightBasedOnChildren(
+                                lvNhacNen
+                        );
+                    }
+
+                    @Override
+                    public void afterTextChanged(
+                            Editable s
+                    ) {
+                    }
+                }
+        );
 
     }
 
@@ -893,6 +1014,9 @@ public class SettingActivity extends AppCompatActivity {
             dsNhacNen.add(new NhacNen(-1, file.getName(), file.getPath(), "", ""));
 
         }
+        // Lưu danh sách gốc để tìm kiếm
+        dsNhacNenGoc.clear();
+        dsNhacNenGoc.addAll(dsNhacNen);
 
         nhacNenAdapter = new NhacNenAdapter(SettingActivity.this, dsNhacNen);
         lvNhacNen.setAdapter(nhacNenAdapter);
@@ -926,19 +1050,10 @@ public class SettingActivity extends AppCompatActivity {
     private void loadLaiNhacNen() {
 
         dsNhacNen.clear();
-
-        Field[] fields =
-                R.raw.class.getFields();
-
-        int stt = 1;
-
         dsNhacNen.addAll(musicType.getDsNhacNen());
 
 
-        List<File> files =
-                MusicFileHelper
-                        .getAllMusic(this);
-
+        List<File> files = MusicFileHelper.getAllMusic(this);
 
         Log.e(
                 "MUSIC",
@@ -969,6 +1084,9 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+        // Lưu danh sách gốc để tìm kiếm
+        dsNhacNenGoc.clear();
+        dsNhacNenGoc.addAll(dsNhacNen);
 
         nhacNenAdapter.notifyDataSetChanged();
 
@@ -1215,6 +1333,7 @@ public class SettingActivity extends AppCompatActivity {
 
         seekBarEffect = findViewById(R.id.seekBarEffect);
         seekBarBackground = findViewById(R.id.seekBarBackground);
+        seekBarLiveWallpaper = findViewById(R.id.seekBarLiveWallpaper);
 
         cardXacThucEmailDongMo = findViewById(R.id.cardXacThucEmailDongMo);
         cardMaKhoiPhucDongMo = findViewById(R.id.cardMaKhoiPhucDongMo);
@@ -1230,6 +1349,8 @@ public class SettingActivity extends AppCompatActivity {
         viewNhieu = findViewById(R.id.viewNhieu);
 
         layoutGlitch = findViewById(R.id.layoutGlitch);
+
+        edtTimKiemNhacNen = findViewById(R.id.edtTimKiemNhacNen);
     }
 
     private void luuThietBi(String maNguoiDung) {

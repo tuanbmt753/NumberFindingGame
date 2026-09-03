@@ -66,7 +66,7 @@ public class NhacNenAdapter
         MaterialCardView cardThongTin = convertView.findViewById(R.id.cardThongTin);
 
         NhacNen nhacNen = dsNhacNen.get(position);
-        txtTenNhacNen.setText(nhacNen.getTxtTenNhacNen());
+        txtTenNhacNen.setText("▶ " + nhacNen.getTxtTenNhacNen());
         txtGhiChu.setText(nhacNen.getTxtGhiChu());
 
         String currentMusicPath =

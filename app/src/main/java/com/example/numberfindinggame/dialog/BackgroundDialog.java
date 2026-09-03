@@ -3,9 +3,12 @@ package com.example.numberfindinggame.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +24,7 @@ import com.example.numberfindinggame.constant.DanhSachHinhNenDong;
 import com.example.numberfindinggame.constant.LinkType;
 import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.model.BackgroundItem;
+import com.example.numberfindinggame.model.NhacNen;
 import com.google.android.material.card.MaterialCardView;
 
 import java.lang.reflect.Field;
@@ -35,6 +39,8 @@ public class BackgroundDialog {
 
     private ListView lvBackground;
     private List<BackgroundItem> list = new ArrayList<>();
+    private List<BackgroundItem> listGoc = new ArrayList<>();
+
     private BackgroundAdapter adapter;
 
     private Context context;
@@ -45,6 +51,8 @@ public class BackgroundDialog {
     private TextView txtChonHinhNen;
 
     private DanhSachHinhNenDong danhSachHinhNenDong;
+
+    private EditText edtTimKiemNhacNen;
 
     public BackgroundDialog(
             Context context,
@@ -78,31 +86,21 @@ public class BackgroundDialog {
 
 
         lvBackground.setOnItemClickListener(
-                (parent,
-                 view,
-                 position,
-                 id) -> {
+                (parent, view, position, id) -> {
+
                     item = list.get(position);
-                    phatVideoNen(item.getResId());
 
                     if (item != null) {
+
+                        phatVideoNen(item.getResId());
+
                         txtChonHinhNen.setText("✔️");
-                    } else {
-                        txtChonHinhNen.setText("✖️");
+
+                        adapter.onSelectItem(item);
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.onSelectItem(item);
-                    adapter.notifyDataSetChanged();
-
-//                    BackgroundItem item = list.get(position);
-//                    dialog.dismiss();
-//
-//                    if (callback != null) {
-//
-//                        callback.onSelect(item);
-//
-//                    }
-
-                });
+                }
+        );
 
         cardChonHinhNen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,10 +115,77 @@ public class BackgroundDialog {
                 }
             }
         });
+
+        edtTimKiemNhacNen.addTextChangedListener(
+                new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s,
+                            int start,
+                            int count,
+                            int after
+                    ) {
+                    }
+
+                    @Override
+                    public void onTextChanged(
+                            CharSequence s,
+                            int start,
+                            int before,
+                            int count
+                    ) {
+
+                        String tuKhoa = s.toString().trim().toLowerCase();
+
+                        list.clear();
+
+                        // Nếu ô tìm kiếm trống
+                        if (tuKhoa.isEmpty()) {
+                            list.addAll(listGoc);
+
+                        } else {
+
+                            for (BackgroundItem backgroundItem : listGoc) {
+
+                                String name = backgroundItem.getName();
+
+                                if (name == null) {
+                                    name = "";
+                                }
+
+                                name = name.toLowerCase();
+
+                                // Tìm tương đối
+                                if (name.contains(tuKhoa)) {
+
+                                    list.add(backgroundItem);
+                                }
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged();
+
+                        ListViewHelper.setListViewHeightBasedOnChildren(
+                                lvBackground
+                        );
+                    }
+
+                    @Override
+                    public void afterTextChanged(
+                            Editable s
+                    ) {
+                    }
+                }
+        );
     }
 
     private void khoiTao() {
+        list.clear();
         list.addAll(danhSachHinhNenDong.getDsBackgroundItem());
+
+        listGoc.clear();
+        listGoc.addAll(danhSachHinhNenDong.getDsBackgroundItem());
 
         adapter = new BackgroundAdapter(context, list);
         lvBackground.setAdapter(adapter);
@@ -131,6 +196,22 @@ public class BackgroundDialog {
                 );
     }
 
+    private void loadLaiDanhSachHinhNenDong() {
+        list.clear();
+        list.addAll(danhSachHinhNenDong.getDsBackgroundItem());
+
+        listGoc.clear();
+        listGoc.addAll(danhSachHinhNenDong.getDsBackgroundItem());
+
+        adapter.notifyDataSetChanged();
+
+        ListViewHelper
+                .setListViewHeightBasedOnChildren(
+                        lvBackground
+                );
+    }
+
+
     private void setControl() {
         lvBackground = dialog.findViewById(R.id.lvBackground);
 
@@ -138,7 +219,7 @@ public class BackgroundDialog {
         cardChonHinhNen = dialog.findViewById(R.id.cardChonHinhNen);
         txtChonHinhNen = dialog.findViewById(R.id.txtChonHinhNen);
 
-
+        edtTimKiemNhacNen = dialog.findViewById(R.id.edtTimKiemNhacNen);
     }
 
     public void show() {

@@ -159,6 +159,68 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+
+            <!-- Âm thanh hình nền động -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/sono"
+                android:text="Âm thanh nền động"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAmThanhHinhNenDong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="#fff"
+
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp"
+                app:rippleColor="#33000000"
+                app:strokeColor="#000000"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_caidat"
+                    android:orientation="horizontal"
+
+                    android:padding="10sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sono"
+                        android:text="Thấp"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                    <SeekBar
+                        android:id="@+id/seekBarLiveWallpaper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:max="100" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sono"
+                        android:text="Cao"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -221,6 +283,56 @@
                         android:text="Đổi âm thanh nền"
                         android:textColor="#000"
                         android:textSize="20sp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="40sp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/bg_menu2"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="7dp"
+                        app:cardElevation="5dp"
+                        app:rippleColor="#33000000"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_caidat">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="25dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="21dp"
+                                    android:src="@drawable/ic_tim_kiem" />
+
+                                <EditText
+                                    android:id="@+id/edtTimKiemNhacNen"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@android:color/transparent"
+                                    android:fontFamily="@font/sono"
+                                    android:gravity="center"
+                                    android:hint="Từ khóa"
+                                    android:inputType="text"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <ListView
                         android:id="@+id/lvNhacNen"

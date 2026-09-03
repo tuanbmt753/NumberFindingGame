@@ -42,6 +42,9 @@
             android:name=".activity.nguoidung.XemAnhNenActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.nguoidung.XemAnhNenTinhActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.nguoidung.ThongTinNguoiDungActivity"
             android:exported="false" />
         <activity
