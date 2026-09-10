@@ -25,6 +25,7 @@ import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.NhacNenDongSession;
@@ -52,6 +53,9 @@ public class ConfirmDialogMenu {
     private TextView txtTenNguoiDung;
     private Integer dangChoi = 0;
     private NhacNenDongSession nhacNenDongSession;
+    private ExoPlayer exoPlayer2;
+    private String activityType = "null";
+
     public ConfirmDialogMenu(
             Context context
     ) {
@@ -69,6 +73,29 @@ public class ConfirmDialogMenu {
         setEvent();
 
     }
+
+    public ConfirmDialogMenu(
+            Context context, ExoPlayer exoPlayer2, String activityType
+    ) {
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(
+                R.layout.layout_dialog_confirm_menu
+        );
+
+        dialog.setCancelable(false);
+        this.context = context;
+        this.exoPlayer2 = exoPlayer2;
+        this.activityType = activityType;
+
+        exoPlayer2.pause();
+
+        setControl();
+        setEvent();
+
+    }
+
 
     public ConfirmDialogMenu(
             Context context, Integer dangChoi
@@ -119,6 +146,9 @@ public class ConfirmDialogMenu {
 
         cardThoat.setOnClickListener(v -> {
 
+            if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                exoPlayer2.play();
+            }
             dismiss();
             SoundManager.playButton(context);
 

@@ -220,22 +220,84 @@ public class DanhSachHinhNenDong {
                 linkBg9
         ));
 
+        // =========================
+        // BG 10
+        // =========================
         ArrayList<LinkHinhNenDong> linkBg10 = new ArrayList<>();
 
-        linkBg9.add(new LinkHinhNenDong(
+        linkBg10.add(new LinkHinhNenDong(
                 LinkType.DRIVE,
                 "https://drive.google.com/file/d/1kbN9Pqb1Y_STggC61EiEgWDZy25yhP-t/view?usp=drive_link"
         ));
 
-        linkBg9.add(new LinkHinhNenDong(
+        linkBg10.add(new LinkHinhNenDong(
+                LinkType.MEGA,
+                "https://mega.nz/file/E9QgHKLY#Xe_49EgfRCQ81RlJOOKRP4Z5EZO0-kPx_i__gFl7F2E"
+        ));
+
+        linkBg10.add(new LinkHinhNenDong(
                 LinkType.TIKTOK,
                 "https://www.tiktok.com/@_ist.lanh07_/video/7619657533455748372?_r=1&_t=ZS-99QXfkhjob2"
         ));
 
+
         dsBackgroundItem.add(new BackgroundItem(
                 R.raw.bg_10,
                 "Eye characters",
-                linkBg9
+                linkBg10
+        ));
+
+        // =========================
+        // BG 11
+        // =========================
+        ArrayList<LinkHinhNenDong> linkBg11 = new ArrayList<>();
+
+        linkBg11.add(new LinkHinhNenDong(
+                LinkType.DRIVE,
+                "https://drive.google.com/file/d/1fVqs5oFnbWu5qmgj9Y_ski5fDI8hRW_K/view?usp=drive_link"
+        ));
+
+        linkBg11.add(new LinkHinhNenDong(
+                LinkType.MEGA,
+                "https://mega.nz/file/gshD2BoS#MR6ez8KG7P96Rb4-xIckcDIiCs2yqM4AFWXN5DODk3w"
+        ));
+
+        linkBg11.add(new LinkHinhNenDong(
+                LinkType.TIKTOK,
+                "https://www.tiktok.com/@dywupfpello2/video/7622995100951612679"
+        ));
+
+        dsBackgroundItem.add(new BackgroundItem(
+                R.raw.bg_11,
+                "Hoshino Falling Blue Archive",
+                linkBg11
+        ));
+
+
+        // =========================
+        // BG 12
+        // =========================
+        ArrayList<LinkHinhNenDong> linkBg12 = new ArrayList<>();
+
+        linkBg12.add(new LinkHinhNenDong(
+                LinkType.DRIVE,
+                "https://drive.google.com/file/d/121zlc5yHbh50SOWpNGGmDOPT6ocJlMVQ/view?usp=drive_link"
+        ));
+
+        linkBg12.add(new LinkHinhNenDong(
+                LinkType.MEGA,
+                "https://mega.nz/file/99BCQKJY#1r3g0Hd9epkK7ciaAIMifXTiqN1NK2SFrnyvV2SHNMg"
+        ));
+
+        linkBg12.add(new LinkHinhNenDong(
+                LinkType.TIKTOK,
+                "https://www.tiktok.com/@van.dungx.888/video/7602223509175045384?_r=1&_t=ZS-99To8fC8Exc"
+        ));
+
+        dsBackgroundItem.add(new BackgroundItem(
+                R.raw.bg_12,
+                "Scene transition AI",
+                linkBg12
         ));
     }
 

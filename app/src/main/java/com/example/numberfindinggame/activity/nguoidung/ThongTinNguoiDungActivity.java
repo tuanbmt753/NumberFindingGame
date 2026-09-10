@@ -194,7 +194,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
-                new ConfirmDialogMenu(ThongTinNguoiDungActivity.this).show();
+                new ConfirmDialogMenu(ThongTinNguoiDungActivity.this, exoPlayer, ActivityType.THONG_TIN_NGUOI_DUNG).show();
             }
         });
 
@@ -269,6 +269,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                                 new BackgroundDialog(
 
                                         ThongTinNguoiDungActivity.this,
+                                        exoPlayer,
 
                                         item -> {
 
@@ -380,6 +381,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                                 new BackgroundDialog(
 
                                         ThongTinNguoiDungActivity.this,
+                                        exoPlayer,
 
                                         item -> {
 
