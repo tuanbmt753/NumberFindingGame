@@ -16,6 +16,17 @@ public class DateUtils {
         return sdf.format(
                 new Date(timestamp));
     }
-    
+
+    // Chỉ định dạng giờ và phút
+    public static String formatTime(long timestamp) {
+
+        SimpleDateFormat sdf =
+                new SimpleDateFormat(
+                        "HH:mm",
+                        Locale.getDefault()
+                );
+
+        return sdf.format(new Date(timestamp));
+    }
 
 }

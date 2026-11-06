@@ -20,12 +20,15 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.BanBe.BanBeActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
+import com.example.numberfindinggame.constant.ActivityType;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
+import com.example.numberfindinggame.session.NhacNenDongSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -36,7 +39,7 @@ import com.google.android.material.card.MaterialCardView;
 public class ConfirmDialogMenu {
 
     private final Dialog dialog;
-    private MaterialCardView cardTrangChu, cardMap, cardCaiDat, cardTaiKhoan, cardThoat;
+    private MaterialCardView cardTrangChu, cardMap, cardCaiDat, cardTaiKhoan, cardThoat, cardBanBe;
 
     private Context context;
 
@@ -49,6 +52,9 @@ public class ConfirmDialogMenu {
 
     private TextView txtTenNguoiDung;
     private Integer dangChoi = 0;
+    private NhacNenDongSession nhacNenDongSession;
+    private ExoPlayer exoPlayer2;
+    private String activityType = "null";
 
     public ConfirmDialogMenu(
             Context context
@@ -67,6 +73,29 @@ public class ConfirmDialogMenu {
         setEvent();
 
     }
+
+    public ConfirmDialogMenu(
+            Context context, ExoPlayer exoPlayer2, String activityType
+    ) {
+
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(
+                R.layout.layout_dialog_confirm_menu
+        );
+
+        dialog.setCancelable(false);
+        this.context = context;
+        this.exoPlayer2 = exoPlayer2;
+        this.activityType = activityType;
+
+        exoPlayer2.pause();
+
+        setControl();
+        setEvent();
+
+    }
+
 
     public ConfirmDialogMenu(
             Context context, Integer dangChoi
@@ -88,6 +117,7 @@ public class ConfirmDialogMenu {
     }
 
     private void setEvent() {
+        nhacNenDongSession = new NhacNenDongSession(context);
         exoPlayer = new ExoPlayer.Builder(context).build();
         playerView.setPlayer(exoPlayer);
         maNguoiDung = SessionManager.getUserId(context);
@@ -110,8 +140,15 @@ public class ConfirmDialogMenu {
             chuyenManHinh(ThongTinNguoiDungActivity.class);
         });
 
+        cardBanBe.setOnClickListener(v -> {
+            chuyenManHinh(BanBeActivity.class);
+        });
+
         cardThoat.setOnClickListener(v -> {
 
+            if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                exoPlayer2.play();
+            }
             dismiss();
             SoundManager.playButton(context);
 
@@ -230,8 +267,11 @@ public class ConfirmDialogMenu {
         // lặp vô hạn
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
 
-//        // tắt tiếng nếu muốn
-//        exoPlayer.setVolume(0f);
+        // tắt tiếng nếu muốn
+        // Lấy âm lượng đã lưu
+        int amLuong = nhacNenDongSession.getAmLuong();
+        float volume = amLuong / 100f;
+        exoPlayer.setVolume(volume);
 
         exoPlayer.prepare();
 
@@ -300,6 +340,7 @@ public class ConfirmDialogMenu {
         cardCaiDat = dialog.findViewById(R.id.cardCaiDat);
         cardTaiKhoan = dialog.findViewById(R.id.cardTaiKhoan);
         cardThoat = dialog.findViewById(R.id.cardThoat);
+        cardBanBe = dialog.findViewById(R.id.cardBanBe);
 
         imgAvatar = dialog.findViewById(R.id.imgAvatar);
         imgHinhNen = dialog.findViewById(R.id.imgHinhNen);

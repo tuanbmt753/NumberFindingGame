@@ -26,6 +26,9 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.BanBe.BanBeActivity;
+import com.example.numberfindinggame.activity.BanBe.LoiMoiKetBanActivity;
+import com.example.numberfindinggame.activity.BanBe.ThemBanBeActivity;
 import com.example.numberfindinggame.activity.auth.DangNhapActivity;
 import com.example.numberfindinggame.activity.auth.XacThucEmailActivity;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
@@ -40,6 +43,7 @@ import com.example.numberfindinggame.helper.HinhAnhHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.MenuSession;
+import com.example.numberfindinggame.session.NhacNenDongSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.manager.SoundManager;
 import com.example.numberfindinggame.helper.ThietBiDangNhapHelper;
@@ -82,6 +86,11 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     private MenuSession menuSession;
     private LinearLayout layoutMenu;
 
+    private NhacNenDongSession nhacNenDongSession;
+
+    private String activityType = ActivityType.THONG_TIN_NGUOI_DUNG;
+
+    private LinearLayout layoutBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +104,21 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
+        activityType = ActivityType.THONG_TIN_NGUOI_DUNG;
+        maNguoiDung = SessionManager.getUserId(ThongTinNguoiDungActivity.this);
+
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+            maNguoiDung = getIntent().getStringExtra(IntentKey.MA_NGUOI_DUNG);
+        }
+
+        if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+            layoutBottom.setVisibility(View.VISIBLE);
+        } else {
+            layoutBottom.setVisibility(View.GONE);
+        }
+
+        nhacNenDongSession = new NhacNenDongSession(this);
         menuSession = new MenuSession(this);
         linearLayoutTienDoTaiLen.setVisibility(View.GONE);
         exoPlayer = new ExoPlayer.Builder(this).build();
@@ -153,14 +177,16 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
 
                 );
 
-        maNguoiDung = SessionManager.getUserId(ThongTinNguoiDungActivity.this);
+
+        layThongTinNguoiDung();
+
         ThietBiDangNhapHelper.kiemTraThietBiDangNhap(
                 this,
                 SessionManager.getUserId(this),
                 DeviceHelper.getDeviceId(ThongTinNguoiDungActivity.this)
 
         );
-        layThongTinNguoiDung();
+
 
         if (menuSession.isMenuMo()) {
             layoutMenu.setVisibility(View.VISIBLE);
@@ -191,7 +217,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
-                new ConfirmDialogMenu(ThongTinNguoiDungActivity.this).show();
+                new ConfirmDialogMenu(ThongTinNguoiDungActivity.this, exoPlayer, ActivityType.THONG_TIN_NGUOI_DUNG).show();
             }
         });
 
@@ -210,23 +236,50 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this, TrangChuActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (activityType.equals(ActivityType.BAN_BE)) {
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this, BanBeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (activityType.equals(ActivityType.LOI_MOI_KET_BAN)) {
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this, LoiMoiKetBanActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (activityType.equals(ActivityType.THEM_BAN_BE)) {
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this, ThemBanBeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
-                Intent intent = new Intent(ThongTinNguoiDungActivity.this, TrangChuActivity.class);
-                startActivity(intent);
-                finish();
+
             }
         });
 
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                themAnh = IntentKey.ANH_DAI_DIEN;
                 SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                    themAnh = IntentKey.ANH_DAI_DIEN;
 
-                //Mở thư viên
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 1);
+                    //Mở thư viên
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 1);
+                } else if (activityType.equals(ActivityType.BAN_BE) || activityType.equals(ActivityType.LOI_MOI_KET_BAN) || activityType.equals(ActivityType.THEM_BAN_BE)) {
+                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                            , XemAnhDaiDienActivity.class);
+
+                    intent.putExtra(IntentKey.ACTIVITY_TYPE, activityType);
+                    intent.putExtra(IntentKey.MA_NGUOI_DUNG, maNguoiDung);
+
+                    startActivity(intent);
+                    finish();
+                }
 
             }
         });
@@ -242,205 +295,236 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         imgHinhNen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                    new ConfirmDialogAnhNen(
+                            ThongTinNguoiDungActivity.this,
+                            "Xác nhận",
+                            "Bạn muốn chọn loại ảnh gì làm ảnh nền. Hay bạn chỉ muốn xem ảnh? ",
+                            new ConfirmDialogAnhNen.ConfirmCallback() {
+                                @Override
+                                public void onNenTinh() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
-                new ConfirmDialogAnhNen(
-                        ThongTinNguoiDungActivity.this,
-                        "Xác nhận",
-                        "Bạn muốn chọn loại ảnh gì làm ảnh nền. Hay bạn chỉ muốn xem ảnh? ",
-                        new ConfirmDialogAnhNen.ConfirmCallback() {
-                            @Override
-                            public void onNenTinh() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    themAnh = IntentKey.ANH_NEN;
+                                    //Mở thư viên
+                                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    startActivityForResult(intent, 1);
+                                }
 
-                                themAnh = IntentKey.ANH_NEN;
-                                //Mở thư viên
-                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(intent, 1);
-                            }
+                                @Override
+                                public void onHeThong() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    themAnh = IntentKey.ANH_NEN_DONG;
 
-                            @Override
-                            public void onHeThong() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-                                themAnh = IntentKey.ANH_NEN_DONG;
+                                    new BackgroundDialog(
 
-                                imgHinhNen.setVisibility(View.GONE);
-                                playerView.setVisibility(View.VISIBLE);
+                                            ThongTinNguoiDungActivity.this,
+                                            exoPlayer,
 
-                                new BackgroundDialog(
+                                            item -> {
 
-                                        ThongTinNguoiDungActivity.this,
+                                                if (item != null) {
+                                                    imgHinhNen.setVisibility(View.GONE);
+                                                    playerView.setVisibility(View.VISIBLE);
 
-                                        item -> {
+                                                    //MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getResId());
+                                                    int resId = item.getResId();
+                                                    phatVideoNen(resId);
+                                                    capNhapHinhNen("" + resId);
 
-                                            MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getName());
-                                            int resId = item.getResId();
-                                            phatVideoNen(resId);
-                                            capNhapHinhNen("" + resId);
+                                                    if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
+                                                        CloudinaryManager.deleteVideo(
+                                                                oldVideoUrl
+                                                                , new CloudinaryManager.OnDeleteListener() {
+                                                                    @Override
+                                                                    public void onSuccess() {
 
-                                            if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
-                                                CloudinaryManager.deleteVideo(
-                                                        oldVideoUrl
-                                                        , new CloudinaryManager.OnDeleteListener() {
-                                                            @Override
-                                                            public void onSuccess() {
+                                                                        oldVideoUrl = null;
+                                                                    }
 
-                                                                oldVideoUrl = null;
-                                                            }
+                                                                    @Override
+                                                                    public void onFailed(String error) {
 
-                                                            @Override
-                                                            public void onFailed(String error) {
+                                                                        oldVideoUrl = null;
+                                                                    }
+                                                                });
+                                                    } else {
+                                                        oldVideoUrl = null;
+                                                    }
+                                                }
 
-                                                                oldVideoUrl = null;
-                                                            }
-                                                        });
-                                            } else {
-                                                oldVideoUrl = null;
+
                                             }
 
+                                    ).show();
 
-                                        }
+                                }
 
-                                ).show();
+                                @Override
+                                public void onNenDong() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
+                                    pickVideoLauncher.launch(
+
+                                            "video/*"
+
+                                    );
+
+                                }
+
+                                public void onXemAnhNen() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                                            , XemAnhNenTinhActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
+                                public void onXemAnhDaiDien() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                                            , XemAnhDaiDienActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
+                                @Override
+                                public void onNo() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                                }
                             }
+                    ).show();
+                } else if (activityType.equals(ActivityType.BAN_BE) || activityType.equals(ActivityType.LOI_MOI_KET_BAN) || activityType.equals(ActivityType.THEM_BAN_BE)) {
+                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                            , XemAnhNenTinhActivity.class);
 
-                            @Override
-                            public void onNenDong() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                    intent.putExtra(IntentKey.ACTIVITY_TYPE, activityType);
+                    intent.putExtra(IntentKey.MA_NGUOI_DUNG, maNguoiDung);
 
-                                pickVideoLauncher.launch(
+                    startActivity(intent);
+                    finish();
+                }
 
-                                        "video/*"
-
-                                );
-
-                            }
-
-                            public void onXemAnhNen() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-                                Intent intent = new Intent(ThongTinNguoiDungActivity.this
-                                        , XemAnhNenActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-
-                            public void onXemAnhDaiDien() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-
-                            }
-
-                            @Override
-                            public void onNo() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-
-                            }
-                        }
-                ).show();
             }
         });
 
         playerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (activityType.equals(ActivityType.THONG_TIN_NGUOI_DUNG)) {
+                    new ConfirmDialogAnhNen(
+                            ThongTinNguoiDungActivity.this,
+                            "Xác nhận",
+                            "Bạn muốn chọn loại ảnh gì làm ảnh nền. Hay bạn chỉ muốn xem ảnh? ",
+                            new ConfirmDialogAnhNen.ConfirmCallback() {
+                                @Override
+                                public void onNenTinh() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
-                new ConfirmDialogAnhNen(
-                        ThongTinNguoiDungActivity.this,
-                        "Xác nhận",
-                        "Bạn muốn chọn loại ảnh gì làm ảnh nền. Hay bạn chỉ muốn xem ảnh? ",
-                        new ConfirmDialogAnhNen.ConfirmCallback() {
-                            @Override
-                            public void onNenTinh() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                                    themAnh = IntentKey.ANH_NEN;
+                                    //Mở thư viên
+                                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    startActivityForResult(intent, 1);
+                                }
+
+                                @Override
+                                public void onHeThong() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    themAnh = IntentKey.ANH_NEN_DONG;
+
+                                    imgHinhNen.setVisibility(View.GONE);
+                                    playerView.setVisibility(View.VISIBLE);
+
+                                    new BackgroundDialog(
+
+                                            ThongTinNguoiDungActivity.this,
+                                            exoPlayer,
+
+                                            item -> {
+
+                                                MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getName());
+                                                int resId = item.getResId();
+                                                phatVideoNen(resId);
+                                                capNhapHinhNen("" + resId);
+
+                                                if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
+                                                    CloudinaryManager.deleteVideo(
+                                                            oldVideoUrl
+                                                            , new CloudinaryManager.OnDeleteListener() {
+                                                                @Override
+                                                                public void onSuccess() {
+                                                                    oldVideoUrl = null;
+                                                                }
+
+                                                                @Override
+                                                                public void onFailed(String error) {
+                                                                    oldVideoUrl = null;
+                                                                }
+                                                            });
+                                                } else {
+                                                    oldVideoUrl = null;
+                                                }
 
 
-                                themAnh = IntentKey.ANH_NEN;
-                                //Mở thư viên
-                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(intent, 1);
-                            }
-
-                            @Override
-                            public void onHeThong() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-                                themAnh = IntentKey.ANH_NEN_DONG;
-
-                                imgHinhNen.setVisibility(View.GONE);
-                                playerView.setVisibility(View.VISIBLE);
-
-                                new BackgroundDialog(
-
-                                        ThongTinNguoiDungActivity.this,
-
-                                        item -> {
-
-                                            MessageHelper.success(ThongTinNguoiDungActivity.this, "" + item.getName());
-                                            int resId = item.getResId();
-                                            phatVideoNen(resId);
-                                            capNhapHinhNen("" + resId);
-
-                                            if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
-                                                CloudinaryManager.deleteVideo(
-                                                        oldVideoUrl
-                                                        , new CloudinaryManager.OnDeleteListener() {
-                                                            @Override
-                                                            public void onSuccess() {
-                                                                oldVideoUrl = null;
-                                                            }
-
-                                                            @Override
-                                                            public void onFailed(String error) {
-                                                                oldVideoUrl = null;
-                                                            }
-                                                        });
-                                            } else {
-                                                oldVideoUrl = null;
                                             }
 
+                                    ).show();
 
-                                        }
+                                }
 
-                                ).show();
+                                @Override
+                                public void onNenDong() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
 
+                                    pickVideoLauncher.launch(
+
+                                            "video/*"
+
+                                    );
+
+                                }
+
+                                public void onXemAnhNen() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                                            , XemAnhNenActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
+                                public void onXemAnhDaiDien() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                                            , XemAnhDaiDienActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+
+                                @Override
+                                public void onNo() {
+                                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+
+                                }
                             }
+                    ).show();
+                } else if (activityType.equals(ActivityType.BAN_BE) || activityType.equals(ActivityType.LOI_MOI_KET_BAN) || activityType.equals(ActivityType.THEM_BAN_BE)) {
+                    SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                    Intent intent = new Intent(ThongTinNguoiDungActivity.this
+                            , XemAnhNenActivity.class);
 
-                            @Override
-                            public void onNenDong() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
+                    intent.putExtra(IntentKey.ACTIVITY_TYPE, activityType);
+                    intent.putExtra(IntentKey.MA_NGUOI_DUNG, maNguoiDung);
 
-                                pickVideoLauncher.launch(
-
-                                        "video/*"
-
-                                );
-
-                            }
-
-                            public void onXemAnhNen() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-                                Intent intent = new Intent(ThongTinNguoiDungActivity.this
-                                        , XemAnhNenActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-
-                            public void onXemAnhDaiDien() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-                                Intent intent = new Intent(ThongTinNguoiDungActivity.this
-                                        , XemAnhDaiDienActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-
-                            @Override
-                            public void onNo() {
-                                SoundManager.playButton(ThongTinNguoiDungActivity.this);
-
-                            }
-                        }
-                ).show();
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
@@ -679,6 +763,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
     }
 
     private void layThongTinNguoiDung() {
+        exoPlayer.pause();
         if (!NetworkHelper.isConnected(ThongTinNguoiDungActivity.this)) {
 
             MessageHelper.error(
@@ -695,7 +780,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         loading.show();
 
         nguoiDungRepository.layNguoiDungTheoMa(
-                SessionManager.getUserId(ThongTinNguoiDungActivity.this),
+                maNguoiDung,
                 task -> {
 
                     if (task.isSuccessful() && task.getResult().exists()) {
@@ -720,9 +805,13 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                             } else {
                                 imgAvatar.setImageResource(R.drawable.avatar_default);
                             }
+                            imgHinhNen.setVisibility(View.VISIBLE);
+                            playerView.setVisibility(View.GONE);
 
                         } catch (Exception exception) {
                             imgAvatar.setImageResource(R.drawable.avatar_default);
+                            imgHinhNen.setVisibility(View.VISIBLE);
+                            playerView.setVisibility(View.GONE);
                         }
 
                         if (isInteger(nguoiDung.getHinhNen()) == false) {
@@ -827,8 +916,12 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         // lặp vô hạn
         exoPlayer.setRepeatMode(Player.REPEAT_MODE_ALL);
 
-//        // tắt tiếng nếu muốn
-//        exoPlayer.setVolume(0f);
+
+        // tắt tiếng nếu muốn
+        // Lấy âm lượng đã lưu
+        int amLuong = nhacNenDongSession.getAmLuong();
+        float volume = amLuong / 100f;
+        exoPlayer.setVolume(volume);
 
         exoPlayer.prepare();
 
@@ -853,6 +946,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         txtThoat = findViewById(R.id.txtThoat);
         txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
 
+
         txtTenNguoiDung = findViewById(R.id.txtTenNguoiDung);
         txtMaNguoiDung = findViewById(R.id.txtMaNguoiDung);
         txtEmail = findViewById(R.id.txtEmail);
@@ -872,6 +966,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
         seekBarBTaiLen = findViewById(R.id.seekBarBTaiLen);
 
         layoutMenu = findViewById(R.id.layoutMenu);
+        layoutBottom = findViewById(R.id.layoutBottom);
 
 
     }
@@ -985,6 +1080,8 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                                     public void onSuccess() {
 
                                         MessageHelper.success(ThongTinNguoiDungActivity.this, "Cập nhật thành công");
+
+
                                         if (kiemTratPlayableVideoUrl(oldVideoUrl) == true) {
                                             CloudinaryManager.deleteVideo(
                                                     oldVideoUrl
@@ -1005,7 +1102,7 @@ public class ThongTinNguoiDungActivity extends AppCompatActivity {
                                             oldVideoUrl = null;
                                         }
 
-
+                                        layThongTinNguoiDung();
                                     }
 
                                     @Override

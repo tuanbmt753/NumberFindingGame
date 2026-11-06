@@ -62,7 +62,7 @@ public class NhacHieuUngAdapter
         txtGhiChu.setVisibility(View.GONE);
         MaterialCardView cardNhacHieuUng = convertView.findViewById(R.id.cardNhacHieuUng);
 
-        txtTenNhacHieuUng.setText(nhacHieuUng.getTenHieuUng());
+        txtTenNhacHieuUng.setText("▶ " +nhacHieuUng.getTenHieuUng());
         txtGhiChu.setText(nhacHieuUng.getGhiChu());
 
         if (SoundManager.getCurrentSound(context) == nhacHieuUng.getMaHieuUng()) {

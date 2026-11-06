@@ -36,4 +36,23 @@ public class FirebaseManager {
     public static DatabaseReference ManChoi() {
         return database.getReference("ManChoi");
     }
+
+    public static DatabaseReference banBe() {
+        return database.getReference("BanBe");
+    }
+
+    public static DatabaseReference phongChat() {
+        return database.getReference("PhongChat");
+    }
+
+    public static DatabaseReference thanhVienPhongChat() {
+        return database.getReference("ThanhVienPhongChat");
+    }
+
+    public static DatabaseReference tinNhan() {
+        return database.getReference("TinNhan");
+    }
+    public static DatabaseReference xemChat() {
+        return database.getReference("XemChat");
+    }
 }

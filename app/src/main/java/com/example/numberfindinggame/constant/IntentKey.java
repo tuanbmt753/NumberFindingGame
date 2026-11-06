@@ -10,10 +10,14 @@ public class IntentKey {
     public static final String FALSE = "FALSE";
 
     public static final String NGUOI_DUNG = "NGUOI_DUNG";
+    public static final String MA_NGUOI_DUNG = "MA_NGUOI_DUNG";
     public static final String MA_KHOI_PHUC = "MA_KHOI_PHUC";
 
     public static final String ANH_DAI_DIEN = "ANH_DAI_DIEN";
     public static final String ANH_NEN = "ANH_NEN";
     public static final String ANH_NEN_DONG = "ANH_NEN_DONG";
+
+    public static final String MA_BAN_BE = "MA_BAN_BE";
+    public static final String MA_PHONG_CHAT = "MA_PHONG_CHAT";
 
 }
