@@ -15,6 +15,21 @@
 
     </style>
 
+
+    <style name="ShapeAppearanceOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+
+    <style name="CircleTinNhanHinhAnh">
+
+        <item name="cornerFamily">rounded</item>
+
+        <item name="cornerSize">5%</item>
+
+    </style>
+
     <style name="BottomRoundImage">
 
         <item name="cornerFamily">rounded</item>

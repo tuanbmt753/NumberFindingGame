@@ -18,6 +18,8 @@ import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.constant.ActivityType;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.model.NguoiDung;
@@ -33,6 +35,7 @@ public class XemAnhNenTinhActivity extends AppCompatActivity {
     private String maNguoiDung;
     private byte[] byteArrayHinh = new byte[0];
 
+    private String activityType = ActivityType.THONG_TIN_NGUOI_DUNG;
 
 
     @Override
@@ -48,6 +51,13 @@ public class XemAnhNenTinhActivity extends AppCompatActivity {
 
     private void setEvent() {
         maNguoiDung = SessionManager.getUserId(XemAnhNenTinhActivity.this);
+        activityType = ActivityType.THONG_TIN_NGUOI_DUNG;
+
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+            maNguoiDung = getIntent().getStringExtra(IntentKey.MA_NGUOI_DUNG);
+        }
+
         layThongTinNguoiDung(maNguoiDung);
 
         layoutBottom.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +66,10 @@ public class XemAnhNenTinhActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(XemAnhNenTinhActivity.this
                         , ThongTinNguoiDungActivity.class);
+
+                intent.putExtra(IntentKey.ACTIVITY_TYPE, activityType);
+                intent.putExtra(IntentKey.MA_NGUOI_DUNG, maNguoiDung);
+
                 startActivity(intent);
                 finish();
 

@@ -38,55 +38,76 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="40sp"
                 android:layout_marginTop="24dp"
+                android:background="@drawable/bg_menu2"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="12dp"
+                app:cardCornerRadius="7dp"
+                app:cardElevation="5dp"
                 app:rippleColor="#33000000"
                 app:strokeColor="#000000"
-                app:strokeWidth="0.5dp">
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:layout_marginRight="30dp">
+                    android:background="@drawable/bg_caidat">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="21dp"
-                        android:src="@drawable/ic_tim_kiem" />
-
-                    <EditText
-                        android:id="@+id/edtTimKiemBanBe"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:background="@android:color/transparent"
-                        android:fontFamily="@font/sono"
-                        android:gravity="center"
-                        android:hint="Tên/Email/ID"
-                        android:inputType="text"
-                        android:textColor="#000000"
-                        android:textSize="20sp" />
-                </LinearLayout>
+                        android:layout_marginRight="25dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
 
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="21dp"
+                            android:src="@drawable/ic_tim_kiem" />
+
+                        <EditText
+                            android:id="@+id/edtTimKiemBanBe"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/sono"
+                            android:gravity="center"
+                            android:hint="Từ khóa"
+                            android:inputType="text"
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
             <ListView
                 android:id="@+id/lvBanBe"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10dp"
+                android:nestedScrollingEnabled="true"
+                android:visibility="visible">
 
             </ListView>
+
+            <ImageView
+                android:id="@+id/imgKhongTimThay"
+                android:layout_width="match_parent"
+                android:layout_height="300sp"
+                android:layout_marginTop="10dp"
+                android:background="#fff"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_khong_tim_thay"
+                android:visibility="gone"></ImageView>
+
 
 
         </LinearLayout>
@@ -111,9 +132,9 @@
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardDoiMatKhau"
+                android:id="@+id/cardLoiMoiKetBan"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:clickable="true"
@@ -132,22 +153,26 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txtLoiMoi"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/sono"
                         android:gravity="center"
+                        android:paddingHorizontal="10dp"
                         android:text="🤝 Lời mời"
                         android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardDangXuat"
+                android:id="@+id/cardThemBanBe"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
@@ -165,13 +190,16 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/sono"
                         android:gravity="center"
+                        android:paddingHorizontal="10dp"
                         android:text="➕ Thêm bạn"
                         android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>

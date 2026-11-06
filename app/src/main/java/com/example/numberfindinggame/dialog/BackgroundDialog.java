@@ -138,7 +138,7 @@ public class BackgroundDialog {
                     if (item != null) {
 
                         boolean dangPhat2 = dangPhatPlayer2;
-                        
+
                         chuyenLaiPlayer1();
                         phatVideoNen(item.getResId());
 

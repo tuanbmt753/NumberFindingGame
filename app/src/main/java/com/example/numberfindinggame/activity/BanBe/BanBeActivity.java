@@ -4,12 +4,18 @@ import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenByteSangB
 import static com.example.numberfindinggame.helper.HinhAnhHelper.chuyenStringSangByte;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,21 +25,31 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.numberfindinggame.R;
 import com.example.numberfindinggame.activity.home.TrangChuActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
+import com.example.numberfindinggame.adapter.BanBeAdapter;
+import com.example.numberfindinggame.adapter.LoiMoiKetBanAdapter;
 import com.example.numberfindinggame.dialog.ConfirmDialogMenu;
 import com.example.numberfindinggame.helper.GlitchView;
 import com.example.numberfindinggame.helper.HieuUngGlitchLayout;
 import com.example.numberfindinggame.helper.HieuUngHelper;
+import com.example.numberfindinggame.helper.ListViewHelper;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.manager.MusicManager;
 import com.example.numberfindinggame.manager.SoundManager;
+import com.example.numberfindinggame.model.BanBe;
 import com.example.numberfindinggame.model.NguoiDung;
+import com.example.numberfindinggame.repository.BanBeRepository;
 import com.example.numberfindinggame.repository.NguoiDungRepository;
 import com.example.numberfindinggame.session.HieuUngSession;
 import com.example.numberfindinggame.session.MenuSession;
 import com.example.numberfindinggame.session.NhacHieuUngNenSession;
 import com.example.numberfindinggame.session.SessionManager;
 import com.example.numberfindinggame.utils.LoadingDialog;
+import com.google.android.material.card.MaterialCardView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BanBeActivity extends AppCompatActivity {
 
@@ -54,6 +70,20 @@ public class BanBeActivity extends AppCompatActivity {
     private Integer hieuUng = 4;
     private Handler handler = new Handler(Looper.getMainLooper());
     private NhacHieuUngNenSession nhacHieuUngNenSession;
+    private MaterialCardView cardThemBanBe, cardLoiMoiKetBan;
+
+    private ListView lvBanBe;
+    ArrayList<BanBe> dsBanBe = new ArrayList<>();
+    ArrayList<BanBe> dsBanBeGoc = new ArrayList<>();
+    private BanBeAdapter banBeAdapter;
+    private BanBeRepository banBeRepository = new BanBeRepository();
+
+    private EditText edtTimKiemBanBe;
+    private ImageView imgKhongTimThay;
+
+    private Integer soLoiMoiKetBan = 0;
+    private TextView txtLoiMoi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +128,9 @@ public class BanBeActivity extends AppCompatActivity {
         menuSession = new MenuSession(this);
         maNguoiDung = SessionManager.getUserId(BanBeActivity.this);
         layThongTinNguoiDung(maNguoiDung);
+        demSoLoiMoiKetBan();
+
+        khoiTao();
 
         txtMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +186,289 @@ public class BanBeActivity extends AppCompatActivity {
             }
         });
 
+        cardThemBanBe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(BanBeActivity.this);
 
+                Intent intent = new Intent(BanBeActivity.this, ThemBanBeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        cardLoiMoiKetBan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SoundManager.playButton(BanBeActivity.this);
+
+                Intent intent = new Intent(BanBeActivity.this, LoiMoiKetBanActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+        edtTimKiemBanBe.addTextChangedListener(
+                new TextWatcher() {
+
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s,
+                            int start,
+                            int count,
+                            int after
+                    ) {
+                    }
+
+                    @Override
+                    public void onTextChanged(
+                            CharSequence s,
+                            int start,
+                            int before,
+                            int count
+                    ) {
+
+                        String tuKhoa = s.toString().trim().toLowerCase();
+
+                        dsBanBe.clear();
+
+                        // Nếu ô tìm kiếm trống
+                        if (tuKhoa.isEmpty()) {
+                            dsBanBe.addAll(dsBanBeGoc);
+
+                        } else {
+
+                            for (BanBe banBe : dsBanBeGoc) {
+
+                                NguoiDung nguoiDung =
+                                        banBe.getNguoiDung1();
+
+                                if (nguoiDung == null) {
+                                    continue;
+                                }
+
+                                String name =
+                                        nguoiDung.getTenNguoiDung();
+
+                                if (name == null) {
+                                    name = "";
+                                }
+
+                                name = name.toLowerCase();
+
+                                if (name.contains(tuKhoa)) {
+                                    dsBanBe.add(banBe);
+                                }
+                            }
+                        }
+
+                        if (banBeAdapter != null) {
+                            banBeAdapter.notifyDataSetChanged();
+
+                            ListViewHelper.setListViewHeightBasedOnChildren(
+                                    lvBanBe
+                            );
+
+                            khongCoDuLieu();
+                        }
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(
+                            Editable s
+                    ) {
+                    }
+                }
+        );
+
+
+    }
+
+    private void khoiTao() {
+        layDanhSachBanBe();
+    }
+
+    private void layDanhSachBanBe() {
+
+        banBeRepository.layDanhSachBanBe(
+                maNguoiDung,
+                new BanBeRepository.OnGetBanBeListener() {
+
+                    @Override
+                    public void onResult(List<BanBe> danhSach) {
+
+                        dsBanBe.clear();
+                        dsBanBeGoc.clear();
+
+                        if (danhSach == null || danhSach.isEmpty()) {
+
+                            khongCoDuLieu();
+
+                            khoiTaoAdapter();
+
+                            return;
+                        }
+
+                        dsBanBe.addAll(danhSach);
+                        dsBanBeGoc.addAll(danhSach);
+
+                        khongCoDuLieu();
+
+                        // Số lượng người dùng cần lấy
+                        AtomicInteger soNguoiConLai =
+                                new AtomicInteger(danhSach.size());
+
+                        for (BanBe banBe : danhSach) {
+
+
+                            layThongTinNguoiDung2(
+                                    banBe.getMaNguoiDung1(),
+                                    () -> {
+
+                                        int conLai =
+                                                soNguoiConLai.decrementAndGet();
+
+                                        // Chỉ tạo Adapter khi
+                                        // tất cả request đã hoàn thành
+                                        if (conLai == 0) {
+
+                                            runOnUiThread(() -> {
+
+                                                khoiTaoAdapter();
+
+                                            });
+                                        }
+                                    }
+                            );
+                        }
+
+                        for (BanBe banBe : danhSach) {
+
+                            Log.d(
+                                    "BAN_BE",
+                                    "Ma ban be: "
+                                            + banBe.getMaNguoiDung1()
+                            );
+                        }
+                    }
+                }
+        );
+    }
+
+    private void khoiTaoAdapter() {
+
+        banBeAdapter =
+                new BanBeAdapter(
+                        BanBeActivity.this,
+                        dsBanBe
+                );
+
+        lvBanBe.setAdapter(banBeAdapter);
+
+        ListViewHelper.setListViewHeightBasedOnChildren(
+                lvBanBe
+        );
+
+        khongCoDuLieu();
+    }
+
+    private void khongCoDuLieu() {
+        if (dsBanBe.size() == 0) {
+            lvBanBe.setVisibility(View.GONE);
+            imgKhongTimThay.setVisibility(View.VISIBLE);
+        } else {
+            lvBanBe.setVisibility(View.VISIBLE);
+            imgKhongTimThay.setVisibility(View.GONE);
+        }
+    }
+
+    private void layThongTinNguoiDung2(
+            String maNguoiDung,
+            Runnable onComplete
+    ) {
+
+        if (maNguoiDung == null
+                || maNguoiDung.trim().isEmpty()) {
+
+            if (onComplete != null) {
+                onComplete.run();
+            }
+
+            return;
+        }
+
+        nguoiDungRepository.layNguoiDungTheoMa(
+                maNguoiDung,
+                task -> {
+
+                    if (task.isSuccessful()
+                            && task.getResult() != null
+                            && task.getResult().exists()) {
+
+                        NguoiDung nguoiDung =
+                                task.getResult()
+                                        .getValue(NguoiDung.class);
+
+                        if (nguoiDung != null
+                                && nguoiDung.getMaNguoiDung() != null) {
+
+                            // Cập nhật danh sách đang hiển thị
+                            for (BanBe banBe : dsBanBe) {
+
+                                if (maNguoiDung.equals(
+                                        banBe.getMaNguoiDung1()
+                                )) {
+
+                                    banBe.setNguoiDung1(
+                                            nguoiDung
+                                    );
+
+                                    break;
+                                }
+                            }
+
+                            // Cập nhật danh sách gốc
+                            for (BanBe banBe : dsBanBeGoc) {
+
+                                if (maNguoiDung.equals(
+                                        banBe.getMaNguoiDung1()
+                                )) {
+
+                                    banBe.setNguoiDung1(
+                                            nguoiDung
+                                    );
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Request này đã hoàn thành
+                    if (onComplete != null) {
+                        onComplete.run();
+                    }
+                }
+        );
+    }
+
+    private void demSoLoiMoiKetBan() {
+        banBeRepository.demSoLoiMoiKetBan(
+                maNguoiDung,
+                new BanBeRepository.OnCountLoiMoiListener() {
+
+                    @Override
+                    public void onResult(int soLuong) {
+                        if (soLuong > 0) {
+                            txtLoiMoi.setText("🤝 Lời mời (" + soLuong + ")");
+                        } else {
+                            txtLoiMoi.setText("🤝 Lời mời");
+                        }
+                    }
+                }
+        );
     }
 
     private void setControl() {
@@ -169,6 +484,16 @@ public class BanBeActivity extends AppCompatActivity {
         txtMoRongMenu = findViewById(R.id.txtMoRongMenu);
 
         viewNhieu = findViewById(R.id.viewNhieu);
+
+        cardThemBanBe = findViewById(R.id.cardThemBanBe);
+        cardLoiMoiKetBan = findViewById(R.id.cardLoiMoiKetBan);
+
+        lvBanBe = findViewById(R.id.lvBanBe);
+
+        edtTimKiemBanBe = findViewById(R.id.edtTimKiemBanBe);
+        imgKhongTimThay = findViewById(R.id.imgKhongTimThay);
+
+        txtLoiMoi = findViewById(R.id.txtLoiMoi);
     }
 
     private void layThongTinNguoiDung(String maNguoiDung) {
