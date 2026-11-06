@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.activity.BanBe.BanBeActivity;
 import com.example.numberfindinggame.activity.manchoi.ManChoiActivity;
 import com.example.numberfindinggame.activity.nguoidung.ThongTinNguoiDungActivity;
 import com.example.numberfindinggame.activity.setting.SettingActivity;
@@ -43,7 +44,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.ValueEventListener;
 
 public class TrangChuActivity extends AppCompatActivity {
-    private MaterialCardView cardCaiDat, cardThoat, cardTaiKhoan, cardMap;
+    private MaterialCardView cardCaiDat, cardThoat, cardTaiKhoan, cardMap, cardBanBe;
     private ValueEventListener dangHoatDongListener;
 
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
@@ -225,6 +226,21 @@ public class TrangChuActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        cardBanBe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        TrangChuActivity.this,
+                        BanBeActivity.class
+                );
+
+                SoundManager.playButton(TrangChuActivity.this);
+
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void layThongTinNguoiDung() {
@@ -275,6 +291,7 @@ public class TrangChuActivity extends AppCompatActivity {
         cardThoat = findViewById(R.id.cardThoat);
         cardTaiKhoan = findViewById(R.id.cardTaiKhoan);
         cardMap = findViewById(R.id.cardMap);
+        cardBanBe = findViewById(R.id.cardBanBe);
 
         imgLogo = findViewById(R.id.imgLogo);
         layoutLogo = findViewById(R.id.layoutLogo);

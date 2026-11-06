@@ -1,33 +1,41 @@
 package com.example.numberfindinggame.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.dialog.ConfirmDialogThongTinHinhNenDong;
+import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.model.BackgroundItem;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
-public class BackgroundAdapter
-        extends BaseAdapter {
+public class BackgroundAdapter extends ArrayAdapter<BackgroundItem> {
 
     private final Context context;
 
     private final List<BackgroundItem> list;
+    private BackgroundItem item = null;
 
     public BackgroundAdapter(
-
             Context context,
-
-            List<BackgroundItem> list
-    ) {
-
+            List<BackgroundItem> list) {
+        super(
+                context,
+                R.layout.item_background,
+                list
+        );
         this.context = context;
-
         this.list = list;
 
     }
@@ -40,9 +48,13 @@ public class BackgroundAdapter
 
     }
 
+    public void onSelectItem(BackgroundItem item) {
+        this.item = item;
+    }
+
     @Override
 
-    public Object getItem(int position) {
+    public BackgroundItem getItem(int position) {
 
         return list.get(position);
 
@@ -56,56 +68,51 @@ public class BackgroundAdapter
 
     }
 
-    @Override
 
+    @NonNull
+    @Override
     public View getView(
 
             int position,
 
             View convertView,
 
-            ViewGroup parent
-    ) {
+            @NonNull ViewGroup parent) {
 
         if (convertView == null) {
-
-            convertView =
-
-                    LayoutInflater
-
-                            .from(context)
-
-                            .inflate(
-
-                                    R.layout.item_background,
-
-                                    parent,
-
-                                    false
-                            );
-
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_background, parent, false);
         }
 
-        TextView txtName =
+        TextView txtName = convertView.findViewById(R.id.txtName);
+        MaterialCardView cardNenDong = convertView.findViewById(R.id.cardNenDong);
+        MaterialCardView cardThongTin = convertView.findViewById(R.id.cardThongTin);
 
-                convertView.findViewById(
+        BackgroundItem item = list.get(position);
+        txtName.setText("▶ " + item.getName());
 
-                        R.id.txtName
-                );
+        if (this.item != null) {
+            if (this.item.getResId() == item.getResId()) {
+                cardNenDong.setStrokeWidth(dpToPx(1));
+            } else {
+                cardNenDong.setStrokeWidth(dpToPx(0));
+            }
+        } else {
+            cardNenDong.setStrokeWidth(dpToPx(0));
+        }
 
-        BackgroundItem item =
-
-                list.get(position);
-
-        txtName.setText(
-
-                "▶ " +
-
-                        item.getName()
-        );
+        cardThongTin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ConfirmDialogThongTinHinhNenDong(context, item.getName(), item.getDsLinkHinhNenDong()).show();
+            }
+        });
 
         return convertView;
 
+    }
+
+    private int dpToPx(int dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density);
     }
 
 }

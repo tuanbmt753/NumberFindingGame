@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
+        android:background="#000"
         android:fillViewport="true">
 
         <LinearLayout
@@ -36,7 +35,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgHinhNen"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/background_profile"
                 app:shapeAppearanceOverlay="@style/BottomRoundImage" />
 

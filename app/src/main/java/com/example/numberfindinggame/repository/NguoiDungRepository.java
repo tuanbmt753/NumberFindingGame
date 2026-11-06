@@ -14,7 +14,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NguoiDungRepository {
@@ -317,6 +321,79 @@ public class NguoiDungRepository {
 
     }
 
+    public void layDanhSachNguoiDungTruBanThan(
+            String maNguoiDung,
+            OnGetUsersListener listener
+    ) {
+
+        FirebaseManager.nguoiDung()
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(
+                                    @NonNull DataSnapshot snapshot
+                            ) {
+
+                                List<NguoiDung> danhSach = new ArrayList<>();
+
+                                for (DataSnapshot item :
+                                        snapshot.getChildren()) {
+
+                                    NguoiDung nd = item.getValue(NguoiDung.class);
+
+                                    if (nd == null) {
+                                        continue;
+                                    }
+
+                                    // Loại bỏ chính người đang đăng nhập
+                                    if (maNguoiDung.equals(nd.getMaNguoiDung())) {
+                                        continue;
+                                    }
+
+                                    // Chỉ lấy tài khoản LOCAL
+//                                    if (!LoginType.LOCAL.equals(
+//                                            nd.getLoaiDangNhap())) {
+//                                        continue;
+//                                    }
+
+                                    danhSach.add(nd);
+                                }
+
+                                // Đăng nhập gần đây nhất đứng đầu
+                                Collections.sort(
+                                        danhSach,
+                                        new Comparator<NguoiDung>() {
+                                            @Override
+                                            public int compare(
+                                                    NguoiDung nd1,
+                                                    NguoiDung nd2
+                                            ) {
+
+                                                return Long.compare(
+                                                        nd2.getDangNhapCuoi(),
+                                                        nd1.getDangNhapCuoi()
+                                                );
+                                            }
+                                        }
+                                );
+
+                                listener.onSuccess(danhSach);
+                            }
+
+                            @Override
+                            public void onCancelled(
+                                    @NonNull DatabaseError error
+                            ) {
+
+                                listener.onFailed(
+                                        error.getMessage()
+                                );
+                            }
+                        }
+                );
+    }
+
 
     public interface OnGetEmailListener {
 
@@ -331,6 +408,13 @@ public class NguoiDungRepository {
 
         void onFailed(String message);
 
+    }
+
+    public interface OnGetUsersListener {
+
+        void onSuccess(List<NguoiDung> danhSach);
+
+        void onFailed(String message);
     }
 
 

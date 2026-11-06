@@ -72,7 +72,8 @@ public class HieuUngAdapter
         MaterialCardView cardAmThanhHieuUng = convertView.findViewById(R.id.cardAmThanhHieuUng);
 
         HieuUng hieuUng = dsHieuUng.get(position);
-        txtTenHieuUng.setText(hieuUng.getTenHieuUng());
+        
+        txtTenHieuUng.setText("▶ " +hieuUng.getTenHieuUng());
         txtGhiChu.setText(hieuUng.getGhiChu());
 
         Integer hieuUngHienTai =

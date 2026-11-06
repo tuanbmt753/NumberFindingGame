@@ -13,6 +13,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.numberfindinggame.R;
+import com.example.numberfindinggame.constant.ActivityType;
+import com.example.numberfindinggame.constant.IntentKey;
 import com.example.numberfindinggame.helper.MessageHelper;
 import com.example.numberfindinggame.helper.NetworkHelper;
 import com.example.numberfindinggame.session.SessionManager;
@@ -28,6 +30,7 @@ public class XemAnhDaiDienActivity extends AppCompatActivity {
     private NguoiDungRepository nguoiDungRepository = new NguoiDungRepository();
     private byte[] byteArrayHinh = new byte[0];
     private String maNguoiDung;
+    private String activityType = ActivityType.THONG_TIN_NGUOI_DUNG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,13 @@ public class XemAnhDaiDienActivity extends AppCompatActivity {
 
     private void setEvent() {
         maNguoiDung = SessionManager.getUserId(XemAnhDaiDienActivity.this);
+        activityType = ActivityType.THONG_TIN_NGUOI_DUNG;
+
+        if (getIntent().hasExtra(IntentKey.ACTIVITY_TYPE)) {
+            activityType = getIntent().getStringExtra(IntentKey.ACTIVITY_TYPE);
+            maNguoiDung = getIntent().getStringExtra(IntentKey.MA_NGUOI_DUNG);
+        }
+
         layThongTinNguoiDung(maNguoiDung);
 
         layoutBottom.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +61,12 @@ public class XemAnhDaiDienActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(XemAnhDaiDienActivity.this
                         , ThongTinNguoiDungActivity.class);
+
+                intent.putExtra(IntentKey.ACTIVITY_TYPE, activityType);
+                intent.putExtra(IntentKey.MA_NGUOI_DUNG, maNguoiDung);
+
                 startActivity(intent);
+
                 finish();
 
             }

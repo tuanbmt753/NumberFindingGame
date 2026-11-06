@@ -115,7 +115,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="👥 Tài khoản"
+                android:text="👤 Tài khoản"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -165,7 +165,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sono"
                 android:gravity="center"
-                android:text="Bạn bè"
+                android:text="👥 Bạn bè"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
